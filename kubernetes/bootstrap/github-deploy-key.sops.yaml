@@ -1,14 +1,13 @@
-#ENC[AES256_GCM,data:1xfsNVFwC3pr29b6C7ZnvTk=,iv:x7wPnXB6tOML7MDL//2TmUIGtHeiPW0m2VmW8A4Jy4I=,tag:7CaBmkxElrPLcrZEcN22AA==,type:comment]
-#ENC[AES256_GCM,data:lTcfPmVNZs+Pk44LH60ttQNlM6h1/czGXeJRUq5o4h/915whlX3sPDdvTNjjV55mBmI0x2aC5OHFj+YYQUPl,iv:bKk0oymruTUqcZ/QWw/kkqkxfmqe7+nvyxRdeQjtJrk=,tag:jRA8MQBFlt3LzZ3WngVnyg==,type:comment]
-apiVersion: ENC[AES256_GCM,data:dU0=,iv:5AeLG00pHWC3Za6VHUQFcrv+av6/U6Hy2TgHwlpX7qc=,tag:v4271GKuQX3F5ZCP6O90KA==,type:str]
-kind: ENC[AES256_GCM,data:+oUzsTuk,iv:yw9BqzjnlC+vRQBFw5K/chc6nJW5om9UCkqItF4mAxo=,tag:JCShF9/X0+llajvS0AA5eQ==,type:str]
+apiVersion: v1
+kind: Secret
 metadata:
-    name: ENC[AES256_GCM,data:Lr6mygQStQMO+yM7wpAAlg0=,iv:LfH6hYy2YDngj1df5ITmQiiLJSFboBYpuzDuSpkWfOg=,tag:mcImGan/T3wO1zHgggGWVA==,type:str]
-    namespace: ENC[AES256_GCM,data:Hgh91TT5LZkCDBA=,iv:AWnfFtIOJVpFxAi4QRRz7uXe5pLL7Yso5XjMIVd5Afs=,tag:H8r8LPraZP+6O2epaeSJiA==,type:str]
+    name: github-deploy-key
+    namespace: flux-system
 stringData:
-    identity: ENC[AES256_GCM,data:Zv5a5V3bgjmQciiLbWfgNj8zJFCW31soTs2JHMgUZGKfBJ+R2hmwJ01cZtRce2dXDwtQtNYM5wF/RESqDjTcU8inYJeN74ZBzrwY00/HUbPT9A++kfBti9KGCftmzNWmt8MGItTy2fF77K528CoLY70mtPJTGpBLQ70phYQ//aNgMad8WUkGR3UiCHP1D/onsdWE5NyaVpdH4u/ks1QEiw/xrz3j8bmd7QBVoTa+qy7CYMS7YHicHX8OvFqnS/BiWAe3XYoEu3tXfOcc/iZFhy1ljIVHFP+msyJdlx7hgNsumERSFEoq8Is4O+Ww6Gzd1qEGr7tOMLVio1oGSIdsegvGLmNKSXOQhoEpiyY7bCQ+WnX4hx+yf7lOIXOk4RBw68B15rV96iWMWYiBPTF6QSUo1iLWHzmr2fZFEWEP1c18paMG7iMOnHRau7Tt8Tj8U2yrugp56NweXMLPOM4JoISPY6/BriYRO69zGaArymBqymLFXe7qxei+GUH2rYrZ3PtxeEyUzc6BZbeiOk8NX5ACrAco8y0McQglrM++cU0F5tiVeHhxAHyLPlViZ0UNY2EJWVTuvcX6tveKAL0RUtu7COkQpnuxvQeelPrLjUwk75d8mpNP4nNoayOyWFXRA9RnxxVQv7cOXCODjpOFyNTCkqb3NImgvFMu4QqVg9ImCqTf1Mi2vxklCQoSXNABKuloGXSEIRXAJnqw9H2xWizZoJyG8jYnEhZbCQ4pE/AslMR6vfUnxlfUYqOPzdyeYX4V5mrcSTGntB/3WPtCZuwllfZU9yOYzDeAWh0MvbTOjFRtQ47bvvMmziXLzvTYdIvSKgLvYJL2yNvf3eqdFfY5I0CjlYPn7GvP32iQQV4k0ED38IW1ZJA=,iv:edY27eEbktEC6T1Ls82upOsF73YMgCJ3Ll2I3XFa2Nk=,tag:rLPwUp2370tQ9lB4Xvx/4w==,type:str]
-    identidy.pub: ENC[AES256_GCM,data:DQPRxLUrfBmenUahWx+KngVB7/rudHrx+xY+nl7IPaZ1UxpOWG9eX9rbVOgSz/Ybw4qVebK4hFGYUmDdiUlX/r61nsEKq5lrEeZCwrodGRzq+uEU3Od0UkTtrmccW54LtrTeafS9Jg30Zt70ZekWlanbWIgKJjntzWmVJEbv5wR7N3JDmutMumInCy5BCgZO+bT+b9V9y7fjPPi2Zy/oaVZUmGvmMx8egPA1yQ4DI2rdcw229Bga9BhAGaNiUj9ZOdQACRqX2dmK8mnwk1sQSDrLpELp3wwxoyM+2BtM64CQy5vjFcdS/7x7FFHammOUV5a99iHjJ1rI/2OkzMcxkYyiLhrt4Sk1T5M59Nw1fw==,iv:k+h+Z6gOyRh6o1mv/0wZRR/7xw1aXQoGUrf7Uf/oEtI=,tag:ZF3gZ+QgeK+ZsA89y0yR2g==,type:str]
-    known_hosts: ENC[AES256_GCM,data:YbDCnJkkksTFPQhz+mon0jcaIom9jCiH6SWBfzq9xP1mMK7sCnBxl1FmYYGm/JrHokQ+5NWk+0JQ+g6axjYngSGhWDmKeqgbRYat7bTUWlQW5RVNhqOZ8b3LeLnFgERMD6LHVQ0/dgp9ESo/4d9hHe3dUbw1Ag+K03gI09xU6bScsoIxVTp4X80A953tk3VBhKMxuIQMjKD2sQeSNldzRw2d6agKrn3qbipQGtBKmP3hWcLb1BYMwaipgHTdVnekMdaJnXxQydcNdVxaKTsRptrXE0e6ZJz8xkdXfnqnWyTd3KUjj1PtkiU69aeG0LGWcuKpn1As4mJC09CE3xsD4uLc3/4PqnLaVMnp+wTCwVFNouzX2sVZg7/qj0rSsrhbfzTQtCvLj4H3YZWKWvqbIJix1i/WL2vFvDEep0Xepo/IEmdBfTjWy/q6bw1eVzHPV5jED9T5LXzTgnSUb2DuHclipUK5hrTHMWdJ4supVJtNETpsaqkZRK3UMEZdZqqwToos5bLfGCSpvddtUZEgov/iAcXyE2B1T6BHfKIpAkzrUvzWEj2mzqF/P1JBeeQzUAju3jFBSEZ0+Rejz/A0d1OIrPHm2EWaQgjEtKuMQ9nBZ6KRohV5BzGYadiaLruPMiJ+xd5sTD6wiwLnrEUqh6TXVHcCePz0KwrZtEUMNNA2ZGYSd/H4gmseK4wjDgxTVa2y5/23/I/2wPrOxFLMu6EpP8iFHkgXv+a6gdvqiidF+JRqQFHjoONeqBeDbQQxoDqb8MzDysYWyoofmWj5mWUePfOAhTDRnPkqxeakn9+XbXMkk6hQ5iEiqo57cbpmBXvhFnR+XpH7NuK/z5XTPB2hnUOIOBuSiD0MEABEwaFCKAzojroeHw4i7WVdsFytYRGw55QCEQV2A/S9vE1W4sejhj0yK4TIAvJ8XNSE/s84sL7Hs8ovA7FjjHY75rdJDYmlxgrNaMjmcwF89A0ziFU3fjdQ9Bt7Qs10ogfRUToRNOfEpTHUSrSY31W9T5uxe2aGmmI60OUAUczOURB/sYdS+OYtF5pc0oivFQxbvj4hrcgpUbjL+v+Is5U4fykO11TGxbQjEoByqCAT,iv:LcXXvsIlC7uOHRbBP+5FQbaKdhul/pq5Tz/RwW7+8hk=,tag:26xIYdlxmUF6f2uHPrkw/Q==,type:str]
+    #ENC[AES256_GCM,data:VGOyf06DxCWpDJ9ermf0UIeLPMlXbunztWOj/CQkD2dRhw==,iv:qGq90MLORaaHd4YACeDfFT1qt7Ly25hMDRGG3XdDTj8=,tag:kMPWv+PvVk5P/C6f6rw08A==,type:comment]
+    identity: ENC[AES256_GCM,data:U0933f7CxBOz/tfsp4CJ4sSPeMoxK63OV8BsNCAbAGPE4+uN78Zi+zXOazuV582++HPvID5G8lKRuotHn7NP7r5aGSetc5AMIzjsnNroWYnOjDWxZFmYef4yFEvyVi3l10pbVHu36QDj3x/OIcoibcmp/J+Mzv7lpXBeBBVpNdXvT8ifN8VcZmxP4X8oIp3vVYSHbWGce4gEw5zgV4BAZ7JkVl0B91EPEDAQgFIhK0omxb/TCqRSBFFqj2hi/X8WPjxz68vinPhF8FnXIAD+IvBneLiVvHMkz7JyaCgA83afALLes4bvdhjFhqKilMTG1NK1plZ3c3GVonmGvYwmWAvjk7NoazNh9KVYJj14kCuvAooGMP7ElIic5SPAoEtFTPdx+0UuNiHT0Ccnfg98E7OW0WpT93GpbzbT2Sc5uq2NlnIlK1qxwsJkUH2gH0MjXKCM7K3JWwsiZ0HaO94Eg9jsWBo72T3WRYPNYwTJBODERMRPdu46ZD0ISMXwT3q7CSPwQiyhrn+hehA98lsMU/A70W/lo6XQ6n2mx2LkbojUx/qP49RrCAMvisgvrywek9kvkFOAaUVz8+bwnw+xc30C7Fbydjh7R8NrBtuIQ76KqSHZ58JknbGonyi863cKZ67fZpXGajslUt5TAbmBcUqC2brc/7UjwoU+jM+sKXb6vtjxI/s3oZeCkd5LCT2Xm4D/lP5gExQ2ZUFyP4fmL5ynkfzZV7Ru0stqUFKb6QM4nbKzHihQQ6A8JWErHDEhONtkvK2Thrd9f2zreHgTt0GcfYIgoKqX6K+QfpF+3PAGB5yFqerp3GE/9Yk25/R83CXV3j4p6b49fl/BaUvUK7hHfGxBDjWnYCDg0Xc74nY0Uko0f74uvfMoNo086EDkUOfhrtrDpgTiU2kwQ4UvEvHnci64yCKcid77qVS+WbWtYFvMtvU/vSbQyeMAWsVy1uxjJFoZ1tEy+dDjVujh4Q==,iv:96t+2x4n+Dh52mk5XsnHsYVJRrIYOd6yw4pdOHbpu2E=,tag:C6SJTcOnqQ0n/fvVhuU4Cw==,type:str]
+    #ENC[AES256_GCM,data:skTgwwXa++9pki3hGRSnr7Oa2peU5lEcT/U/RaMK7ziIZNGpIzXa+xGzT5nl9nuLGPMkHpdq1kFOVkOzpxut7hi0ATPmZmZGo5MBQdrFVuyYpMpjhT/3hPG0iQknb03SqZRgWxe7,iv:vFNBIs0OtRQLSW92wEGrZ0faIz/m+YmuQhgw2BIWVUA=,tag:X4MfQaFpAaQMSVagVr7Qfg==,type:comment]
+    known_hosts: ENC[AES256_GCM,data:ht2Z/Y5t6ms4+2x4xmXeOwk0HSJt6l3Ajfr4nzTlsUf0wjk0jg7kZQRrGgjEJIwimgbYf+wpuWAQ5F18JIwy/gyvX37Quq6VhAlE2Ko5zNMNaZ0gqOsqVjENz+t53pgcJasU8Is7dbRBb8N73kDkpTNS0JNDKuNHS9eyRTNnIgc3oTM56G5+Fcvt9qkgF7ovEg52VY57N5cD+BkUXULfwyxl752DoR7E2hYCLoxxVOP36OFKzMvybsIZtciJrkw22S6rxEIC4DqzGYjhozhW8tl+pkB5FHEa4H1IBRgOgLdbnlN/CQDjWkfX3Etx7lyVo6VpBIU8Obert+P7K0U94+KbQX5gXebPZzGMOz+17TakYO6qT/jZQL0RRFyEcr4P1VbvLGjtrOjUF5HXOIPW2KhnyJ6Dq7SwaVie+BwJnfWbQ4+Y7wV83DSA9CAU5Ob927Ti6Q2OLgtWPy2tdV4HfvkSFqtTx8m7FqILgxWFazpl6Uj1x6LP7sdSgNGAze6IXIjfAQXRqunriwwNAWfuvwAXE/Jgq1NhSGp5m9FVmSR100+sj+lIShjGmf5E0/C33Zl5wrqWq2ndiu4NbQXYlgJqAegsAoBgIn621qJOtBOeUrLi9Z6feNFZv0f5TS9+9NPtbDW0JWRubYd7uMdVsRGhJjKEMvxNR1/RCWzIqynEFlwwZ/OZTDkraBB2cke8jCMad0ZkWcsxcS3xMGUHv45GDBUrx7PWyDz5rigmaWymWcqFHeMEvCc0mx8PRwVOj/DwF5+5S8xJzjsWsyRgzYfXkFgAKB1F3Fpxl4aS5q8LKaiDEve+HFX851HaptJNaSbcIVbYPmWsmb6rgbAAECHeaVGaXVkf2gboBPfzkgHPR9J5iMJ2xn7QdqZnWZBcuKQ0+WKMfIE7MR+llpd0HQ/PT7qbpbYLdQ8wqfpmpXqDnoPhS+jRvmfGg2ETFOF9nwLovU1BCXEZ3gqPCT/HoDJKozxt0obI+zxbCioMuo3P9SpW8kMRumTT4pS0xfduWoNgIIPqosd6AzfUXIXo04Gmo3oOz3+/AmrC5GYGe+0cH2lkTbPzb5nmpMLLxr2RD3Qy/AA1TixVx543aFbhd+1NpeE=,iv:22JQogu6+sckk/R+8G7ITV9Q7ZKOzmwTdjJA07GQnEw=,tag:99h+B/VrTLoJ1ZuFMIdw8g==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -18,14 +17,14 @@ sops:
         - recipient: age1mtzvncgylzrqrf3m6e4wpxt8sk6zq59mdraehr7lhxksyltmwdksl0ltrv
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB3Znh6QWV4eHYrUHdtbFNO
-            ZXVBS0hwVjFka3NqNm1mNUJ0cXVvZTN0bkVZCm1MUDJIMzhpRlZJbjk2Y0xFMUxT
-            cVRrWXZHcFJ0bkpSazdldHhWTFdSK3MKLS0tIGNVV0FabnBtZUpyUUcyb0lXY1dy
-            SHhMdkVlT3Q4MC8vaEZTZTZXL2lKeUUKkJzo2DpCT+xKwvz4RpWqE+EOcWwXae+1
-            nv85Cu9cqDHGP7xpwQghcai48wZvJXcetb3a90ePVg/Z/1/oHQo29g==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBINWRBcS9oeC9CS3N1ZDB0
+            eUtMTzd1c0RSZ3RQS2phRFFhdjM3Rlh4aUYwCkxuejQwZzN3NXpPeC92aGl2UXdQ
+            ZUtRdWw1NHBIMkZDL2QyVlVvRHREemcKLS0tIHZyYmpxR2V2azRBK2d1bnZLUkVJ
+            Tzd2TGl2UkRRUzhaQllKdTlPUFd2Rk0KrdzYlvBTo8IVPrV/flKP3lNVynHvekBo
+            bXEQ12LkfW0+7ul0oDSi7ScaLzaBr6f3wivRqBERKI9aZzlbuGtO3A==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-04-16T15:57:26Z"
-    mac: ENC[AES256_GCM,data:f6xN3cEzf8YExXFBlb9beicY1N805RNtkjhV1asn7yaL7cglnpB/VS7KFSeGp8hn2/QTJqacT4CddZ9vGZqg0OR2Cityh8hqhoUJPnwbyb5+0gqrFahxw7SBNLHcrZuk3PR7PMBczSJNuAc0VZlkuJVIhz0iuYZl3hsCSbdnPs0=,iv:QWJfR2p3OlS+4rE2U2CtflPH4cBIFrGa9vQQntBl5Ss=,tag:kBbFpwP4t9xwwTRD6dyaOA==,type:str]
+    lastmodified: "2023-04-16T19:20:56Z"
+    mac: ENC[AES256_GCM,data:60SZDVVrNPu4K7WFfi5A3ptRm4OTp7lu0izI4k1Qs0lSSXtXrntua6jxf1zg37sq43+DrDD++fj772bCgdLhLb+FVm0JRUBNVVtHEEt5TSoAlecgCS+JB7PzZDezWlSYposicif9Z3le9UZipd6/WmSW82TlcWUrDE75Idxcii4=,iv:Jler28kWGu2bfylG0FQdjq/ZD42M1yU0+Ai01hWWFSE=,tag:77ch2bq9ThRngWlOs5FjdA==,type:str]
     pgp: []
-    unencrypted_suffix: _unencrypted
+    encrypted_regex: ^(data|stringData)$
     version: 3.7.3
