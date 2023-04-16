@@ -8,17 +8,19 @@ spec:
   interval: 30m
   ref:
     branch: master
-  url: "https://github.com/kireque/home-ops.git"
+  url: ssh://git@github.com/kireque/home-ops
+  secretRef:
+    name: github-deploy-key
   ignore: |
     # exclude all
     /*
     # include kubernetes directory
     !/kubernetes
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: cluster
+  name: flux-cluster
   namespace: flux-system
 spec:
   interval: 30m
@@ -36,5 +38,7 @@ spec:
     substituteFrom:
       - kind: ConfigMap
         name: cluster-settings
+        optional: false
       - kind: Secret
         name: cluster-secrets
+        optional: false
