@@ -2,12 +2,12 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
-  name: home-kubernetes
+  name: home-ops-kubernetes
   namespace: flux-system
 spec:
   interval: 30m
   ref:
-    branch: main
+    branch: master
   url: "https://github.com/kireque/home-ops.git"
   ignore: |
     # exclude all

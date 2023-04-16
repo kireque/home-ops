@@ -19,7 +19,7 @@ kubectl apply --server-side --kustomize ./bootstrap
 _These cannot be applied with `kubectl` in the regular fashion due to some files being encrypted with sops_
 
 ```sh
-sops --decrypt ./bootstrap/flux/age-key.sops.yaml | kubectl apply -f -
+sops --decrypt ./bootstrap/age-key.sops.yaml | kubectl apply -f -
 kubectl apply -f ./flux/vars/cluster-settings.yaml
 ```
 
