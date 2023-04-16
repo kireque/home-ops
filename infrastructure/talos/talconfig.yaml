@@ -1,0 +1,120 @@
+---
+clusterName: home-cluster
+talosVersion: v1.3.7
+kubernetesVersion: v1.26.1
+endpoint: https://${clusterName}.${domainName}:6443
+allowSchedulingOnMasters: false
+cniConfig:
+  name: none
+nodes:
+  - hostname: talos-mstr-01
+    ipAddress: 192.168.0.21
+    controlPlane: true
+    installDisk: /dev/sda
+    nameservers:
+      - ${router}
+    networkInterfaces:
+      - interface: eth0
+        addresses:
+          - 192.168.0.21/23
+        routes:
+          - network: 0.0.0.0/0
+            gateway: ${router}
+        vip:
+          ip: ${clusterEndpointIP}
+  - hostname: talos-mstr-02
+    ipAddress: 192.168.0.22
+    controlPlane: true
+    installDisk: /dev/sda
+    nameservers:
+      - ${router}
+    networkInterfaces:
+      - interface: eth0
+        addresses:
+          - 192.168.0.22/23
+        routes:
+          - network: 0.0.0.0/0
+            gateway: ${router}
+        vip:
+          ip: ${clusterEndpointIP}
+  - hostname: talos-mstr-03
+    ipAddress: 192.168.0.23
+    controlPlane: true
+    installDisk: /dev/sda
+    nameservers:
+      - ${router}
+    networkInterfaces:
+      - interface: eth0
+        addresses:
+          - 192.168.0.23/23
+        routes:
+          - network: 0.0.0.0/0
+            gateway: ${router}
+        vip:
+          ip: ${clusterEndpointIP}
+  - hostname: talos-wrkr-01
+    ipAddress: 192.168.0.31
+    controlPlane: false
+    installDisk: /dev/sda
+    nameservers:
+      - ${router}
+    networkInterfaces:
+      - interface: eth0
+        addresses:
+          - 192.168.0.31/23
+        routes:
+          - network: 0.0.0.0/0
+            gateway: ${router}
+  - hostname: talos-wrkr-02
+    ipAddress: 192.168.0.32
+    controlPlane: false
+    installDisk: /dev/sda
+    nameservers:
+      - ${router}
+    networkInterfaces:
+      - interface: eth0
+        addresses:
+          - 192.168.0.32/23
+        routes:
+          - network: 0.0.0.0/0
+            gateway: ${router}
+controlPlane:
+  patches:
+    - |-
+      - op: add
+        path: /machine/kubelet/extraArgs
+        value:
+          rotate-server-certificates: "true"
+          feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true
+      - op: add
+        path: /cluster/controllerManager/extraArgs
+        value:
+          bind-address: 0.0.0.0
+      - op: add
+        path: /cluster/scheduler/extraArgs
+        value:
+          bind-address: 0.0.0.0
+      - op: add
+        path: /cluster/proxy/extraArgs
+        value:
+          bind-address: 0.0.0.0
+    - |-
+      machine:
+        time:
+          disabled: false
+          servers:
+            - ${router}
+worker:
+  patches:
+    - |-
+      - op: add
+        path: /machine/kubelet/extraArgs
+        value:
+          rotate-server-certificates: "true"
+          feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true
+    - |-
+      machine:
+        time:
+          disabled: false
+          servers:
+            - ${router}

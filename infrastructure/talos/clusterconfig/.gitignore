@@ -1,0 +1,6 @@
+home-cluster-talos-mstr-01.yaml
+home-cluster-talos-mstr-02.yaml
+home-cluster-talos-mstr-03.yaml
+home-cluster-talos-wrkr-01.yaml
+home-cluster-talos-wrkr-02.yaml
+talosconfig
