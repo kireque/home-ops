@@ -38,8 +38,8 @@ spec:
       - --dns01-recursive-nameservers-only
     cainjector:
       replicaCount: 1
-    prometheus:
-      enabled: true
-      servicemonitor:
-        enabled: true
-        prometheusInstance: monitoring
+    # prometheus:
+    #   enabled: true
+    #   servicemonitor:
+    #     enabled: true
+    #     prometheusInstance: monitoring
