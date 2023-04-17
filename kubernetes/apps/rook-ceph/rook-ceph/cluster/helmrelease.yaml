@@ -28,8 +28,8 @@ spec:
     keepHistory: false
   values:
     monitoring:
-      enabled: true
-      createPrometheusRules: true
+      enabled: false
+      createPrometheusRules: false
     ingress:
       dashboard:
         ingressClassName: "nginx"
@@ -61,10 +61,10 @@ spec:
         nodes:
           - name: "talos-wrkr-01"
             devices:
-              - dev: "/dev/sda"
+              - dev: "/dev/sdb"
           - name: "talos-wrkr-02"
             devices:
-              - dev: "/dev/sda"
+              - dev: "/dev/sdb"
       resources:
         mgr:
           requests:
