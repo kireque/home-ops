@@ -7,7 +7,6 @@ resources:
   - ./backube.yaml
   - ./bitnami.yaml
   - ./bjw-s.yaml
-  - ./cert-manager-webhook-ovh.yaml
   - ./cilium.yaml
   - ./cloudnative-pg.yaml
   - ./crowdsec.yaml
