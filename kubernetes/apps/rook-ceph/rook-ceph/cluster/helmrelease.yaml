@@ -62,8 +62,7 @@ spec:
           path: /
         tls:
           - hosts:
-              - *host
-            secretName: rook-ceph-cluster-tls
+              - "rook.${SECRET_CLUSTER_DOMAIN}"
     configOverride: |
       [global]
       bdev_enable_discard = true
