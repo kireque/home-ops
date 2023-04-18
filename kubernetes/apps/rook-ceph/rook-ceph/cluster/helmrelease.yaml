@@ -45,7 +45,7 @@ spec:
       enabled: false
     monitoring:
       enabled: false
-      createPrometheusRules: true
+      createPrometheusRules: false
     ingress:
       dashboard:
         ingressClassName: "traefik"
