@@ -42,7 +42,7 @@ spec:
       enabled: true
     pspEnable: false
     monitoring:
-      enabled: true
+      enabled: false
     csi:
       kubeletDirPath: /var/lib/kubelet
       enableCSIHostNetwork: true
