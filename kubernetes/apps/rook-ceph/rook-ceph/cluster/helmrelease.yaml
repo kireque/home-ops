@@ -46,6 +46,9 @@ spec:
     monitoring:
       enabled: false
       createPrometheusRules: false
+    dashboard:
+      enabled: true
+      urlPrefix: /
     ingress:
       dashboard:
         ingressClassName: "traefik"
