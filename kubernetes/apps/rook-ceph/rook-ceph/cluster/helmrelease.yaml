@@ -49,21 +49,21 @@ spec:
     ingress:
       dashboard:
         ingressClassName: "traefik"
-        rules:
-          - host: "rook.${SECRET_DOMAIN}"
-            http:
-              paths:
-                - path: /
-                  pathType: Prefix
-                  backend:
-                    service:
-                      name: rook-ceph-mgr-dashboard
-                      port:
-                        name: http-dashboard
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Rook-Ceph"
+          gethomepage.dev/group: "Private"
+          gethomepage.dev/icon: "ceph"
+          gethomepage.dev/description: "Rook-Ceph Dashboard."
+        host:
+          name: "rook.${SECRET_DOMAIN}"
+          path: "/"
         tls:
-          - hosts:
+          - secretName: rook-ceph-cluster-tls
+            hosts:
               - "rook.${SECRET_DOMAIN}"
-            secretName: rook-tls
     configOverride: |
       [global]
       bdev_enable_discard = true
