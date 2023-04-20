@@ -3,7 +3,7 @@ clusterName: home-cluster
 talosVersion: v1.3.7
 kubernetesVersion: v1.26.1
 endpoint: https://${clusterName}.${domainName}:6443
-allowSchedulingOnMasters: false
+allowSchedulingOnMasters: true
 cniConfig:
   name: none
 nodes:

@@ -21,11 +21,11 @@ resource "proxmox_vm_qemu" "talos_master" {
 
   agent    = 0
   os_type  = "linux"
-  cores    = 2
+  cores    = 3
   sockets  = 1
   cpu      = "host"
   balloon  = 0
-  memory   = 4096
+  memory   = 8192
   scsihw   = "virtio-scsi-pci"
   boot     = "cdn"
   bootdisk = "scsi0"
@@ -57,11 +57,11 @@ resource "proxmox_vm_qemu" "talos_worker" {
 
   agent    = 0
   os_type  = "linux"
-  cores    = 2
+  cores    = 6
   sockets  = 1
   cpu      = "host"
   balloon  = 0
-  memory   = 12288
+  memory   = 32768
   scsihw   = "virtio-scsi-pci"
   boot     = "cdn"
   bootdisk = "scsi0"
