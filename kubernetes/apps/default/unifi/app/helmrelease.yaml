@@ -2,8 +2,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app unifi
-  namespace: default
+  name: unifi
+  namespace: network
 spec:
   interval: 15m
   chart:
@@ -12,24 +12,20 @@ spec:
       version: 1.4.0
       sourceRef:
         kind: HelmRepository
-        name: bjw-s
+        name: bjw-s-charts
         namespace: flux-system
-  maxHistory: 3
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
-    cleanupOnFail: true
     remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
+      retries: 5
   values:
     image:
       repository: jacobalberty/unifi
       tag: v7.3.83
-      pullPolicy: IfNotPresent
+
     env:
       RUNAS_UID0: "false"
       UNIFI_UID: "999"
@@ -37,11 +33,32 @@ spec:
       UNIFI_STDOUT: "true"
       JVM_INIT_HEAP_SIZE:
       JVM_MAX_HEAP_SIZE: 1024M
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Unifi"
+          gethomepage.dev/group: "Private"
+          gethomepage.dev/icon: "unifi"
+          gethomepage.dev/description: "Unifi Dashboard."
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
+            paths: "/"
+        tls:
+          - secretName: "unifi-dashboard-tls"
+            hosts:
+              - "unifi.${SECRET_DOMAIN}"
+
     service:
       main:
         type: LoadBalancer
+        loadBalancerIP: "${CLUSTER_LB_UNIFI}"
         externalTrafficPolicy: Local
-        loadBalancerIP: ${CLUSTER_LB_UNIFI}
         ports:
           http:
             port: 8443
@@ -74,31 +91,16 @@ spec:
             enabled: true
             port: 10001
             protocol: UDP
-    ingress:
-      main:
-        enabled: true
-        ingressClassName: "traefik"
-        annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/name: "Unifi"
-          gethomepage.dev/group: "Private"
-          gethomepage.dev/icon: "unifi"
-          gethomepage.dev/description: "Unifi Dashboard."
-        hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
-            paths: "/"
-        tls:
-          - secretName: "unifi-dashboard-tls"
-            hosts:
-              - "unifi.${SECRET_DOMAIN}"
+
     persistence:
-      config:
+      data:
         enabled: true
-        existingClaim: unifi-config
+        existingClaim: unifi-data
         mountPath: /unifi
+
     resources:
       requests:
-        memory: 2Gi
-        cpu: 50m
+        cpu: 23m
+        memory: 1390M
+      limits:
+        memory: 1390M
