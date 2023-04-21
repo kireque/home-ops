@@ -67,4 +67,4 @@ resources:
   # - ./zigbee2mqtt/ks.yaml
   # - ./zwave-js-ui/ks.yaml
   # Default resources
-  - jobs-rbac.yaml
+  # - jobs-rbac.yaml
