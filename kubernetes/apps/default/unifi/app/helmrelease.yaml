@@ -88,11 +88,11 @@ spec:
           gethomepage.dev/description: "Unifi Dashboard."
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
-            paths:
-              - path: /
+            paths: "/"
         tls:
-          - hosts:
-              - *host
+          - secretName: &host "{{ .Release.Name }}-dashboard-tls"
+            hosts:
+              - &host "{{ .Release.Name }}.${SECRET_CLUSTER_DOMAIN}"
     persistence:
       config:
         enabled: true
