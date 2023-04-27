@@ -18,4 +18,7 @@ tasks:
 
   default:
     silent: true
-    cmds: ["task -l"]
+    cmds: 
+      - "task proxmox:redeploy"
+      - "task talos:bootstrap"
+      - "task flux:bootstrap" 
