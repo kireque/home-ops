@@ -1,5 +1,5 @@
 ---
-apiVersion: metallb.io/v1beta1
+apiVersion: metallb.io/v11
 kind: L2Advertisement
 metadata:
   name: l2-ip
@@ -8,7 +8,7 @@ spec:
   ipAddressPools:
     - default-pool
 ---
-apiVersion: metallb.io/v1beta1
+apiVersion: metallb.io/v11
 kind: IPAddressPool
 metadata:
   name: default-pool
