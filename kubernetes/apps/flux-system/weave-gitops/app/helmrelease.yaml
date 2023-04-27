@@ -36,7 +36,7 @@ spec:
       annotations:
         ingressClassName: "traefik"
       hosts:
-        - host: &host "gitops.${SECRET_DOMAIN_CASA}"
+        - host: &host "gitops.${SECRET_CLUSTER_DOMAIN}"
           paths:
             - path: /
               pathType: Prefix
