@@ -34,15 +34,15 @@ spec:
       enabled: true
       className: traefik
       annotations:
-        cert-manager.io/cluster-issuer: "letsencrypt-production"
-        hajimari.io/icon: mdi:sawtooth-wave
-      host:
-        name: "gitops.${SECRET_DOMAIN}"
-        path: "/"
+        ingressClassName: "traefik"
+      hosts:
+        - host: &host "gitops.${SECRET_DOMAIN_CASA}"
+          paths:
+            - path: /
+              pathType: Prefix
       tls:
-        - secretName: rook-ceph-cluster-tls
-          hosts:
-            - "gitops.${SECRET_DOMAIN}"
+        - hosts:
+            - *host
   valuesFrom:
     - kind: Secret
       name: weave-gitops
