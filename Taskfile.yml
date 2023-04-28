@@ -20,5 +20,7 @@ tasks:
     silent: true
     cmds: 
       - "task proxmox:redeploy"
+      - "sleep 10"
       - "task talos:bootstrap"
+      - "sleep 10"
       - "task flux:bootstrap" 
