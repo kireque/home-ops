@@ -36,14 +36,12 @@ spec:
       annotations:
         ingressClassName: "traefik"
       hosts:
-        - host: "gitops.${SECRET_CLUSTER_DOMAIN}"
-          paths:
-            - path: /
-              pathType: Prefix
+          name: "gitops.${SECRET_DOMAIN}"
+          path: "/"
       tls:
-        - secretName: rook-ceph-cluster-tls
+        - secretName: weave-gitops-tls
           hosts:
-            - "rook.${SECRET_DOMAIN}"
+            - "gitops.${SECRET_DOMAIN}"
   valuesFrom:
     - kind: Secret
       name: weave-gitops
