@@ -21,6 +21,7 @@ resources:
   - ./ingress-nginx.yaml
   - ./jameswynn.yaml
   - ./jetstack.yaml
+  - ./k8s-at-home.yaml
   - ./kyverno.yaml
   - ./metallb.yaml
   - ./metrics-server.yaml
