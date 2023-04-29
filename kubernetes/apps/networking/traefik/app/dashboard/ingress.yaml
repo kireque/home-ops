@@ -7,6 +7,11 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-staging"
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Traefik"
+    gethomepage.dev/group: "Private"
+    gethomepage.dev/icon: "traefik"
+    gethomepage.dev/description: "Traefik Dashboard."
 spec:
   ingressClassName: "traefik"
   tls:
