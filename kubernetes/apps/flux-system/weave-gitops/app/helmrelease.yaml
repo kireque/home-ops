@@ -40,9 +40,11 @@ spec:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/affinity: "true"
         traefik.ingress.kubernetes.io/router.tls: "true"
-        hajimari.io/appName: weave-gitops
-        hajimari.io/enable: "true"
-        hajimari.io/icon: simple-icons:git
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/name: "weave-gitops"
+        gethomepage.dev/group: "Private"
+        gethomepage.dev/icon: "simple-icons:git"
+        gethomepage.dev/description: "Weave GitOps Dashboard."
       hosts:
         - host: &host "gitops.${SECRET_DOMAIN}"
           paths:
