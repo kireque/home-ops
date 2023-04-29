@@ -48,7 +48,7 @@ spec:
       createPrometheusRules: false
     ingress:
       dashboard:
-        className: "traefik"
+        ingressClassName: "traefik"
         annotations:
           cert-manager.io/cluster-issuer: "letsencrypt-staging"
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
@@ -59,15 +59,13 @@ spec:
           gethomepage.dev/group: "Private"
           gethomepage.dev/icon: "ceph"
           gethomepage.dev/description: "Rook-Ceph Dashboard."
-        hosts:
-          - host: &host "rook.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
+        host:
+          name: &host "rook.${SECRET_DOMAIN}"
+          path: "/"
         tls:
-          - secretName: weave-gitops-tls
+          - secretName: rook-ceph-cluster-tls
             hosts:
-              - *host
+            - *host
     configOverride: |
       [global]
       bdev_enable_discard = true
