@@ -57,13 +57,15 @@ spec:
           gethomepage.dev/group: "Private"
           gethomepage.dev/icon: "ceph"
           gethomepage.dev/description: "Rook-Ceph Dashboard."
-        host:
-          name: "rook.${SECRET_DOMAIN}"
-          path: "/"
+        hosts:
+          - host: &host "rook.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
         tls:
-          - secretName: rook-ceph-cluster-tls
+          - secretName: weave-gitops-tls
             hosts:
-              - "rook.${SECRET_DOMAIN}"
+              - *host
     configOverride: |
       [global]
       bdev_enable_discard = true
