@@ -76,6 +76,7 @@ spec:
           gethomepage.dev/group: "Private"
           gethomepage.dev/icon: "unifi-controller"
           gethomepage.dev/description: "Ubiqiti Network's Unifi Controller."
+          gethomepage.dev/target: "_blank"
         hosts:
           - host: &host "unifi.${SECRET_DOMAIN}"
             paths:
