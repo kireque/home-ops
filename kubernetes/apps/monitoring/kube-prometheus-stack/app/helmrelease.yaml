@@ -1,0 +1,203 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+  namespace: monitoring
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: kube-prometheus-stack
+      version: 45.21.0
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+        namespace: flux-system
+      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    cleanPrometheusOperatorObjectNames: true
+    grafana:
+      enabled: false
+      forceDeployDashboards: true
+      sidecar:
+        dashboards:
+          multicluster:
+            etcd:
+              enabled: true
+    prometheusOperator:
+      prometheusConfigReloader:
+        resources:
+          requests:
+            cpu: 5m
+            memory: 24Mi
+          limits:
+            memory: 50Mi
+    prometheus:
+      ingress:
+        enabled: true
+        pathType: Prefix
+        ingressClassName: "traefik"
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Prometheus"
+          gethomepage.dev/group: "Private"
+          gethomepage.dev/icon: "prometheus"
+          gethomepage.dev/description: "The Prometheus monitoring system and time series database."
+        hosts:
+          - &prometheusHost "prometheus.${SECRET_DOMAIN}"
+        tls:
+          - hosts:
+              - *prometheusHost
+            secretName: prometheus-tls
+      thanosService:
+        enabled: true
+      thanosServiceMonitor:
+        enabled: true
+      thanosIngress:
+        enabled: true
+        pathType: Prefix
+        ingressClassName: "traefik"
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          external-dns/is-public: "true"
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        hosts:
+          - &thanosHost "thanos-sidecar.${SECRET_DOMAIN}"
+        tls:
+          - hosts:
+              - *thanosHost
+            secretName: thanos-sidecar-tls
+      prometheusSpec:
+        replicas: 3
+        # priorityClassName: platform-cluster-critical
+        replicaExternalLabelName: "__replica__"
+        enableFeatures:
+          - exemplar-storage
+        scrapeInterval: 1m
+        secrets:
+          - etcd-client-cert
+        # podAntiAffinity: hard
+        resources:
+          requests:
+            memory: 4Gi
+            cpu: 1000m
+          limits:
+            memory: 6294M
+        thanos:
+          image: "quay.io/thanos/thanos:v0.31.0"
+          version: "v0.28.1"
+          objectStorageConfig:
+            name: thanos-objstore-secret
+            key: objstore.yml
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 10m
+            limits:
+              memory: 160Mi
+        ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        enableAdminAPI: true
+        walCompression: true
+    alertmanager:
+      config:
+        global:
+          resolve_timeout: 5m
+        route:
+          group_by: ["alertname", "job"]
+          group_wait: 30s
+          group_interval: 5m
+          repeat_interval: 6h
+          receiver: "alerts"
+          routes:
+            - receiver: "null"
+              matchers:
+                - alertname =~ "InfoInhibitor|Watchdog"
+        receivers:
+          - name: "null"
+          - name: "alerts"
+            email_configs:
+              - send_resolved: true
+                to: &email ${SECRET_ALERT_EMAIL}
+                from: *email
+                smarthost: ${SECRET_ALERT_SMARTHOST}
+                require_tls: false
+        inhibit_rules:
+          - source_matchers:
+              - severity = "critical"
+            target_matchers:
+              - severity = "warning"
+            equal: ["alertname", "namespace"]
+      ingress:
+        enabled: true
+        pathType: Prefix
+        ingressClassName: "traefik"
+        annotations:
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Alertmanager"
+          gethomepage.dev/group: "Private"
+          gethomepage.dev/icon: "alertmanager"
+          gethomepage.dev/description: "Alertmanager handles alerts sent by client applications."
+        hosts:
+          - &alertHost "alertmanager.${SECRET_DOMAIN}"
+        tls:
+          - hosts:
+              - *alertHost
+            secretName: alertmanager-tls
+      alertmanagerSpec:
+        replicas: 3
+        podAntiAffinity: hard
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: "ceph-block"
+              resources:
+                requests:
+                  storage: 250Mi
+    kube-state-metrics:
+      collectors:
+        - certificatesigningrequests
+        - configmaps
+        - cronjobs
+        - daemonsets
+        - deployments
+        - endpoints
+        - horizontalpodautoscalers
+        - ingresses
+        - jobs
+        - leases
+        - limitranges
+        - mutatingwebhookconfigurations
+        - namespaces
+        - networkpolicies
+        - nodes
+        - persistentvolumeclaims
+        - persistentvolumes
+        - poddisruptionbudgets
+        - pods
+        - replicasets
+        - replicationcontrollers
+        - resourcequotas
+        - secrets
+        - services
+        - statefulsets
+        - storageclasses
+        - validatingwebhookconfigurations
+        - verticalpodautoscalers
+        - volumeattachments
+    kubeProxy:
+      enabled: false
