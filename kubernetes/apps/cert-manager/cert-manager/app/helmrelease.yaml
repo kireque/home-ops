@@ -37,7 +37,7 @@ spec:
         - "1.1.1.1"
         - "8.8.8.8"
     prometheus:
-      enabled: false
+      enabled: true
       servicemonitor:
         enabled: true
         prometheusInstance: monitoring
