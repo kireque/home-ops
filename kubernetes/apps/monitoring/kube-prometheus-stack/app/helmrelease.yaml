@@ -176,11 +176,11 @@ spec:
         #         labels:
         #           app: "truenas-remote"
       thanosService:
-        enabled: true
+        enabled: false
       thanosServiceMonitor:
-        enabled: true
+        enabled: false
       thanosIngress:
-        enabled: true
+        enabled: false
         pathType: Prefix
         ingressClassName: "traefik"
         annotations:
