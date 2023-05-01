@@ -42,7 +42,7 @@ spec:
       namespace: rook-ceph
   values:
     toolbox:
-      enabled: false
+      enabled: true
     monitoring:
       enabled: false
       createPrometheusRules: false
