@@ -8,14 +8,9 @@ talosctl config node "192.168.0.21"
 
 echo Applying master..
 # Master nodes
-talosctl apply-config --insecure --nodes talos-mstr-01.econline.local --file ./clusterconfig/home-cluster-talos-mstr-01.yaml
-talosctl apply-config --insecure --nodes talos-mstr-02.econline.local --file ./clusterconfig/home-cluster-talos-mstr-02.yaml
-talosctl apply-config --insecure --nodes talos-mstr-03.econline.local --file ./clusterconfig/home-cluster-talos-mstr-03.yaml
-
-echo Applying worker..
-# Worker nodes
-talosctl apply-config --insecure --nodes talos-wrkr-01.econline.local --file ./clusterconfig/home-cluster-talos-wrkr-01.yaml
-talosctl apply-config --insecure --nodes talos-wrkr-02.econline.local --file ./clusterconfig/home-cluster-talos-wrkr-02.yaml
+talosctl apply-config --insecure --nodes talos-01.econline.local --file ./clusterconfig/home-cluster-talos-01.yaml
+talosctl apply-config --insecure --nodes talos-02.econline.local --file ./clusterconfig/home-cluster-talos-02.yaml
+talosctl apply-config --insecure --nodes talos-03.econline.local --file ./clusterconfig/home-cluster-talos-03.yaml
 
 echo Sleep..
 sleep 120

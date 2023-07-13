@@ -82,12 +82,15 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
-          - name: "talos-wrkr-01"
+          - name: "talos-01"
             devices:
-              - name: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1"
-          - name: "talos-wrkr-02"
+              - name: "/pci0000:00/0000:00:1d.0/0000:3a:00.0/nvme/nvme0/nvme0n1"
+          - name: "talos-02"
             devices:
-              - name: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1"
+              - name: "/pci0000:00/0000:00:1d.0/0000:3a:00.0/nvme/nvme0/nvme0n1"
+          - name: "talos-03"
+            devices:
+              - name: "/pci0000:00/0000:00:1d.0/0000:3a:00.0/nvme/nvme0/nvme0n1"
     cephBlockPools:
       - name: ceph-blockpool
         spec:
