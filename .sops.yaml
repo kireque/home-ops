@@ -1,19 +1,41 @@
+---
 creation_rules:
-    - path_regex: kubernetes/.*\.sops\.ya?ml
-      encrypted_regex: ^(data|stringData)$
-      key_groups:
-        - age:
-            - age1mtzvncgylzrqrf3m6e4wpxt8sk6zq59mdraehr7lhxksyltmwdksl0ltrv
-    - path_regex: kubernetes/.*\.sops\.toml
-      key_groups:
-        - age:
-            - age1mtzvncgylzrqrf3m6e4wpxt8sk6zq59mdraehr7lhxksyltmwdksl0ltrv
-    - path_regex: ansible/.*\.sops\.ya?ml
-      unencrypted_regex: ^(kind)$
-      key_groups:
-        - age:
-            - age1mtzvncgylzrqrf3m6e4wpxt8sk6zq59mdraehr7lhxksyltmwdksl0ltrv
-    - path_regex: .*\.sops\.ya?ml
-      key_groups:
-        - age:
-            - age1mtzvncgylzrqrf3m6e4wpxt8sk6zq59mdraehr7lhxksyltmwdksl0ltrv
+  - path_regex: flux/.*/cluster-secrets\.sops\.ya?ml
+    encrypted_regex: "^(data|stringData)$"
+    key_groups:
+      - age:
+          - age1vq46r6697jer0udz6pjx9grgt5xlpg70wjvnw3l6pjmup4k57e4qnqn7vn
+  - path_regex: bootstrap/.*/secret-.*\.sops\.ya?ml
+    encrypted_regex: "^(data|stringData)$"
+    key_groups:
+      - age:
+          - age1vq46r6697jer0udz6pjx9grgt5xlpg70wjvnw3l6pjmup4k57e4qnqn7vn
+  - path_regex: apps/.*/secret-.*\.sops\.ya?ml
+    encrypted_regex: "^(data|stringData)$"
+    key_groups:
+      - age:
+          - age1vq46r6697jer0udz6pjx9grgt5xlpg70wjvnw3l6pjmup4k57e4qnqn7vn
+  - path_regex: apps/.*\.sops\.yaml
+    key_groups:
+      - age:
+          - age1vq46r6697jer0udz6pjx9grgt5xlpg70wjvnw3l6pjmup4k57e4qnqn7vn
+  - path_regex: infrastructure/.*\.sops\.yaml
+    key_groups:
+      - age:
+          - age1vq46r6697jer0udz6pjx9grgt5xlpg70wjvnw3l6pjmup4k57e4qnqn7vn
+  - path_regex: apps/.*\.sops\.ini
+    key_groups:
+      - age:
+          - age1vq46r6697jer0udz6pjx9grgt5xlpg70wjvnw3l6pjmup4k57e4qnqn7vn
+  - path_regex: apps/.*\.sops\.toml
+    key_groups:
+      - age:
+          - age1vq46r6697jer0udz6pjx9grgt5xlpg70wjvnw3l6pjmup4k57e4qnqn7vn
+  - path_regex: apps/.*\.sops\.json
+    key_groups:
+      - age:
+          - age1vq46r6697jer0udz6pjx9grgt5xlpg70wjvnw3l6pjmup4k57e4qnqn7vn
+  - path_regex: apps/.*\.sops\.env
+    key_groups:
+      - age:
+          - age1vq46r6697jer0udz6pjx9grgt5xlpg70wjvnw3l6pjmup4k57e4qnqn7vn

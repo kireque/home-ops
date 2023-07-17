@@ -1,17 +1,43 @@
+# Editors
+.vscode/
+
+# Folders
+ignore/
+logs/
+testing/
+
 # Trash
 .DS_Store
 Thumbs.db
-# k8s
-kubeconfig
-# vscode-sops
-.decrypted~*.yaml
-.config.env
-*.agekey
-*.pub
-*.key
-# Ansible
-xanmanning.k3s*
+
+# Binaries
+bin
+*.iso
+
+# Sops
+.decrypted~*
+
 # Terraform
-.terraform
-.terraform.tfstate*
-terraform.tfstate*
+## Local .terraform directories
+**/.terraform/*
+
+## .tfstate files
+*.tfstate
+*.tfstate.*
+
+## terraform plan output
+*tfplan*
+
+## terraform variable files
+*.tfvars
+
+# Other files
+kubeconfig
+
+# Talos clusterconfigs
+infrastructure/talos/**/clusterconfig
+
+# Other
+.env
+*.snap
+setup/cluster/*cluster.yml

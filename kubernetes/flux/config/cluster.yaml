@@ -1,39 +1,39 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta2
+apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
-  name: home-ops-kubernetes
+  name: k8s-home-ops
   namespace: flux-system
 spec:
   interval: 30m
   ref:
-    branch: master
-  url: ssh://git@github.com/kireque/home-ops
+    branch: main
   secretRef:
     name: github-deploy-key
+  url: ssh://git@github.com/JefeDavis/k8s-HomeOps
   ignore: |
     # exclude all
     /*
     # include kubernetes directory
-    !/kubernetes
+    !/kubernetes/
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: flux-cluster
+  name: cluster
   namespace: flux-system
 spec:
-  interval: 30m
+  interval: 10m
   path: ./kubernetes/flux
   prune: true
   wait: false
   sourceRef:
     kind: GitRepository
-    name: home-ops-kubernetes
+    name: k8s-home-ops
+  dependsOn:
+    - name: flux
   decryption:
     provider: sops
-    secretRef:
-      name: sops-age
   postBuild:
     substituteFrom:
       - kind: ConfigMap
@@ -41,4 +41,4 @@ spec:
         optional: false
       - kind: Secret
         name: cluster-secrets
-        optional: false
+
