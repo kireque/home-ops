@@ -427,7 +427,7 @@ data:
   cgroup-root: /sys/fs/cgroup
   cilium-endpoint-gc-interval: 5m0s
   cluster-id: "1"
-  cluster-name: jsdyb-k8s-001
+  cluster-name: kubernetes
   cni-exclusive: "false"
   cni-log-file: /var/run/cilium/cilium-cni.log
   custom-cni-conf: "false"
@@ -585,7 +585,7 @@ spec:
               name: cilium-config
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: jsdyb-k8s-001.internal.davishaus.dev
+          value: kubernetes.econline.local
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
         image: quay.io/cilium/operator-generic:v1.14.0-snapshot.4
@@ -684,7 +684,7 @@ spec:
         - name: CILIUM_CLUSTERMESH_CONFIG
           value: /var/lib/cilium/clustermesh/
         - name: KUBERNETES_SERVICE_HOST
-          value: jsdyb-k8s-001.internal.davishaus.dev
+          value: kubernetes.econline.local
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
         image: quay.io/cilium/cilium:v1.14.0-snapshot.4
@@ -794,7 +794,7 @@ spec:
               apiVersion: v1
               fieldPath: metadata.namespace
         - name: KUBERNETES_SERVICE_HOST
-          value: jsdyb-k8s-001.internal.davishaus.dev
+          value: kubernetes.econline.local
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
         image: quay.io/cilium/cilium:v1.14.0-snapshot.4
@@ -836,7 +836,7 @@ spec:
               name: cilium-config
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: jsdyb-k8s-001.internal.davishaus.dev
+          value: kubernetes.econline.local
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
         image: quay.io/cilium/cilium:v1.14.0-snapshot.4
