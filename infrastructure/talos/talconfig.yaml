@@ -65,7 +65,7 @@ controlPlane:
           disabled: true
         etcd:
           advertisedSubnets:
-            - 10.77.0.0/24
+            - 192.168.0.0/23
         extraManifests:
           - https://raw.githubusercontent.com/kireque/home-ops/master/infrastructure/talos/integrations/cni/cilium.yaml
           - https://raw.githubusercontent.com/kireque/home-ops/master/infrastructure/talos/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
@@ -108,7 +108,7 @@ controlPlane:
             maxPods: 250
           nodeIP:
             validSubnets:
-              - 10.77.0.0/24
+            - 192.168.0.0/23
 
         network:
           extraHostEntries:
