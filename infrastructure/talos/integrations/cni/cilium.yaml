@@ -546,7 +546,7 @@ spec:
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: cca9f37856931c5be999f77fceb55536c31fdaac0ce48a6a2cae722790cbe583
+        cilium.io/cilium-configmap-checksum: 44597ec448bfa193c61f54730816b46ff202e8eadb377466543ffa63d6729da6
       labels:
         app.kubernetes.io/name: cilium-operator
         app.kubernetes.io/part-of: cilium
@@ -649,7 +649,7 @@ spec:
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: cca9f37856931c5be999f77fceb55536c31fdaac0ce48a6a2cae722790cbe583
+        cilium.io/cilium-configmap-checksum: 44597ec448bfa193c61f54730816b46ff202e8eadb377466543ffa63d6729da6
         container.apparmor.security.beta.kubernetes.io/cilium-agent: unconfined
         container.apparmor.security.beta.kubernetes.io/clean-cilium-state: unconfined
       labels:
