@@ -123,8 +123,8 @@ controlPlane:
           advertisedSubnets:
             - 10.1.1.0/24
         extraManifests:
-          - https://raw.githubusercontent.com/kireque/home-ops/main/infrastructure/talos/cluster-0/integrations/cni/cilium.yaml
-          - https://raw.githubusercontent.com/kireque/home-ops/main/infrastructure/talos/cluster-0/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
+          - https://raw.githubusercontent.com/kireque/home-ops/master/infrastructure/talos/cluster-0/integrations/cni/cilium.yaml
+          - https://raw.githubusercontent.com/kireque/home-ops/master/infrastructure/talos/cluster-0/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
 
     - |-
       - op: remove
