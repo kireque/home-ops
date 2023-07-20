@@ -1,0 +1,167 @@
+---
+clusterName: ${clusterName}
+
+talosVersion: v1.4.6
+kubernetesVersion: 1.27.3
+endpoint: "https://${clusterName}.econline.local:6443"
+
+cniConfig:
+  name: none
+
+additionalApiServerCertSans:
+  - ${clusterEndpointIP}
+
+additionalMachineCertSans:
+  - ${clusterEndpointIP}
+  - ${clusterName}.econline.local
+
+nodes:
+  - hostname: delta.econline.local
+    disableSearchDomain: true
+    ipAddress: 192.168.0.21
+    controlPlane: true
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:17.0/ata3/host2/target2:0:0/2:0:0:0/
+    machineDisks:
+      - device: /dev/disk/by-id/ata-SEAGATE_ST240FP0021_Z5800NB3
+        partitions:
+          - mountpoint: /var/mnt/sata
+    networkInterfaces:
+      - interface: eth0
+        dhcp: true
+        vlans:
+          - vlanId: 40
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+    patches:
+      - |-
+        machine:
+          kubelet:
+            extraMounts:
+              - destination: /var/mnt/sata
+                type: bind
+                source: /var/mnt/sata
+                options:
+                  - rbind
+                  - rshared
+                  - rw
+
+  - hostname: enigma.econline.local
+    disableSearchDomain: true
+    ipAddress: 192.168.0.22
+    controlPlane: true
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:17.0/ata3/host2/target2:0:0/2:0:0:0/
+    machineDisks:
+      - device: /dev/disk/by-id/ata-CT500MX500SSD1_2235E6604278
+        partitions:
+          - mountpoint: /var/mnt/sata
+    networkInterfaces:
+      - interface: eth0
+        dhcp: true
+        vlans:
+          - vlanId: 40
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+    patches:
+      - |-
+        machine:
+          kubelet:
+            extraMounts:
+              - destination: /var/mnt/sata
+                type: bind
+                source: /var/mnt/sata
+                options:
+                  - rbind
+                  - rshared
+                  - rw
+
+  - hostname: felix.econline.local
+    disableSearchDomain: true
+    ipAddress: 192.168.0.23
+    controlPlane: true
+    installDiskSelector:
+      busPath: /pci0000:00/0000:00:17.0/ata3/host2/target2:0:0/2:0:0:0/
+    machineDisks:
+      - device: /dev/disk/by-id/ata-VK0480GDJXV_BTWL5131051T480QGN
+        partitions:
+          - mountpoint: /var/mnt/sata
+    networkInterfaces:
+      - interface: eth0
+        dhcp: true
+        vlans:
+          - vlanId: 40
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+    patches:
+      - |-
+        machine:
+          kubelet:
+            extraMounts:
+              - destination: /var/mnt/sata
+                type: bind
+                source: /var/mnt/sata
+                options:
+                  - rbind
+                  - rshared
+                  - rw
+
+controlPlane:
+  patches:
+    - |-
+      cluster:
+        allowSchedulingOnMasters: true
+        proxy:
+          disabled: true
+        etcd:
+          advertisedSubnets:
+            - 10.1.1.0/24
+        extraManifests:
+          - https://raw.githubusercontent.com/kireque/home-ops/main/infrastructure/talos/cluster-0/integrations/cni/cilium.yaml
+          - https://raw.githubusercontent.com/kireque/home-ops/main/infrastructure/talos/cluster-0/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
+
+    - |-
+      - op: remove
+        path: /cluster/apiServer/admissionControl
+
+    - |-
+      machine:
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins]
+                [plugins."io.containerd.grpc.v1.cri"]
+                  enable_unprivileged_ports = true
+                  enable_unprivileged_icmp = true
+        kubelet:
+          extraArgs:
+            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
+            rotate-server-certificates: "true"
+          extraConfig:
+            maxPods: 150
+          nodeIP:
+            validSubnets:
+                - 10.1.1.0/24
+        network:
+          extraHostEntries:
+            - ip: ${clusterEndpointIP}
+              aliases:
+                - ${clusterName}.econline.local
+        install:
+          extensions:
+            - image: ghcr.io/siderolabs/i915-ucode:20230310
+            - image: ghcr.io/siderolabs/intel-ucode:20230512
+        sysctls:
+          fs.inotify.max_user_watches: "1048576"
+          fs.inotify.max_user_instances: "8192"
+        time:
+          disabled: false
+          servers:
+            - 10.1.1.1

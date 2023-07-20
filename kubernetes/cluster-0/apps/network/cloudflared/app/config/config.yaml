@@ -1,0 +1,11 @@
+---
+ingress:
+  - hostname: "bjw-s.dev"
+    service: https://nginx-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: ingress-exteconline.local
+  - hostname: "*econline.local"
+    service: https://nginx-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: ingress-exteconline.local
+  - service: http_status:404

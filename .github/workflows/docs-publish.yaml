@@ -1,0 +1,45 @@
+---
+name: "Docs: Release to GitHub pages"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/docs-publish.yaml"
+      - "docs/**"
+
+jobs:
+  release-docs:
+    name: Release documentation
+    runs-on: ubuntu-22.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - name: Get GitHub API token
+        id: get-app-token
+        uses: getsentry/action-github-app-token@v2
+        with:
+          app_id: ${{ secrets.BJWS_APP_ID }}
+          private_key: ${{ secrets.BJWS_APP_PRIVATE_KEY }}
+
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+        with:
+          token: ${{ steps.get-app-token.outputs.token }}
+          fetch-depth: 0
+
+      - name: Build docs
+        uses: docker://ghcr.io/kireque/mdbook:0.4.31@sha256:c11298e82c62cf89721f4ad26506d7bcb451cc51d889e9348f20a7ae6fc90bd6
+        with:
+          args: bash -c "cd docs && mdbook build"
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3.9.3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ steps.get-app-token.outputs.token }}
+          publish_dir: ./docs/book/html
+          user_name: 'kireque-bot[bot]'
+          user_email: 'kireque-bot <87358111+kireque-bot[bot]@users.noreply.github.com>'

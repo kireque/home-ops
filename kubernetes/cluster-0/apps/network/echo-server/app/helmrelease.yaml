@@ -1,0 +1,57 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: echo-server
+  namespace: network
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: kireque
+        namespace: flux-system
+
+  values:
+    image:
+      repository: ghcr.io/mendhak/http-https-echo
+      tag: "30"
+
+    env:
+      HTTP_PORT: &port 8080
+      LOG_WITHOUT_NEWLINE: "true"
+      LOG_IGNORE_PATH: "/healthz"
+
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "external-nginx"
+        annotations:
+          nginx.ingress.kubernetes.io/auth-url: https://autheconline.local/oauth2/auth?allowed_groups=admins
+          nginx.ingress.kubernetes.io/auth-signin: https://autheconline.local/oauth2/start?rd=$scheme://$best_http_host$request_uri
+          nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-email, x-auth-request-groups"
+          external-dns.alpha.kubernetes.io/target: ingress-exteconline.local
+        hosts:
+          - host: &host "echo-servereconline.local"
+            paths:
+              - path: /
+        tls:
+          - hosts:
+              - *host
+
+    resources:
+      requests:
+        cpu: 5m
+        memory: 30M
+      limits:
+        memory: 30M

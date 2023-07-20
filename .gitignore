@@ -1,6 +1,3 @@
-# Editors
-.vscode/
-
 # Folders
 ignore/
 logs/
@@ -9,10 +6,6 @@ testing/
 # Trash
 .DS_Store
 Thumbs.db
-
-# Binaries
-bin
-*.iso
 
 # Sops
 .decrypted~*
@@ -28,16 +21,8 @@ bin
 ## terraform plan output
 *tfplan*
 
-## terraform variable files
-*.tfvars
-
 # Other files
 kubeconfig
 
 # Talos clusterconfigs
 infrastructure/talos/**/clusterconfig
-
-# Other
-.env
-*.snap
-setup/cluster/*cluster.yml

@@ -1,9 +1,5 @@
 ---
-area/github:
+area/ci:
   - ".github/**/*"
 area/kubernetes:
   - "kubernetes/**/*"
-area/hack:
-  - "hack/**/*"
-area/terraform:
-  - "terraform/**/*"
