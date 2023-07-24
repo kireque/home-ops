@@ -29,12 +29,8 @@ nodes:
     networkInterfaces:
       - interface: eth0
         dhcp: true
-        vlans:
-          - vlanId: 40
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
+        vip:
+          ip: 192.168.0.20
     patches:
       - |-
         machine:
@@ -61,12 +57,8 @@ nodes:
     networkInterfaces:
       - interface: eth0
         dhcp: true
-        vlans:
-          - vlanId: 40
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
+        vip:
+          ip: 192.168.0.20
     patches:
       - |-
         machine:
@@ -93,12 +85,8 @@ nodes:
     networkInterfaces:
       - interface: eth0
         dhcp: true
-        vlans:
-          - vlanId: 40
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
+        vip:
+          ip: 192.168.0.20
     patches:
       - |-
         machine:
@@ -121,7 +109,7 @@ controlPlane:
           disabled: true
         etcd:
           advertisedSubnets:
-            - 10.1.1.0/24
+            - 192.168.0.0/23
         extraManifests:
           - https://raw.githubusercontent.com/kireque/home-ops/main/infrastructure/talos/cluster-0/integrations/cni/cilium.yaml
           - https://raw.githubusercontent.com/kireque/home-ops/main/infrastructure/talos/cluster-0/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml
@@ -148,7 +136,7 @@ controlPlane:
             maxPods: 150
           nodeIP:
             validSubnets:
-                - 10.1.1.0/24
+                - 192.168.0.0/23
         network:
           extraHostEntries:
             - ip: ${clusterEndpointIP}
@@ -164,4 +152,4 @@ controlPlane:
         time:
           disabled: false
           servers:
-            - 10.1.1.1
+            - 192.168.0.1
