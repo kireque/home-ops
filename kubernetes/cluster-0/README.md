@@ -20,6 +20,7 @@ _These cannot be applied with `kubectl` in the regular fashion due to some files
 
 ```sh
 sops --decrypt ./bootstrap/age-key.sops.yaml | kubectl apply -f -
+sops --decrypt ./flux/vars/cluster-secrets.sops.yaml | kubectl apply -f -
 kubectl apply -f ./flux/vars/cluster-settings.yaml
 ```
 
