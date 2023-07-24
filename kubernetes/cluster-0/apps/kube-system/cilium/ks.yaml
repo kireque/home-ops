@@ -5,12 +5,10 @@ metadata:
   name: cluster-apps-cilium
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/kube-system/cilium/app
-  prune: false # never should be deleted
+  interval: 10m
+  path: "./kubernetes/cluster-0/apps/kube-system/cilium/app"
+  prune: true
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
-  wait: false # no flux ks dependents
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
+    name: home-ops-kubernetes
+  wait: true
