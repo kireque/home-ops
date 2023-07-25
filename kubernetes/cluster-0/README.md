@@ -12,6 +12,7 @@ Assuming you are in the `cluster-0` root folder:
 
 ```sh
 kubectl apply --server-side --kustomize ./bootstrap
+kubectl apply --server-side --kustomize ./bootstrap/crds/
 ```
 
 ### Apply Cluster Configuration
