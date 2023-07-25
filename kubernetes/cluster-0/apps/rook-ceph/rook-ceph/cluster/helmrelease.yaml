@@ -99,7 +99,7 @@ spec:
               - name: "/dev/disk/by-id/nvme-KINGSTON_SA2000M8500G_50026B7683E1CB7C"
 
     ingress:
-      ingressClassName: "internal-nginx"
+      ingressClassName: "nginx"
       dashboard:
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
