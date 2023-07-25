@@ -13,6 +13,7 @@ resources:
   - ext-postgres-operator.yaml
   - external-dns.yaml
   - grafana.yaml
+  - hajimari.yaml
   - ingress-nginx.yaml
   - intel.yaml
   - jetstack.yaml
