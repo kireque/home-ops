@@ -10,43 +10,31 @@ spec:
     spec:
       chart: weave-gitops
       version: 4.0.26
-      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: weave-gitops
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
-    podAnnotations:
-      secret.reloader.stakater.com/reload: weave-gitops-secrets
-
-    logLevel: info
-
     adminUser:
       create: true
-      username: &admin_user admin
-
-    networkPolicy:
-      create: false
-
-    metrics:
-      enabled: true
-
-    rbac:
-      create: true
-      impersonationResourceNames:
-        - *admin_user
-      additionalRules:
-        - apiGroups:
-            - "infra.contrib.fluxcd.io"
-          resources:
-            - "terraforms"
-          verbs:
-            - "get"
-            - "list"
-            - "patch"
-
+      createSecret: false
+      username: admin
     ingress:
       enabled: true
-      className: internal-nginx
+      className: nginx
+      annotations:
+        hajimari.io/icon: sawtooth-wave
       hosts:
         - host: &host "gitops.${SECRET_DOMAIN}"
           paths:
@@ -55,9 +43,12 @@ spec:
       tls:
         - hosts:
             - *host
-
-  valuesFrom:
-    - kind: Secret
-      name: weave-gitops-secrets
-      valuesKey: adminPassword
-      targetPath: adminUser.passwordHash
+    networkPolicy:
+      create: false
+    metrics:
+      enabled: true
+    rbac:
+      create: true
+      impersonationResourceNames: ["admin"]
+    podAnnotations:
+      secret.reloader.stakater.com/reload: cluster-user-auth
