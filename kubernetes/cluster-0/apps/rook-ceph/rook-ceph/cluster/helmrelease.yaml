@@ -33,47 +33,61 @@ spec:
 
       resources:
         mgr:
-          requests:
-            cpu: "125m"
-            memory: "549M"
           limits:
-            memory: "1219M"
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 256Mi
         mon:
-          requests:
-            cpu: "49m"
-            memory: "477M"
           limits:
-            memory: "1059M"
+            cpu: 1000m
+            memory: 1280Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
         osd:
-          requests:
-            cpu: "442m"
-            memory: "2678M"
           limits:
-            memory: "5944M"
+            cpu: 500m
+            memory: 1792Mi
+          requests:
+            cpu: 250m
+            memory: 256Mi
+        prepareosd:
+          limits:
+            cpu: 1000m
+            memory: 400Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
         mgr-sidecar:
-          requests:
-            cpu: "49m"
-            memory: "94M"
           limits:
-            memory: "208M"
+            cpu: 256m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 40Mi
         crashcollector:
-          requests:
-            cpu: "15m"
-            memory: "64M"
           limits:
-            memory: "64M"
+            cpu: 100m
+            memory: 220M
+          requests:
+            cpu: 15m
+            memory: 64M
         logcollector:
+          limits:
+            cpu: "500m"
+            memory: "1Gi"
           requests:
             cpu: "100m"
-            memory: "100M"
-          limits:
-            memory: "1G"
+            memory: "100Mi"
         cleanup:
-          requests:
-            cpu: "250m"
-            memory: "100M"
           limits:
-            memory: "1G"
+            cpu: "500m"
+            memory: "1Gi"
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
 
       crashCollector:
         disable: false
