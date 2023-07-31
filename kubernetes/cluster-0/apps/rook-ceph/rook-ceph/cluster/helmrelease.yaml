@@ -120,7 +120,6 @@ spec:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           nginx.ingress.kubernetes.io/server-snippet: |
             proxy_ssl_verify off;
-          hajimari.io/appName: "Rook"
           hajimari.io/icon: mdi:chess-rook
         host:
           name: &host "rook-cluster-0.${SECRET_DOMAIN}"
