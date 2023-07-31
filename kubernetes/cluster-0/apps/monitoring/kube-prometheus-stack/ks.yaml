@@ -13,7 +13,6 @@ spec:
     name: home-ops-kubernetes
   wait: true
   dependsOn:
-    - name: cluster-apps-alertmanager
     - name: cluster-apps-rook-ceph-cluster
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
