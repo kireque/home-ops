@@ -51,10 +51,10 @@ spec:
     metricsScraper:
       enabled: true
     serviceMonitor:
-      enabled: false
+      enabled: true
     cert-manager:
-      enabled: false
+      enabled: true
     nginx:
-      enabled: false
+      enabled: true
     metrics-server:
-      enabled: false
+      enabled: true
