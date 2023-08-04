@@ -27,21 +27,23 @@ spec:
     keepHistory: false
   values:
     env:
+      TZ: "${TIMEZONE}"
     extraArgs:
       - --enable-skip-login
       - --disable-settings-authorizer
       - --enable-insecure-login
       - --token-ttl=43200
-    ingress:
-      enabled: true
-      className: nginx
-      annotations:
-        hajimari.io/icon: mdi:kubernetes
-      hosts:
-        - &host "kubernetes.${SECRET_DOMAIN}"
-      tls:
-        - hosts:
-            - *host
+    app:
+      ingress:
+        enabled: true
+        className: nginx
+        annotations:
+          hajimari.io/icon: mdi:kubernetes
+        hosts:
+          - &host "kubernetes.${SECRET_DOMAIN}"
+        tls:
+          - hosts:
+              - *host
     metricsScraper:
       enabled: true
     serviceMonitor:
