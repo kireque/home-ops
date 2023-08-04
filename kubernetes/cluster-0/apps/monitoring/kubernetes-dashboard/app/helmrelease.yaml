@@ -53,7 +53,7 @@ spec:
     serviceMonitor:
       enabled: true
     cert-manager:
-      enabled: true
+      enabled: false
     nginx:
       enabled: true
     metrics-server:
