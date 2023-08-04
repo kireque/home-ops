@@ -5,7 +5,7 @@ metadata:
   name: kubernetes-dashboard
   namespace: monitoring
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: kubernetes-dashboard
@@ -14,47 +14,40 @@ spec:
         kind: HelmRepository
         name: kubernetes-dashboard
         namespace: flux-system
-  maxHistory: 2
+  maxHistory: 3
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
     cleanupOnFail: true
     remediation:
-      retries: 3
+      retries: 5
   uninstall:
     keepHistory: false
-  dependsOn:
-    - name: ingress-nginx
-      namespace: networking
   values:
     env:
-      TZ: "${TIMEZONE}"
-    api:
-      containers:
-        args:
-          - --enable-insecure-login=true
-          - --enable-skip-login=true
-          - --disable-settings-authorizer=true
-    app:
-      ingress:
-        enabled: true
-        className: nginx
-        annotations:
-          hajimari.io/icon: mdi:kubernetes
-        hosts:
-          - &host "kubernetes.${SECRET_DOMAIN}"
-        tls:
-          - hosts:
-              - *host
-            secretName: kubernetes-dashboard-tls
+    extraArgs:
+      - --enable-skip-login
+      - --disable-settings-authorizer
+      - --enable-insecure-login
+      - --token-ttl=43200
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        hajimari.io/icon: mdi:kubernetes
+      hosts:
+        - &host kubernetes.${SECRET_DOMAIN}
+      tls:
+        - hosts:
+            - *host
     metricsScraper:
       enabled: true
     serviceMonitor:
       enabled: false
     cert-manager:
-      enabled: true
+      installCRDs: false
     nginx:
       enabled: false
     metrics-server:
