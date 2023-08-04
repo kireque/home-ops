@@ -48,13 +48,14 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: kubernetes-dashboard-tls
     metricsScraper:
       enabled: true
     serviceMonitor:
-      enabled: true
-    cert-manager:
       enabled: false
+    cert-manager:
+      enabled: true
     nginx:
-      enabled: true
+      enabled: false
     metrics-server:
-      enabled: true
+      enabled: false
