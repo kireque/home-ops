@@ -40,9 +40,9 @@ spec:
       ui:
         ingress:
           enabled: true
-          className: "internal-nginx"
+          className: "nginx"
           hosts:
-            - &host hubble-cluster-0.econline.local
+            - &host "hubble-cluster-0.${SECRET_DOMAIN}"
           tls:
             - hosts:
                 - *host
