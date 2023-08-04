@@ -28,11 +28,13 @@ spec:
   values:
     env:
       TZ: "${TIMEZONE}"
-    extraArgs:
-      - --enable-skip-login
-      - --disable-settings-authorizer
-      - --enable-insecure-login
-      - --token-ttl=43200
+    api:
+      containers:
+        args:
+          - --enable-skip-login
+          - --disable-settings-authorizer
+          - --enable-insecure-login
+          - --token-ttl=43200
     app:
       ingress:
         enabled: true
