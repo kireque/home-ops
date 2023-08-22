@@ -34,59 +34,51 @@ spec:
       resources:
         mgr:
           limits:
-            cpu: 500m
-            memory: 640Mi
-          requests:
-            cpu: 50m
-            memory: 256Mi
-        mon:
-          limits:
-            cpu: 1000m
-            memory: 1280Mi
-          requests:
-            cpu: 100m
-            memory: 256Mi
-        osd:
-          limits:
-            cpu: 500m
-            memory: 1792Mi
-          requests:
-            cpu: 250m
-            memory: 256Mi
-        prepareosd:
-          limits:
-            cpu: 1000m
-            memory: 400Mi
-          requests:
-            cpu: 100m
-            memory: 200Mi
-        mgr-sidecar:
-          limits:
-            cpu: 256m
-            memory: 100Mi
-          requests:
-            cpu: 50m
-            memory: 40Mi
-        crashcollector:
-          limits:
-            cpu: 100m
-            memory: 220M
-          requests:
-            cpu: 15m
-            memory: 64M
-        logcollector:
-          limits:
-            cpu: "500m"
             memory: "1Gi"
           requests:
-            cpu: "100m"
+            cpu: "50m"
+            memory: "512Mi"
+        mon:
+          limits:
+            memory: "2Gi"
+          requests:
+            cpu: "50m"
+            memory: "1Gi"
+        osd:
+          limits:
+            memory: "4Gi"
+          requests:
+            cpu: "50m"
+            memory: "4Gi"
+        prepareosd:
+          limits:
+            memory: "900Mi"
+          requests:
+            cpu: "50m"
+            memory: "50Mi"
+        mgr-sidecar:
+          limits:
+            memory: "100Mi"
+          requests:
+            cpu: "10m"
+            memory: "40Mi"
+        crashcollector:
+          limits:
+            memory: "60Mi"
+          requests:
+            cpu: "3m"
+            memory: "60Mi"
+        logcollector:
+          limits:
+            memory: "1Gi"
+          requests:
+            cpu: "10m"
             memory: "100Mi"
         cleanup:
           limits:
-            cpu: "500m"
             memory: "1Gi"
           requests:
-            cpu: "100m"
+            cpu: "10m"
             memory: "100Mi"
 
       crashCollector:
