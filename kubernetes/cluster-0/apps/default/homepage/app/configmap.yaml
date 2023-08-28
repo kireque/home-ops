@@ -166,4 +166,4 @@ data:
           showLabel: true
           label: home-cluster
         nodes:
-          show: false
+          show: true
