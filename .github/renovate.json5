@@ -9,8 +9,8 @@
     "github>kireque/home-ops//.github/renovate/groups.json5",
   ],
   platform: "github",
-  username: "kireuqe-bot[bot]",
-  gitAuthor: "kireque-bot <87358111+kireque-bot[bot]@users.noreply.github.com>",
+  username: "kireque-bot[bot]",
+  gitAuthor: "kireque-bot <143391978+kireque-bot[bot]@users.noreply.github.com>",
   repositories: ["kireque/home-ops"],
   ignorePaths: ["^archive/**"],
   flux: {
