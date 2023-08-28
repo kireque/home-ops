@@ -11,8 +11,8 @@ _... managed by Flux, Renovate and GitHub Actions_ :robot:
 <div align="center">
 
 [![Discord](https://img.shields.io/discord/673534664354430999?style=for-the-badge&label&logo=discord&logoColor=white&color=blue)](https://discord.gg/k8s-at-home)
-[![Kubernetes](https://img.shields.io/badge/v1.26-blue?style=for-the-badge&logo=kubernetes&logoColor=white)](https://www.talos.dev/)
-[![Renovate](https://img.shields.io/github/actions/workflow/status/bjw-s/home-ops/schedule-renovate.yaml?branch=main&label=&logo=renovatebot&style=for-the-badge&color=blue)](https://github.com/bjw-s/home-ops/actions/workflows/schedule-renovate.yaml)
+[![Kubernetes](https://img.shields.io/badge/v1.28-blue?style=for-the-badge&logo=kubernetes&logoColor=white)](https://www.talos.dev/)
+[![Renovate](https://img.shields.io/github/actions/workflow/status/kireque/home-ops/schedule-renovate.yaml?branch=main&label=&logo=renovatebot&style=for-the-badge&color=blue)](https://github.com/bjw-s/home-ops/actions/workflows/schedule-renovate.yaml)
 
 </div>
 <br><br>
@@ -23,13 +23,7 @@ _... managed by Flux, Renovate and GitHub Actions_ :robot:
 
 ### 📖 Docs
 
-The documentation that goes along with this repo can be found [over here](https://bjw-s.github.io/home-ops/).
-
----
-
-### 🔎 Support
-
-If you like this project, please consider supporting my work through my [GitHub sponsorship page](https://github.com/sponsors/bjw-s?frequency=one-time).
+TO DO: The documentation that goes along with this repo can be found [over here](https://kireque.github.io/home-ops/).
 
 ---
 
@@ -41,4 +35,4 @@ Thanks to all the people who donate their time to the [Kubernetes @Home](https:/
 
 ### 🔏 License
 
-See [LICENSE](https://github.com/bjw-s/home-ops/blob/main/LICENSE)
+See [LICENSE](https://github.com/kireque/home-ops/blob/main/LICENSE)
