@@ -1,7 +1,5 @@
 <div align="center">
 
-<!-- <img src="https://github.com/bjw-s/bjw-s/blob/main/_assets/images/logo.jpg?raw=true" align="left" width="144px" height="144px"/> -->
-
 ## My Home Operations repository
 
 _... managed by Flux, Renovate and GitHub Actions_ :robot:
@@ -12,7 +10,7 @@ _... managed by Flux, Renovate and GitHub Actions_ :robot:
 
 [![Discord](https://img.shields.io/discord/673534664354430999?style=for-the-badge&label&logo=discord&logoColor=white&color=blue)](https://discord.gg/k8s-at-home)
 [![Kubernetes](https://img.shields.io/badge/v1.28-blue?style=for-the-badge&logo=kubernetes&logoColor=white)](https://www.talos.dev/)
-[![Renovate](https://img.shields.io/github/actions/workflow/status/kireque/home-ops/schedule-renovate.yaml?branch=main&label=&logo=renovatebot&style=for-the-badge&color=blue)](https://github.com/bjw-s/home-ops/actions/workflows/schedule-renovate.yaml)
+[![Renovate](https://img.shields.io/github/actions/workflow/status/kireque/home-ops/schedule-renovate.yaml?branch=main&label=&logo=renovatebot&style=for-the-badge&color=blue)](https://github.com/kireque/home-ops/actions/workflows/schedule-renovate.yaml)
 
 </div>
 <br><br>
