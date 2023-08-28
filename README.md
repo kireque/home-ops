@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://github.com/bjw-s/bjw-s/blob/main/_assets/images/logo.jpg?raw=true" align="left" width="144px" height="144px"/>
+<!-- <img src="https://github.com/bjw-s/bjw-s/blob/main/_assets/images/logo.jpg?raw=true" align="left" width="144px" height="144px"/> -->
 
 ## My Home Operations repository
 
