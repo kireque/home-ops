@@ -31,31 +31,31 @@ spec:
     api:
       containers:
         args:
-          - --enable-skip-login
-          - --disable-settings-authorizer
           - --enable-insecure-login
-          - --token-ttl=43200
-    ingress:
-      enabled: true
-      className: nginx
-      annotations:
-        hajimari.io/icon: mdi:kubernetes
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/description: Web-based Kubernetes user interface
-        gethomepage.dev/group: Operations
-        gethomepage.dev/icon: kubernetes-dashboard.png
-        gethomepage.dev/name: Kubernetes Dashboard
-      hosts:
-        - &host "kubernetes.${SECRET_DOMAIN}"
-      tls:
-        - hosts:
-            - *host
+          - --enable-skip-login
+          - --disable-settings-authorizer=true
+    app:
+      ingress:
+        enabled: true
+        className: nginx
+        annotations:
+          hajimari.io/icon: mdi:kubernetes
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: Web-based Kubernetes user interface
+          gethomepage.dev/group: Operations
+          gethomepage.dev/icon: kubernetes-dashboard.png
+          gethomepage.dev/name: Kubernetes Dashboard
+        hosts:
+          - &host "kubernetes.${SECRET_DOMAIN}"
+        tls:
+          - hosts:
+              - *host
     metricsScraper:
       enabled: true
     serviceMonitor:
       enabled: false
     cert-manager:
-      installCRDs: false
+      enabled: false
     nginx:
       enabled: false
     metrics-server:
