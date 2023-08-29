@@ -33,7 +33,7 @@ metadata:
   name: cluster-apps-flux-webhooks
   namespace: flux-system
 spec:
-  path: "./kubernetes/cluster-0/apps/flux-system/addons/webhooks"
+  path: "./kubernetes/cluster-0/apps/flux-system/add-ons/webhooks"
   prune: true
   sourceRef:
     kind: GitRepository
