@@ -68,6 +68,9 @@ spec:
       transcode:
         enabled: true
         type: emptyDir
+      cache:
+        enabled: true
+        type: emptyDir
 
     podSecurityContext:
       runAsUser: 568
