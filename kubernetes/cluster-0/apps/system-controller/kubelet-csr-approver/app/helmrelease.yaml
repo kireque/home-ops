@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: postfinance
-        namespace: flux-system
+        namespace: system-controller
       interval: 30m
   valuesFrom:
     - kind: ConfigMap
