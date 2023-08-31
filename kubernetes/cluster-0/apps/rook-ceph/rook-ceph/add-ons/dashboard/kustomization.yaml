@@ -7,6 +7,10 @@ configMapGenerator:
   - name: ceph-cluster-dashboard
     files:
       - ceph-cluster-dashboard.json
+  # Ref: https://grafana.com/grafana/dashboards/2842
+  - name: ceph-cluster-dashboard -2-
+    files:
+      - ceph-cluster-dashboard copy.json
   # Ref: https://grafana.com/grafana/dashboards/5336
   - name: ceph-osd-dashboard
     files:
