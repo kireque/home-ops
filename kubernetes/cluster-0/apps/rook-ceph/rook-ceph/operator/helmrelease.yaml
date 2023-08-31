@@ -131,9 +131,9 @@ spec:
 
     pspEnable: false
 
-    resources:
-      requests:
-        cpu: 500m
-        memory: 204M
-      limits:
-        memory: 453M
+    # resources:
+    #   requests:
+    #     cpu: 500m
+    #     memory: 204M
+    #   limits:
+    #     memory: 453M
