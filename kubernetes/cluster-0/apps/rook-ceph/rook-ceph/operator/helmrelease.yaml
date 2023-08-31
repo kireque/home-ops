@@ -68,38 +68,6 @@ spec:
               memory: 128Mi
               cpu: 25m
 
-      csiCephFSProvisionerResource: |
-        - name : csi-provisioner
-          resource:
-            requests:
-              memory: 128Mi
-              cpu: 25m
-        - name : csi-resizer
-          resource:
-            requests:
-              memory: 128Mi
-              cpu: 25m
-        - name : csi-attacher
-          resource:
-            requests:
-              memory: 128Mi
-              cpu: 25m
-        - name : csi-snapshotter
-          resource:
-            requests:
-              memory: 128Mi
-              cpu: 25m
-        - name : csi-cephfsplugin
-          resource:
-            requests:
-              memory: 512Mi
-              cpu: 50m
-        - name : liveness-prometheus
-          resource:
-            requests:
-              memory: 128Mi
-              cpu: 25m
-
     monitoring:
       enabled: true
 
