@@ -41,6 +41,11 @@ spec:
         ingress:
           enabled: true
           className: "nginx"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/description: user interface for Cilium Hubble
+          gethomepage.dev/group: Operations
+          gethomepage.dev/icon: cilium.png
+          gethomepage.dev/name: Cilium Hubble UI
           hosts:
             - &host "hubble-cluster-0.${SECRET_DOMAIN}"
           tls:
