@@ -84,7 +84,7 @@
       },
       {
         "cacheTimeout": null,
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "Prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {},
@@ -175,7 +175,7 @@
       },
       {
         "cacheTimeout": null,
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "Prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {},
@@ -266,7 +266,7 @@
       },
       {
         "cacheTimeout": null,
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "Prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {},
@@ -352,7 +352,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "Prometheus",
         "decimals": 2,
         "editable": true,
         "error": false,
@@ -489,7 +489,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "Prometheus",
         "decimals": 2,
         "editable": true,
         "error": false,
@@ -612,7 +612,7 @@
           "rgba(237, 129, 40, 0.89)",
           "rgba(245, 54, 54, 0.9)"
         ],
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "Prometheus",
         "editable": true,
         "error": false,
         "fieldConfig": {
@@ -723,7 +723,7 @@
           "mode": "opacity"
         },
         "dataFormat": "timeseries",
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "Prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {}
@@ -793,7 +793,7 @@
           "mode": "opacity"
         },
         "dataFormat": "timeseries",
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "Prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {}
@@ -863,7 +863,7 @@
           "mode": "opacity"
         },
         "dataFormat": "timeseries",
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "Prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {}
@@ -933,7 +933,7 @@
           "mode": "opacity"
         },
         "dataFormat": "timeseries",
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "Prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {}
@@ -995,7 +995,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "Prometheus",
         "fieldConfig": {
           "defaults": {
             "custom": {}
@@ -1103,7 +1103,7 @@
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "PBFA97CFB590B2093",
+        "datasource": "Prometheus",
         "decimals": null,
         "fieldConfig": {
           "defaults": {
@@ -1314,7 +1314,7 @@
         {
           "allValue": null,
           "current": {},
-          "datasource": "PBFA97CFB590B2093",
+          "datasource": "Prometheus",
           "definition": "",
           "hide": 0,
           "includeAll": false,
