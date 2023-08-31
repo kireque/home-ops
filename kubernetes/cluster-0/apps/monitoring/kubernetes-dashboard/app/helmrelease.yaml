@@ -9,34 +9,33 @@ spec:
   chart:
     spec:
       chart: kubernetes-dashboard
-      version: 7.0.0-alpha0
+      version: 6.0.8
       sourceRef:
         kind: HelmRepository
         name: kubernetes-dashboard
         namespace: flux-system
-  maxHistory: 3
+      interval: 15m
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
   uninstall:
     keepHistory: false
   values:
     env:
       TZ: "${TIMEZONE}"
-    api:
-      containers:
-        args:
-          # When enabled, the skip button on the login page will be shown.
-          - --enable-skip-login
-          # When enabled, Dashboard settings page will not require user to be logged in and authorized to access settings page.
-          - --disable-settings-authorizer
-          # When enabled, Dashboard login view will also be shown when Dashboard is not served over HTTPS.
-          - --enable-insecure-login
+    extraArgs:
+      - --enable-skip-login
+      - --disable-settings-authorizer
+      - --enable-insecure-login
+      - --token-ttl=43200 # seconds time to expire
+    metricsScraper:
+      enabled: false
     ingress:
       enabled: true
       className: nginx
@@ -52,13 +51,3 @@ spec:
       tls:
         - hosts:
             - *host
-    metricsScraper:
-      enabled: true
-    serviceMonitor:
-      enabled: false
-    cert-manager:
-      enabled: false
-    nginx:
-      enabled: false
-    metrics-server:
-      enabled: false
