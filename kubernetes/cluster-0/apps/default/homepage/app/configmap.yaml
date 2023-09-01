@@ -118,6 +118,11 @@ data:
             icon: si-nixos
             href: https://search.nixos.org
             description: Search NixOS Packages and Options
+    - Kubernetes:
+        - Hubble UI:
+            icon: hubble.png
+            href: https://hubble-cluster-0.{{SECRET_DOMAIN}}/
+            description: Hubble UI
 
   settings.yaml: |
     ---
