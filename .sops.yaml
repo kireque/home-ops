@@ -4,9 +4,9 @@ creation_rules:
     encrypted_regex: "^(data|stringData)$"
     # Personal, Flux
     age: >-
-      age1vq46r6697jer0udz6pjx9grgt5xlpg70wjvnw3l6pjmup4k57e4qnqn7vn
+      age180mw9nde354qyrklgcylwdn42ql657j6vcpdud5gqpeyp7e9v4xsrdns9t
 
   - path_regex: .*\.sops\.ya?ml
     # Personal
     age: >-
-      age1vq46r6697jer0udz6pjx9grgt5xlpg70wjvnw3l6pjmup4k57e4qnqn7vn
+      age180mw9nde354qyrklgcylwdn42ql657j6vcpdud5gqpeyp7e9v4xsrdns9t
