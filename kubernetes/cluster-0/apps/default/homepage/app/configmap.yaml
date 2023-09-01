@@ -120,8 +120,8 @@ data:
             description: Search NixOS Packages and Options
     - Kubernetes:
         - Hubble UI:
-            icon: hubble.png
-            href: https://hubble-cluster-0.{{SECRET_DOMAIN}}/
+            icon: cilium
+            href: https://hubble-cluster-0.${SECRET_DOMAIN}/
             description: Hubble UI
 
   settings.yaml: |
