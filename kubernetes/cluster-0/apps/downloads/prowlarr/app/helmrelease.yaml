@@ -63,6 +63,8 @@ spec:
       limits:
         memory: 256Mi
 
-    securityContext:
+    podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
