@@ -42,9 +42,9 @@ spec:
       repository: ghcr.io/recyclarr/recyclarr
       tag: 5.3.1@sha256:ede628bd5a3064cc9299db23da3c3c7d99417cdae0fe31fdbe04daf9971edd57
 
-    envFrom:
-      - secretRef:
-          name: recyclarr-secret
+    # envFrom:
+    #   - secretRef:
+    #       name: recyclarr-secret
 
     persistence:
       config-file:
