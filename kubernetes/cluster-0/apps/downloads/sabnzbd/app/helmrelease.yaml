@@ -42,7 +42,7 @@ spec:
         sabnzbd.downloads.svc,
         sabnzbd.downloads.svc.cluster,
         sabnzbd.downloads.svc.cluster.local,
-        sabnzbd.${SECRET_DAMAIN}
+        sabnzbd.${SECRET_DOMAIN}
       SABNZBD__API_KEY: "test"
       SABNZBD__NZB_KEY: "test2"
 
@@ -57,7 +57,7 @@ spec:
         enabled: true
         ingressClassName: "nginx"
         hosts:
-          - host: &host "sabnzbd.${SECRET_DAMAIN}"
+          - host: &host "sabnzbd.${SECRET_DOMAIN}"
             paths:
               - path: /
         tls:
