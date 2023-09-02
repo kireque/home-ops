@@ -40,7 +40,7 @@ spec:
       SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
       SONARR__APPLICATION_URL: "https://sonarr.${SECRET_DOMAIN}"
       SONARR__LOG_LEVEL: info
-      SONARR__API_KEY: test
+      SONARR__API_KEY: testtesttesttesttest
 
     service:
       main:
