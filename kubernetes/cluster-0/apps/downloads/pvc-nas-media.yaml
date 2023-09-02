@@ -22,7 +22,7 @@ spec:
     server: synology.${SECRET_DOMAIN_LOCAL}
     path: /volume3/Download
   mountOptions:
-    - nfsvers=4.1
+    - nfsvers=4
     - nconnect=8
     - hard
     - noatime
