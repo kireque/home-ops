@@ -51,7 +51,7 @@ spec:
           - hosts:
               - *host
         annotations:
-          hajimari.io/icon: mdi:{{ .Release.Name }}
+          hajimari.io/icon: mdi:prowlarr
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Downloads
           gethomepage.dev/icon: {{ .Release.Name }}
