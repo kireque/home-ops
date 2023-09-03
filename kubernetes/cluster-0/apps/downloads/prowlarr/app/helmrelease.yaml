@@ -43,6 +43,15 @@ spec:
       main:
         enabled: true
         ingressClassName: "nginx"
+        annotations:
+          hajimari.io/icon: mdi:prowlarr
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/icon: prowlarr.png
+          gethomepage.dev/name: Prowlarr
+          gethomepage.dev/widget.type: "prowlarr"
+          gethomepage.dev/podSelector: ""
+          gethomepage.dev/weight: 10 # optional
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
