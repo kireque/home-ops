@@ -59,6 +59,16 @@ spec:
         tls:
           - hosts:
               - *host
+        annotations:
+          hajimari.io/icon: mdi:sonarr
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/icon: "sonarr"
+          gethomepage.dev/name: "sonarr"
+          gethomepage.dev/widget.type: "sonarr"
+          gethomepage.dev/widget.url: "http://sonarr.downloads.svc.cluster.local:9696"
+          gethomepage.dev/widget.key: "testtesttesttesttest"
+          gethomepage.dev/podSelector: ""
 
     persistence:
       config:

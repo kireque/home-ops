@@ -55,7 +55,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Downloads
           gethomepage.dev/icon: "prowlarr"
-          gethomepage.dev/name: &test "{{ .Release.Name }}"
+          gethomepage.dev/name: "Prowlarr"
           gethomepage.dev/widget.type: "prowlarr"
           gethomepage.dev/widget.url: "http://prowlarr.downloads.svc.cluster.local:9696"
           gethomepage.dev/widget.key: "testtesttesttesttest"
