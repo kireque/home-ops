@@ -56,9 +56,9 @@ spec:
           gethomepage.dev/group: Downloads
           gethomepage.dev/icon: "prowlarr"
           gethomepage.dev/name: "prowlarr"
-          # gethomepage.dev/widget.type: {{ .Release.Name }}
-          # gethomepage.dev/widget.url: *host
-          # gethomepage.dev/weight: 10 # optional
+          gethomepage.dev/widget.type: "prowlarr"
+          gethomepage.dev/widget.url: *host
+          gethomepage.dev/weight: 10 # optional
 
     persistence:
       config:
