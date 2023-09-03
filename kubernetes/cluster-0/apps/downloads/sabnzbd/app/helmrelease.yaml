@@ -43,8 +43,8 @@ spec:
         sabnzbd.downloads.svc.cluster,
         sabnzbd.downloads.svc.cluster.local,
         sabnzbd.${SECRET_DOMAIN}
-      SABNZBD__API_KEY: "test"
-      SABNZBD__NZB_KEY: "test2"
+      SABNZBD__API_KEY: "testtesttesttesttest"
+      SABNZBD__NZB_KEY: "testtesttesttesttest"
 
     service:
       main:
