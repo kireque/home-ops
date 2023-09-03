@@ -51,14 +51,14 @@ spec:
           - hosts:
               - *host
         annotations:
-          hajimari.io/icon: mdi:prowlarr
+          hajimari.io/icon: mdi:{{ .Release.Name }}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Downloads
-          gethomepage.dev/icon: prowlarr.png
-          gethomepage.dev/name: Prowlarr
-          gethomepage.dev/widget.type: prowlarr
-          gethomepage.dev/widget.url: *host
-          gethomepage.dev/weight: 10 # optional
+          gethomepage.dev/icon: {{ .Release.Name }}
+          gethomepage.dev/name: {{ .Release.Name }}
+          # gethomepage.dev/widget.type: {{ .Release.Name }}
+          # gethomepage.dev/widget.url: *host
+          # gethomepage.dev/weight: 10 # optional
 
     persistence:
       config:
