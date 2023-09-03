@@ -66,7 +66,7 @@ spec:
           gethomepage.dev/icon: "radarr"
           gethomepage.dev/name: "radarr"
           gethomepage.dev/widget.type: "radarr"
-          gethomepage.dev/widget.url: "http://radarr.downloads.svc.cluster.local:9696"
+          gethomepage.dev/widget.url: "http://radarr.downloads.svc.cluster.local:7878"
           gethomepage.dev/widget.key: "testtesttesttesttest"
           gethomepage.dev/podSelector: ""
 
