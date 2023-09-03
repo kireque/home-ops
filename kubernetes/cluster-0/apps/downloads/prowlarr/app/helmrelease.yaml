@@ -58,6 +58,7 @@ spec:
           gethomepage.dev/name: "prowlarr"
           gethomepage.dev/widget.type: "prowlarr"
           gethomepage.dev/widget.url: *host
+          gethomepage.dev/podSelector: ""
           gethomepage.dev/weight: 10 # optional
 
     persistence:
