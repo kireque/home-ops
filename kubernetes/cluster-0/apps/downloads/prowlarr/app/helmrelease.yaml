@@ -58,7 +58,6 @@ spec:
           gethomepage.dev/name: "prowlarr"
           gethomepage.dev/widget.type: "prowlarr"
           gethomepage.dev/widget.url: "http://prowlarr.downloads.svc.cluster.local:9696"
-          gethomepage.dev/podSelector: ""
           gethomepage.dev/weight: 10 # optional
 
     persistence:
