@@ -54,8 +54,8 @@ spec:
           hajimari.io/icon: mdi:prowlarr
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Downloads
-          gethomepage.dev/icon: {{ .Release.Name }}
-          gethomepage.dev/name: {{ .Release.Name }}
+          gethomepage.dev/icon: "{{ .Release.Name }}"
+          gethomepage.dev/name: "{{ .Release.Name }}"
           # gethomepage.dev/widget.type: {{ .Release.Name }}
           # gethomepage.dev/widget.url: *host
           # gethomepage.dev/weight: 10 # optional
