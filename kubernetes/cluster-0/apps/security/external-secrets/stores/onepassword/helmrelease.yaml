@@ -117,6 +117,7 @@ spec:
             port: *port
           failureThreshold: 3
           periodSeconds: 30
+
           initialDelaySeconds: 15
         volumeMounts:
           - { name: shared, mountPath: /home/opuser/.op/data }
