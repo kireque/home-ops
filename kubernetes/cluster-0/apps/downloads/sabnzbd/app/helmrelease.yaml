@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -43,8 +44,16 @@ spec:
         sabnzbd.downloads.svc.cluster,
         sabnzbd.downloads.svc.cluster.local,
         sabnzbd.${SECRET_DOMAIN}
-      SABNZBD__API_KEY: "testtesttesttesttest"
-      SABNZBD__NZB_KEY: "testtesttesttesttest"
+      SABNZBD__API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: sabnzbd-secret
+            key: api_key
+      SABNZBD__NZB_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: sabnzbd-secret
+            key: nzb_key
 
     service:
       main:
@@ -63,16 +72,6 @@ spec:
         tls:
           - hosts:
               - *host
-        annotations:
-          hajimari.io/icon: mdi:sabnzbd
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Downloads
-          gethomepage.dev/icon: "sabnzbd"
-          gethomepage.dev/name: "sabnzbd"
-          gethomepage.dev/widget.type: "sabnzbd"
-          gethomepage.dev/widget.url: "http://sabnzbd.downloads.svc.cluster.local:8080"
-          gethomepage.dev/widget.key: "testtesttesttesttest"
-          gethomepage.dev/podSelector: ""
 
     persistence:
       media:
@@ -83,9 +82,9 @@ spec:
     resources:
       requests:
         cpu: 5m
-        memory: "2392M"
+        memory: "1024M"
       limits:
-        memory: "2392M"
+        memory: "4096M"
 
     volumeClaimTemplates:
       - name: config

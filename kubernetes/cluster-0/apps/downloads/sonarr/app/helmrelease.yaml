@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -40,7 +41,11 @@ spec:
       SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
       SONARR__APPLICATION_URL: "https://sonarr.${SECRET_DOMAIN}"
       SONARR__LOG_LEVEL: info
-      SONARR__API_KEY: testtesttesttesttest
+      SONARR__API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: sonarr-secret
+            key: api_key
 
     service:
       main:
@@ -59,16 +64,6 @@ spec:
         tls:
           - hosts:
               - *host
-        annotations:
-          hajimari.io/icon: mdi:sonarr
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Downloads
-          gethomepage.dev/icon: "sonarr"
-          gethomepage.dev/name: "sonarr"
-          gethomepage.dev/widget.type: "sonarr"
-          gethomepage.dev/widget.url: "http://sonarr.downloads.svc.cluster.local:8989"
-          gethomepage.dev/widget.key: "testtesttesttesttest"
-          gethomepage.dev/podSelector: ""
 
     persistence:
       config:
