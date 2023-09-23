@@ -36,6 +36,12 @@ access_control:
       policy: two_factor
       subject:
         - ["group:admins"]
+webauthn:
+  disable: false
+  display_name: EC online
+  attestation_conveyance_preference: indirect
+  user_verification: preferred
+  timeout: 60s
 
 identity_providers:
   oidc:
