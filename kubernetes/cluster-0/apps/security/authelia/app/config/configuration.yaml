@@ -16,7 +16,7 @@ access_control:
   rules:
     - domain:
         - echo-server.${SECRET_DOMAIN}
-      policy: one_factor
+      policy: two_factor
       subject:
         - ["group:admins"]
 
