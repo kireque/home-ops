@@ -7,7 +7,7 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/target: "ingress.${SECRET_DOMAIN}"
 spec:
-  ingressClassName: nginx
+  ingressClassName: external-nginx
   rules:
     - host: &host "flux-receiver-cluster-0.${SECRET_DOMAIN}"
       http:
