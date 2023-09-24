@@ -56,7 +56,7 @@ spec:
         enabled: true
         ingressClassName: external-nginx
         annotations:
-          # external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
+          # external-dns.alpha.kubernetes.io/target: ingress-ext.${SECRET_DOMAIN}
         hosts:
           - host: &host "domo.${SECRET_DOMAIN}"
             paths:
