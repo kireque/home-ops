@@ -100,7 +100,7 @@ spec:
 
     ingress:
       dashboard:
-        ingressClassName: nginx
+        ingressClassName: internal-nginx
         annotations:
           kubernetes.io/tls-acme: "true"
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"

@@ -38,7 +38,7 @@ spec:
       enabled: false
     ingress:
       enabled: true
-      className: nginx
+      className: internal-nginx
       annotations:
         hajimari.io/icon: mdi:kubernetes
         gethomepage.dev/enabled: "true"
