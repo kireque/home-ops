@@ -92,7 +92,7 @@ spec:
         enabled: true
         ingressClassName: "internal-nginx"
         hosts:
-          - host: &host "zigbee2mqtt.${SECRET_DOMAIN"
+          - host: &host "zigbee2mqtt.${SECRET_DOMAIN}"
             paths:
               - path: /
         tls:
