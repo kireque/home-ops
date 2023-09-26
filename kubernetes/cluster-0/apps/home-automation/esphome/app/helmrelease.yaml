@@ -45,7 +45,7 @@ spec:
         enabled: true
         ingressClassName: "internal-nginx"
         hosts:
-          - host: &host "esphome.${EXTERNAL_DOMAIN}"
+          - host: &host "esphome.${SECRET_DOMAIN}"
             paths:
               - path: /
         tls:
