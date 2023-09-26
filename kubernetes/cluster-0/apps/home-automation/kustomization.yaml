@@ -6,7 +6,7 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   # - ./dsmr-reader/ks.yaml
-  # - ./esphome/ks.yaml
+  - ./esphome/ks.yaml
   - ./home-assistant/ks.yaml
   - ./mosquitto/ks.yaml
   # - ./scrypted/ks.yaml
