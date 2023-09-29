@@ -65,7 +65,7 @@ data:
             description: TV Shows Management
             widget:
               type: sonarr
-              url: http://sonarr.default.svc.cluster.local:8989
+              url: http://sonarr.downloads.svc.cluster.local:8989
               key: {{HOMEPAGE_VAR_SONARR_KEY}}
         - Lidarr:
             icon: lidarr.png
