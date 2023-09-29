@@ -23,7 +23,7 @@ data:
             description: Media Server
             widget:
               type: jellyfin
-              url: http://jellyfin.default.svc.cluster.local:8096
+              url: http://jellyfin.media.svc.cluster.local:8096
               key: {{HOMEPAGE_VAR_JELLYFIN_KEY}}
               enableNowPlaying: true
         - Radarr:
