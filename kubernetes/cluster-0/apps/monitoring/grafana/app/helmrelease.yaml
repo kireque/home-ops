@@ -143,10 +143,10 @@ spec:
         auth_url: https://auth.${SECRET_DOMAIN}/api/oidc/authorization
         token_url: https://auth.${SECRET_DOMAIN}/api/oidc/token
         api_url: https://auth.${SECRET_DOMAIN}/api/oidc/userinfo
-      auth.generic_oauth.group_mapping:
-        org_id: 1
-        role_attribute_path: |
-          contains(groups[*], 'admins') && 'Admin' || contains(groups[*], 'people') && 'Viewer'
+      # auth.generic_oauth.group_mapping:
+      #   org_id: 1
+      #   role_attribute_path: |
+      #     contains(groups[*], 'admins') && 'Admin' || contains(groups[*], 'people') && 'Viewer'
       dashboards:
         default_home_dashboard_path: /tmp/dashboards/home.json
       date_formats:
