@@ -226,4 +226,5 @@ spec:
         enabled: true
         labelValue: ""
         searchNamespace: ALL
-      logLevel: INFO
+      logLevel: DEBUG
+      
