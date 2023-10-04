@@ -224,6 +224,7 @@ spec:
           foldersFromFilesStructure: true
       datasources:
         enabled: true
+
         labelValue: ""
         searchNamespace: ALL
       logLevel: DEBUG
