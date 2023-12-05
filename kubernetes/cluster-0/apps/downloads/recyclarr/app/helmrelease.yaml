@@ -25,7 +25,7 @@ spec:
 
     initContainers:
       01-init-config:
-        image: public.ecr.aws/docker/library/busybox:latest@sha256:3fbc632167424a6d997e74f52b878d7cc478225cffac6bc977eedfe51c7f4e79
+        image: public.ecr.aws/docker/library/busybox:latest@sha256:2e817125cc6e9d9c662963bf09912ce6360da6a33a203e1b92f379060890f646
         imagePullPolicy: IfNotPresent
         command:
           - "/bin/sh"
