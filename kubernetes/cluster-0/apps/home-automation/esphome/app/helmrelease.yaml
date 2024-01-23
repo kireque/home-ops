@@ -23,7 +23,7 @@ spec:
 
     image:
       repository: ghcr.io/esphome/esphome
-      tag: 2023.10.6@sha256:5a0276e1b57f231bafd1e75792b6a99d74def8932665acc876a8c34bfe2de8e4
+      tag: 2023.12.9@sha256:310919056ef06f35aa815efce8b2c7c160b6adc1bfb7285afccabc432de38d86
 
     podAnnotations:
       secret.reloader.stakater.com/reload: esphome-secrets,esphome-deploykey
