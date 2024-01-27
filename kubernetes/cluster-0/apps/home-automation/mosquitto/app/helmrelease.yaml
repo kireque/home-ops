@@ -29,7 +29,7 @@ spec:
 
     initContainers:
       copy-config:
-        image: public.ecr.aws/docker/library/eclipse-mosquitto:2.0.18@sha256:760c23e010c72c112a2d484d94f0780ef1c2979b8bfc46d6ced1632c412110c7
+        image: public.ecr.aws/docker/library/eclipse-mosquitto:2.0.18@sha256:d19f9b74ec560b7995a1b8c3fd5ccc05940aed0bad28f5926406e1803212be10
         command:
           - "/bin/sh"
           - -c
