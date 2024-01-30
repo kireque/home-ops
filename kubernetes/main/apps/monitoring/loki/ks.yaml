@@ -7,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/monitoring/loki/app"
+  path: "./kubernetes/main/apps/monitoring/loki/app"
   prune: true
   sourceRef:
     kind: GitRepository

@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/system/node-feature-discovery/app"
+  path: "./kubernetes/main/apps/system/node-feature-discovery/app"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -20,7 +20,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/system/node-feature-discovery/rules"
+  path: "./kubernetes/main/apps/system/node-feature-discovery/rules"
   prune: true
   sourceRef:
     kind: GitRepository

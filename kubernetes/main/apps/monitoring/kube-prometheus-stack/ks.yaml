@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/monitoring/kube-prometheus-stack/app"
+  path: "./kubernetes/main/apps/monitoring/kube-prometheus-stack/app"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -22,7 +22,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/monitoring/kube-prometheus-stack/addons"
+  path: "./kubernetes/main/apps/monitoring/kube-prometheus-stack/addons"
   prune: true
   sourceRef:
     kind: GitRepository

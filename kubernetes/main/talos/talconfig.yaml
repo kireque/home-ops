@@ -30,7 +30,7 @@ nodes:
     #       - mountpoint: /var/mnt/sata
     networkInterfaces:
       - deviceSelector:
-          driver: igc
+          driver: e1000e
         dhcp: true
         # vlans:
         #   - &vlan40
@@ -64,7 +64,7 @@ nodes:
     #       - mountpoint: /var/mnt/sata
     networkInterfaces:
       - deviceSelector:
-          driver: igc
+          driver: e1000e
         dhcp: true
         # vlans:
         #   - *vlan40
@@ -83,7 +83,7 @@ nodes:
     #       - mountpoint: /var/mnt/sata
     networkInterfaces:
       - deviceSelector:
-          driver: igc
+          driver: e1000e
         dhcp: true
         # vlans:
         #   - *vlan40
@@ -214,6 +214,6 @@ controlPlane:
           kubernetesTalosAPIAccess:
             enabled: true
             allowedRoles:
-              - os:admin
+              - os:operator
             allowedKubernetesNamespaces:
               - system-controllers

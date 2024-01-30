@@ -142,7 +142,7 @@ spec:
 
         enableAdminAPI: true
         externalLabels:
-          cluster: cluster-0
+          cluster: main
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         replicas: 1

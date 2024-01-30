@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/system-controller/snapshot-controller/app"
+  path: "./kubernetes/main/apps/system-controller/snapshot-controller/app"
   prune: true
   sourceRef:
     kind: GitRepository

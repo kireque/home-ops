@@ -7,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/networking/external-dns/shared"
+  path: "./kubernetes/main/apps/networking/external-dns/shared"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -22,7 +22,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/networking/external-dns/external"
+  path: "./kubernetes/main/apps/networking/external-dns/external"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -40,7 +40,7 @@ spec:
 #   namespace: flux-system
 # spec:
 #   interval: 10m
-#   path: "./kubernetes/cluster-0/apps/networking/external-dns/internal"
+#   path: "./kubernetes/main/apps/networking/external-dns/internal"
 #   prune: true
 #   sourceRef:
 #     kind: GitRepository

@@ -66,7 +66,7 @@ data:
     - Kubernetes:
         - Hubble UI:
             icon: cilium
-            href: https://hubble-cluster-0.${SECRET_DOMAIN}/
+            href: https://hubble-main.${SECRET_DOMAIN}/
             description: Hubble UI
 
   settings.yaml: |

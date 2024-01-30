@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: ./kubernetes/cluster-0/apps/flux-system/add-ons/monitoring
+  path: ./kubernetes/main/apps/flux-system/add-ons/monitoring
   prune: true
   sourceRef:
     kind: GitRepository
@@ -20,7 +20,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: ./kubernetes/cluster-0/apps/flux-system/add-ons/notifications
+  path: ./kubernetes/main/apps/flux-system/add-ons/notifications
   prune: true
   sourceRef:
     kind: GitRepository
@@ -33,7 +33,7 @@ metadata:
   name: cluster-apps-flux-webhooks
   namespace: flux-system
 spec:
-  path: "./kubernetes/cluster-0/apps/flux-system/add-ons/webhooks"
+  path: "./kubernetes/main/apps/flux-system/add-ons/webhooks"
   prune: true
   sourceRef:
     kind: GitRepository

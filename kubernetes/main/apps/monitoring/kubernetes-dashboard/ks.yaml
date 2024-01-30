@@ -9,7 +9,7 @@ spec:
     - name: cluster-apps-cert-manager
     - name: cluster-apps-nginx-internal
     - name: cluster-apps-metrics-server
-  path: "./kubernetes/cluster-0/apps/monitoring/kubernetes-dashboard/app"
+  path: "./kubernetes/main/apps/monitoring/kubernetes-dashboard/app"
   prune: true
   sourceRef:
     kind: GitRepository

@@ -7,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/networking/ingress-nginx/shared"
+  path: "./kubernetes/main/apps/networking/ingress-nginx/shared"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -24,7 +24,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/networking/ingress-nginx/external"
+  path: "./kubernetes/main/apps/networking/ingress-nginx/external"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -41,7 +41,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/networking/ingress-nginx/internal"
+  path: "./kubernetes/main/apps/networking/ingress-nginx/internal"
   prune: true
   sourceRef:
     kind: GitRepository

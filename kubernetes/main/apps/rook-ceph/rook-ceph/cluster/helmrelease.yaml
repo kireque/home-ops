@@ -108,7 +108,7 @@ spec:
             proxy_ssl_verify off;
           hajimari.io/icon: mdi:chess-rook
         host:
-          name: &host "rook-cluster-0.${SECRET_DOMAIN}"
+          name: &host "rook-main.${SECRET_DOMAIN}"
           path: /
         tls:
           - hosts:
