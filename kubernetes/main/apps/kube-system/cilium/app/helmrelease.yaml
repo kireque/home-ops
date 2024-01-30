@@ -42,7 +42,7 @@ spec:
           enabled: true
           className: "internal-nginx"
           hosts:
-            - &host hubble-main.${SECRET_DOMAIN}
+            - &host hubble-main.econline.nl
           tls:
             - hosts:
                 - *host
