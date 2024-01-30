@@ -4,7 +4,7 @@ kind: Certificate
 metadata:
   name: "econline-nl"
 spec:
-  secretName: "econline-nl-dev-tls"
+  secretName: "econline-nl-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
