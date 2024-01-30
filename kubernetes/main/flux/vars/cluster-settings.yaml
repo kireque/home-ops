@@ -6,4 +6,3 @@ metadata:
   namespace: flux-system
 data:
   CLUSTER_NAME: main
-  TIMEZONE: "Europe/Amsterdam"
