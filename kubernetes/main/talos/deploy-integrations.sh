@@ -11,7 +11,7 @@ rm -rf cni/charts
 
 touch kubelet-csr-approver/values.yaml
 rm -rf kubelet-csr-approver/charts
-envsubst < ../../apps/system-controller/kubelet-csr-approver/app/values.yaml > kubelet-csr-approver/values.yaml
+envsubst < ../../apps/system-controllers/kubelet-csr-approver/app/values.yaml > kubelet-csr-approver/values.yaml
 if ! kubectl get ns system-controllers >/dev/null 2>&1; then
   kubectl create ns system-controllers
 fi
