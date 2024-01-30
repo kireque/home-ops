@@ -1,7 +1,7 @@
 module "cf_domain_ingress" {
   source     = "./modules/cf_domain"
-  domain     = "bjw-s.dev"
-  account_id = cloudflare_account.bjw_s.id
+  domain     = module.onepassword_item_cloudflare.fields["domain_name"]
+  account_id = cloudflare_account.kireque.id
   dns_entries = [
     {
       name  = "ipv4"
@@ -10,89 +10,70 @@ module "cf_domain_ingress" {
     {
       id      = "vpn"
       name    = module.onepassword_item_cloudflare.fields["vpn-subdomain"]
-      value   = "ipv4econline.local"
+      value   = "ipv4.${module.onepassword_item_cloudflare.fields["domain_name"]}"
       type    = "CNAME"
       proxied = false
+    },
+    {
+      name    = "authelia"
+      value   = "ipv4.${module.onepassword_item_cloudflare.fields["domain_name"]}"
+      type    = "CNAME"
+    },
+    {
+      name    = "files-cees"
+      value   = "ipv4.${module.onepassword_item_cloudflare.fields["domain_name"]}"
+      type    = "CNAME"
+    },
+    {
+      name    = "sabnzbd-cees"
+      value   = "ipv4.${module.onepassword_item_cloudflare.fields["domain_name"]}"
+      type    = "CNAME"
     },
     # Generic settings
     {
       name  = "_dmarc"
-      value = "v=DMARC1; p=quarantine;"
+      value = "v=DMARC1; p=quarantine; adkim=s; aspf=s"
       type  = "TXT"
     },
-    # Migadu settings
+    # E-mail settings
     {
-      id       = "migadu_mx_1"
+      id       = "google_mx_1"
       name     = "@"
-      priority = 10
-      value    = "aspmx1.migadu.com"
+      priority = 200
+      value    = "aspmx2.googlemail.com"
       type     = "MX"
     },
     {
-      id       = "migadu_mx_2"
+      id       = "google_mx_2"
+      name     = "@"
+      priority = 200
+      value    = "alt2.aspmx.l.google.com"
+      type     = "MX"
+    },
+    {
+      id       = "google_mx_3"
       name     = "@"
       priority = 20
-      value    = "aspmx2.migadu.com"
+      value    = "alt1.aspmx.l.google.com"
       type     = "MX"
     },
     {
-      id      = "migadu_dkim_1"
-      name    = "key1._domainkey"
-      value   = "key1econline.local._domainkey.migadu.com."
-      type    = "CNAME"
-      proxied = false
-    },
-    {
-      id      = "migadu_dkim_2"
-      name    = "key2._domainkey"
-      value   = "key2econline.local._domainkey.migadu.com."
-      type    = "CNAME"
-      proxied = false
-    },
-    {
-      id      = "migadu_dkim_3"
-      name    = "key3._domainkey"
-      value   = "key3econline.local._domainkey.migadu.com."
-      type    = "CNAME"
-      proxied = false
-    },
-    {
-      id    = "migadu_spf"
-      name  = "@"
-      value = "v=spf1 include:spf.migadu.com -all"
-      type  = "TXT"
-    },
-    {
-      id    = "migadu_verification"
-      name  = "@"
-      value = "hosted-email-verify=sjpcto0x"
-      type  = "TXT"
-    },
-    # Mailgun settings
-    {
-      id       = "mailgun_mx_1"
-      name     = "mg"
+      id       = "google_mx_4"
+      name     = "@"
       priority = 10
-      value    = "mxa.eu.mailgun.org"
+      value    = "aspmx.l.google.com"
       type     = "MX"
     },
     {
-      id       = "mailgun_mx_2"
-      name     = "mg"
-      priority = 50
-      value    = "mxb.eu.mailgun.org"
-      type     = "MX"
-    },
-    {
-      id    = "mailgun_dkim_1"
-      name  = "mta._domainkey.mg"
-      value = "k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA01bXkhzb3ANETaXVWO2ODDiakyOoBLS+JfOBqKr70QG40jcUi4QXg2FTWx6pn2fo1enXCm9YIFglSjaJaWp+QBJ9vWIE6ALzKzuE+MKLNSZhaoi8fdGkSM8SC/qXJxcckIpmgVpzA/V89OGZ1rcEKWZqfaSH49KwSyHEWXgZy//G7LQot5NNwPNdJxh9V+nQfd/NxP2qR2t378iX2nE2Rcwgv+mx1ccv73Cy5TeE1+rsag3kTCJTMikB4oJa+tWqr+rav23Z4aYiAZSQyrh/ccQzZGizLtEvZB/OU+IFe36BYdGuBO5N4Ca/rJ/onm72qZcfCmlH1jT0zRBGygxNOQIDAQAB"
+      id    = "google_spf"
+      name  = "@"
+      value = "v=spf1 include:_spf.google.com ~all"
       type  = "TXT"
     },
     {
-      id    = "mailgun_spf"
-      name  = "mg"
-      value = "v=spf1 include:mailgun.org ~all"
+      id    = "google_domainkey"
+      name  = "google._domainkey"
+      value = "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr1cm2+o7jB3WGXZbIqPHnlXzaIP+mP0zrFiNDszrOeCL0CFgRr7SIgwjpI6lA9jrgeWMY3gdIDfdBMzwL1H1H82F0sul/ddFLT6lR7IstF6PPpGo/1hkDMqSLS0G0D/6KIfpdoh+whlhXH9bg4iwtc4kzeyj7A02f4ApUTLS3OKVfx03LU5OUJrEL8ka4Tt7vz/y5+6tloeLn4if49JpyEWFrSuIgfPYbLKsykBFYzcAPFQgKKWljRCd1uFsotGn+9mBOACrTODkz1vaaWJc94JXWVwuWhBhJ104d0Ya/11+dg6RLlL4hx1ThTF1IAYo3fQdpTklX8cCAEDCIQawoQIDAQAB"
       type  = "TXT"
     }
   ]
@@ -100,8 +81,20 @@ module "cf_domain_ingress" {
   waf_custom_rules = [
     {
       enabled     = true
+      description = "Expression to allow UptimeRobot IP addresses"
+      expression  = "(http.user_agent contains \"UptimeRobot/2.0\" and ip.src in $uptimerobot)"
+      action      = "skip"
+      action_parameters = {
+        ruleset = "current"
+      }
+      logging = {
+        enabled = false
+      }
+    },
+    {
+      enabled     = true
       description = "Allow GitHub flux API"
-      expression  = "(ip.geoip.asnum eq 36459 and http.host eq \"flux-receiver-cluster-0econline.local\")"
+      expression  = "ip.geoip.asnum eq 36459 and http.user_agent contains \"GitHub-Hookshot\" and http.host eq \"flux-receiver-main.${module.onepassword_item_cloudflare.fields["domain_name"]}\""
       action      = "skip"
       action_parameters = {
         ruleset = "current"
@@ -121,12 +114,6 @@ module "cf_domain_ingress" {
       description = "Firewall rule to block all countries except NL/BE/DE"
       expression  = "(ip.geoip.country ne \"NL\") and (ip.geoip.country ne \"BE\") and (ip.geoip.country ne \"DE\")"
       action      = "block"
-    },
-    {
-      enabled     = true
-      description = "Block Plex notifications"
-      expression  = "(http.host eq \"plexeconline.local\" and http.request.uri.path contains \"/:/eventsource/notifications\")"
-      action      = "block"
-    },
+    }
   ]
 }

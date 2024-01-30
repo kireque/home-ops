@@ -1,6 +1,7 @@
 terraform {
   cloud {
-    organization = "bjw-s"
+    organization = "kireque"
+    hostname = "app.terraform.io"
     workspaces {
       name = "home-cloudflare-provisioner"
     }
@@ -9,7 +10,7 @@ terraform {
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "4.18.0"
+      version = "4.21.0"
     }
     http = {
       source  = "hashicorp/http"

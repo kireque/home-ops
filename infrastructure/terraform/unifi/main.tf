@@ -1,6 +1,6 @@
 terraform {
   cloud {
-    organization = "bjw-s"
+    organization = "kireque"
     workspaces {
       name = "home-unifi-provisioner"
     }
@@ -8,8 +8,8 @@ terraform {
 
   required_providers {
     unifi = {
-      source  = "paultyng/unifi"
-      version = "0.41.0"
+      source = "akerl/unifi"
+      version = "0.41.10"
     }
     http = {
       source  = "hashicorp/http"
@@ -18,8 +18,8 @@ terraform {
   }
 }
 
-data "http" "bjws_common_networks" {
-  url = "https://raw.githubusercontent.com/bjw-s/home-ops/main/infrastructure/_shared/networks.yaml"
+data "http" "kireque_common_networks" {
+  url = "https://raw.githubusercontent.com/kireque/home-ops/main/infrastructure/_shared/networks.yaml"
 }
 
 module "onepassword_item_unifi_controller" {

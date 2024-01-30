@@ -1,5 +1,5 @@
-resource "cloudflare_account" "bjw_s" {
-  name              = "kireque's Account"
+resource "cloudflare_account" "kireque" {
+  name              = "kireque-s account"
   type              = "standard"
   enforce_twofactor = false
 }

@@ -1,7 +1,8 @@
 terraform {
   required_providers {
     unifi = {
-      source = "paultyng/unifi"
+      source = "akerl/unifi"
+      version = "0.41.10"
     }
   }
 }
