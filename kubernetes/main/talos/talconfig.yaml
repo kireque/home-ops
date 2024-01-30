@@ -1,0 +1,219 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
+clusterName: ${clusterName}
+endpoint: "https://${clusterName}.${clusterDNSSuffix}:6443"
+
+# renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
+talosVersion: v1.6.3
+# renovate: depName=kubernetes/kubernetes datasource=github-releases extractVersion=^v(?<version>.*)$
+kubernetesVersion: 1.29.1
+
+cniConfig:
+  name: none
+
+additionalApiServerCertSans: &san
+  - ${clusterEndpointIP}
+  - ${clusterName}.${clusterDNSSuffix}
+  - "127.0.0.1" # KubePrism
+additionalMachineCertSans: *san
+
+nodes:
+  - hostname: delta.home.econline.nl
+    ipAddress: 10.1.1.31
+    controlPlane: true
+    installDiskSelector:
+      size: "<= 256GB"
+      model: "SEAGATE ST240FP0"
+    # machineDisks:
+    #   - device: /dev/sda
+    #     partitions:
+    #       - mountpoint: /var/mnt/sata
+    networkInterfaces:
+      - deviceSelector:
+          driver: igc
+        dhcp: true
+        # vlans:
+        #   - &vlan40
+        #     vlanId: 40
+        #     mtu: 1500
+        #     dhcp: true
+        #     dhcpOptions:
+        #       routeMetric: 4096
+    # patches:
+    #   - &kubelet_extra_mounts |-
+    #     machine:
+    #       kubelet:
+    #         extraMounts:
+    #           - destination: /var/mnt/sata
+    #             type: bind
+    #             source: /var/mnt/sata
+    #             options:
+    #               - rbind
+    #               - rshared
+    #               - rw
+
+  - hostname: enigma.home.econline.nl
+    ipAddress: 10.1.1.32
+    controlPlane: true
+    installDiskSelector:
+      size: "<= 512GB"
+      model: "CT500MX500SSD1"
+    # machineDisks:
+    #   - device: /dev/sda
+    #     partitions:
+    #       - mountpoint: /var/mnt/sata
+    networkInterfaces:
+      - deviceSelector:
+          driver: igc
+        dhcp: true
+        # vlans:
+        #   - *vlan40
+    # patches:
+    #   - *kubelet_extra_mounts
+
+  - hostname: felix.home.econline.nl
+    ipAddress: 10.1.1.33
+    controlPlane: true
+    installDiskSelector:
+      size: "<= 500GB"
+      model: "VK0480GDJXV"
+    # machineDisks:
+    #   - device: /dev/sda
+    #     partitions:
+    #       - mountpoint: /var/mnt/sata
+    networkInterfaces:
+      - deviceSelector:
+          driver: igc
+        dhcp: true
+        # vlans:
+        #   - *vlan40
+    # patches:
+    #   - *kubelet_extra_mounts
+
+controlPlane:
+  schematic:
+    customization:
+      extraKernelArgs:
+        - net.ifnames=0
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/intel-ucode
+          - siderolabs/i915-ucode
+
+  patches:
+    # Disable search domain everywhere
+    - |-
+      machine:
+        network:
+          disableSearchDomain: true
+
+    # Force nameserver
+    - |-
+      machine:
+        network:
+          nameservers:
+            - 10.5.0.4
+
+    # Configure NTP
+    - |-
+      machine:
+        time:
+          disabled: false
+          servers:
+            - 10.1.1.1
+
+    # Enable KubePrism
+    - |-
+      machine:
+        features:
+          kubePrism:
+            enabled: true
+            port: 7445
+
+    # Configure cluster loopback
+    - |-
+      machine:
+        network:
+          extraHostEntries:
+            - ip: ${clusterEndpointIP}
+              aliases:
+                - ${clusterName}.${clusterDNSSuffix}
+
+    # Cluster configuration
+    - |-
+      cluster:
+        allowSchedulingOnMasters: true
+        proxy:
+          disabled: true
+
+    # ETCD configuration
+    - |-
+      cluster:
+        etcd:
+          advertisedSubnets:
+            - 10.1.1.0/24
+
+    # Configure containerd
+    - |-
+      machine:
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins]
+                [plugins."io.containerd.grpc.v1.cri"]
+                  enable_unprivileged_ports = true
+                  enable_unprivileged_icmp = true
+
+    # Configure nfs mount options
+    - |-
+      machine:
+        files:
+          - op: overwrite
+            path: /etc/nfsmount.conf
+            permissions: 0o644
+            content: |
+              [ NFSMount_Global_Options ]
+              nfsvers=4.2
+              hard=True
+              noatime=True
+              nodiratime=True
+              rsize=131072
+              wsize=131072
+              nconnect=8
+
+    # Disable default API server admission plugins.
+    - |-
+      - op: remove
+        path: /cluster/apiServer/admissionControl
+
+    # Kubelet configuration
+    - |-
+      machine:
+        kubelet:
+          extraArgs:
+            feature-gates: GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
+            rotate-server-certificates: "true"
+          extraConfig:
+            maxPods: 150
+          nodeIP:
+            validSubnets:
+                - 10.1.1.0/24
+
+    # Custom sysctls
+    - |-
+      machine:
+        sysctls:
+          fs.inotify.max_user_watches: "1048576"
+          fs.inotify.max_user_instances: "8192"
+
+    # Enable K8s Talos API Access
+    - |-
+      machine:
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - system-controllers
