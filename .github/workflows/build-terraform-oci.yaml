@@ -51,6 +51,9 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     needs:
       - changed-files
     if: ${{ needs.changed-files.outputs.matrix != '[]' }}
