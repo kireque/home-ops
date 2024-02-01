@@ -31,17 +31,17 @@ spec:
     metrics:
       enabled: true
 
-    rbac:
-      create: true
-      additionalRules:
-        - apiGroups:
-            - "infra.contrib.fluxcd.io"
-          resources:
-            - "terraforms"
-          verbs:
-            - "get"
-            - "list"
-            - "patch"
+    # rbac:
+    #   create: true
+    #   additionalRules:
+    #     - apiGroups:
+    #         - "infra.contrib.fluxcd.io"
+    #       resources:
+    #         - "terraforms"
+    #       verbs:
+    #         - "get"
+    #         - "list"
+    #         - "patch"
 
     ingress:
       enabled: true
