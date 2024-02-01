@@ -1,12 +1,17 @@
 ---
 creation_rules:
-  - path_regex: kubernetes/main/.*\.sops\.ya?ml
-    encrypted_regex: "^(data|stringData)$"
+  - path_regex: kubernetes/.*/talos/.*\.sops\.ya?ml$
     # Personal, Flux
     age: >-
       age180mw9nde354qyrklgcylwdn42ql657j6vcpdud5gqpeyp7e9v4xsrdns9t
 
-  - path_regex: .*\.sops\.ya?ml
+  - path_regex: kubernetes/.*\.sops\.ya?ml$
+    encrypted_regex: "^(data|stringData)$"
+    # Personal
+    age: >-
+      age180mw9nde354qyrklgcylwdn42ql657j6vcpdud5gqpeyp7e9v4xsrdns9t
+
+  - path_regex: .*\.sops\.ya?ml$
     # Personal
     age: >-
       age180mw9nde354qyrklgcylwdn42ql657j6vcpdud5gqpeyp7e9v4xsrdns9t
