@@ -12,7 +12,7 @@ module "cf_domain_ingress" {
       name    = module.onepassword_item_cloudflare.fields["vpn-subdomain"]
       value   = "ipv4.${module.onepassword_item_cloudflare.fields["domain_name"]}"
       type    = "CNAME"
-      proxied = true
+      proxied = false
     },
     {
       name    = "authelia"
