@@ -19,7 +19,7 @@ tasks:
       - task: wipe-disk
         vars:
           node: "{{.node}}"
-          ceph_disk: "/dev/disk/by-id/nvme-Samsung_SSD_980_1TB_S649NX0RB57009Y"
+          ceph_disk: "/dev/nvme0n1"
       - task: wipe-data
         vars:
           node: "{{.node}}"
@@ -32,7 +32,7 @@ tasks:
       - task: wipe-disk
         vars:
           node: "{{.node}}"
-          ceph_disk: "/dev/disk/by-id/nvme-Samsung_SSD_980_1TB_S649NX0RB57050E"
+          ceph_disk: "/dev/nvme0n1"
       - task: wipe-data
         vars:
           node: "{{.node}}"
@@ -45,7 +45,7 @@ tasks:
       - task: wipe-disk
         vars:
           node: "{{.node}}"
-          ceph_disk: "/dev/disk/by-id/nvme-CT1000P1SSD8_202228759489"
+          ceph_disk: "/dev/nvme0n1"
       - task: wipe-data
         vars:
           node: "{{.node}}"
