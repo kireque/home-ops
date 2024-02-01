@@ -22,4 +22,4 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      HOSTNAME: gitops.bjw-s.dev
+      HOSTNAME: gitops.econline.nl
