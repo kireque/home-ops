@@ -1,16 +1,20 @@
 <div align="center">
-
 ## My Home Operations repository
 
 _... managed by Flux, Renovate and GitHub Actions_ :robot:
 
-</div>
+[![Discord](https://img.shields.io/discord/673534664354430999?style=for-the-badge&label&logo=discord&logoColor=white&color=blue)](https://discord.gg/home-operations)&nbsp;
+[![Renovate](https://img.shields.io/github/actions/workflow/status/bjw-s/.github/schedule-renovate.yaml?branch=main&label=&logo=renovatebot&style=for-the-badge&color=blue)](https://github.com/bjw-s/home-ops/actions/workflows/schedule-renovate.yaml)
 
-<div align="center">
+Main k8s cluster stats:
 
-[![Discord](https://img.shields.io/discord/673534664354430999?style=for-the-badge&label&logo=discord&logoColor=white&color=blue)](https://discord.gg/k8s-at-home)
-[![Kubernetes](https://img.shields.io/badge/v1.28-blue?style=for-the-badge&logo=kubernetes&logoColor=white)](https://www.talos.dev/)
-[![Renovate](https://img.shields.io/github/actions/workflow/status/kireque/home-ops/schedule-renovate.yaml?branch=main&label=&logo=renovatebot&style=for-the-badge&color=blue)](https://github.com/kireque/home-ops/actions/workflows/schedule-renovate.yaml)
+[![Kubernetes](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fbjw-s%2Fhome-ops%2Fmain%2Fkubernetes%2Fmain%2Ftalos%2Ftalconfig.yaml&query=%24.kubernetesVersion&flat-square&logo=kubernetes&logoColor=white&label=version)
+](https://www.talos.dev/)&nbsp;
+[![Age-Days](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.econline.nl%2Fquery%3Fformat%3Dendpoint%26metric%3Dmain_cluster_age_days&style=flat-square&label=Age)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Node-Count](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.econline.nl%2Fquery%3Fformat%3Dendpoint%26metric%3Dmain_cluster_node_count&style=flat-square&label=Nodes)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Pod-Count](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.econline.nl%2Fquery%3Fformat%3Dendpoint%26metric%3Dmain_cluster_pod_count&style=flat-square&label=Pods)](https://github.com/kashalls/kromgo/)&nbsp;
+[![CPU-Usage](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.econline.nl%2Fquery%3Fformat%3Dendpoint%26metric%3Dmain_cluster_cpu_usage&style=flat-square&label=CPU)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Memory-Usage](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.econline.nl%2Fquery%3Fformat%3Dendpoint%26metric%3Dmain_cluster_memory_usage&style=flat-square&label=Memory)](https://github.com/kashalls/kromgo/)&nbsp;
 
 </div>
 <br><br>
@@ -21,7 +25,13 @@ _... managed by Flux, Renovate and GitHub Actions_ :robot:
 
 ### 📖 Docs
 
-TO DO: The documentation that goes along with this repo can be found [over here](https://kireque.github.io/home-ops/).
+The documentation that goes along with this repo can be found [over here](https://econline.github.io/home-ops/).
+
+---
+
+### 🔎 Support
+
+If you like this project, please consider supporting my work through my.
 
 ---
 
