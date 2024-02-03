@@ -110,7 +110,7 @@ module "cf_domain_ingress" {
       action      = "block"
     },
     {
-      enabled     = true
+      enabled     = false
       description = "Expression to allow Shields.io"
       expression  = "(http.user_agent contains \"Shields.io\" and http.host eq \"kromgo.econline.nl\")"
       action      = "skip"
