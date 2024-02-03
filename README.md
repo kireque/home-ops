@@ -4,7 +4,7 @@
 _... managed by Flux, Renovate and GitHub Actions_ :robot:
 
 [![Discord](https://img.shields.io/discord/673534664354430999?style=for-the-badge&label&logo=discord&logoColor=white&color=blue)](https://discord.gg/home-operations)&nbsp;
-[![Renovate](https://img.shields.io/github/actions/workflow/status/kireque/.github/schedule-renovate.yaml?branch=main&label=&logo=renovatebot&style=for-the-badge&color=blue)](https://github.com/kireque/home-ops/actions/workflows/schedule-renovate.yaml)
+[![Renovate](https://img.shields.io/github/actions/workflow/status/kireque/home-ops/schedule-renovate.yaml?branch=main&label=&logo=renovatebot&style=for-the-badge&color=blue)](https://github.com/kireque/home-ops/actions/workflows/schedule-renovate.yaml)
 
 Main k8s cluster stats:
 
