@@ -111,6 +111,18 @@ module "cf_domain_ingress" {
     },
     {
       enabled     = true
+      description = "Expression to allow Shields.io"
+      expression  = "(http.user_agent contains \"Shields.io\" and http.host eq \"kromgo.econline.nl\")"
+      action      = "skip"
+      action_parameters = {
+        ruleset = "current"
+      }
+      logging = {
+        enabled = false
+      }
+    },
+    {
+      enabled     = true
       description = "Firewall rule to block all countries except NL/BE/DE"
       expression  = "(ip.geoip.country ne \"NL\") and (ip.geoip.country ne \"BE\") and (ip.geoip.country ne \"DE\")"
       action      = "block"
