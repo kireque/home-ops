@@ -104,7 +104,7 @@ spec:
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         host:
-          name: &host rook-main.econline.nl
+          name: &host rook-main2.econline.nl
           path: "/"
         tls:
           - hosts:
