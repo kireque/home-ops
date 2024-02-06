@@ -106,6 +106,8 @@ spec:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           nginx.ingress.kubernetes.io/server-snippet: |
             proxy_ssl_verify off;
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_ssl_protocols TLSv1.3;
           hajimari.io/icon: mdi:chess-rook
         host:
           name: &host "rook-main.${SECRET_DOMAIN}"
