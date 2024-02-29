@@ -86,7 +86,7 @@ spec:
         #   memory: 270M
       persistence:
         enabled: true
-        storageClass: "rook-cephfs"
+        storageClass: "ceph-filesystem"
         size: 15Gi
 
     storegateway:
@@ -101,7 +101,7 @@ spec:
           memory: 226M
       persistence:
         enabled: true
-        storageClass: "rook-cephfs"
+        storageClass: "ceph-filesystem"
         size: 512Mi
 
     ruler:
@@ -121,7 +121,7 @@ spec:
         enabled: true
       persistence:
         enabled: true
-        storageClass: "rook-cephfs"
+        storageClass: "ceph-filesystem"
         size: 512Mi
       resources:
         requests:
