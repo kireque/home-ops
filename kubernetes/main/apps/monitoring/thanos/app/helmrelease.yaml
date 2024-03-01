@@ -29,7 +29,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    existingObjstoreSecret: thanos-objstore-secret
+    existingObjstoreSecret: thanos-secret
 
     query:
       enabled: true
