@@ -27,7 +27,7 @@ spec:
         sidecarsService: kube-prometheus-stack-thanos-discovery
         sidecarsNamespace: monitoring
       stores:
-        - thanos-svc-nas.home.econline.nl:10901
+        - synology.home.econline.nl:10901
       replicaLabels:
         - "__replica__" # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.replicaExternalLabelName`
       resources:
@@ -101,7 +101,7 @@ spec:
         enabled: true
       persistence:
         enabled: true
-        storageClass: "openebs-hostpath"
+        storageClass: "ceph-filesystem"
         size: 512Mi
       resources:
         requests:
