@@ -70,7 +70,7 @@ spec:
         #   memory: 270M
       persistence:
         enabled: true
-        storageClass: "openebs-hostpath"
+        storageClass: "ceph-filesystem"
         size: 15Gi
 
     storegateway:
@@ -83,7 +83,7 @@ spec:
         #   memory: 226M
       persistence:
         enabled: true
-        storageClass: "openebs-hostpath"
+        storageClass: "ceph-filesystem"
         size: 1Gi
 
     ruler:
