@@ -12,7 +12,6 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cert-manager
-    - name: metrics-server
   path: ./kubernetes/apps/kube-system/kubernetes-dashboard/app
   prune: true
   sourceRef:
