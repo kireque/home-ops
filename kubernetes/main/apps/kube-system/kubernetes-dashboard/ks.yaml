@@ -6,7 +6,7 @@ metadata:
   name: &app kubernetes-dashboard
   namespace: flux-system
 spec:
-  targetNamespace: observability
+  targetNamespace: kube-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
