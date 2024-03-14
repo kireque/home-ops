@@ -2,54 +2,44 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/1password/onepassword" {
-  version     = "1.1.4"
-  constraints = "1.1.4"
+  version     = "1.4.2"
+  constraints = "1.4.2"
   hashes = [
-    "h1:3TVsJ9fbNOerTE00uFqqKQDW6WRAPP0kZVhVhfd0COw=",
-    "zh:018f3e223ae82ba675f0f088af135a9196326501f9f57f397067a65342cdcca3",
-    "zh:1a077bba8db0ffa0c969bbcd8525d30f4d8018257363408b4e6891b319397e91",
-    "zh:273534ba172eec6bc71cdf107cb51197fb58818b5a31bf9812b89ebaa0545522",
-    "zh:2956acd7594b024f708588fe47f495abb555593bd0360c544b97a700490810fb",
-    "zh:2a204b457c53c2808a990e9fe2ceafc73c1371eb11d60a7e9baf5f2db2d5891d",
-    "zh:329bcfccbb6f96d3cdfc79d04c677545a5e170e3a29480a3002459fc1801db0e",
-    "zh:446e6e9fad793e14f53cecf8140407fab6a8178590a032f764a0fe300171e2d8",
-    "zh:69ca3fa115f292b48defdc5c06297f68ce38389596b0cb715ac8730a1080512d",
-    "zh:cce0942774602a0357251f3c10570fb71c4d2b4769c324cea6532e75d7e58c14",
-    "zh:d4aec090dbd03beba2f4eea52d64cfc9417433418c7ada6d76649364429af220",
-    "zh:e99adab86730b3847332d93d66621fdf4fea3b309579266c45469358f68f10c9",
-    "zh:eef501df7d4f1694cb1145a6c8a905d7338a4abd0001d43e2425986e3d8768f6",
-    "zh:f8424c10cc66fd8feea457aaab47fc122f67ca5a9dfbcb47c7c79859cf7291ed",
+    "h1:2OMWx1/cw4PP6Ep4inzen6R/gF0KWntGR+Cfs11oHZk=",
+    "zh:0b4baf798c5f779e726ed057fb556b93757ac1099c6389d3a9bd80ab23efd798",
+    "zh:193f3d17a8b7a5297b487c506b7bd5be791737d63fd4d14ba56b8d6d184bfbef",
+    "zh:19dbcc59f2ba561f2facb07eea7496e48cf93ef6bbe375b9ac08e33fe8c36786",
+    "zh:1d818db73fcd51e13061ae37b16b7afa69f719913d0e061fab7bba7280095d07",
+    "zh:406feb41cba437e2b8c13469fb8230a6cd0c4241addf90a4951774e220cc4e4a",
+    "zh:432ecde380096eabe1f5563e91a6bd34f4fb0e5867fc426b548182b5b927c25e",
+    "zh:7020d12410832c858604254d3606246ca65c6b401169e24eac220f0ad594961c",
+    "zh:95a1b78aff1630a8e57b22144962e885f7f5902523d24761fa80a5c066af7a52",
+    "zh:976c268ffd06b8378b308144a7f2af850a0d1bc6274206446166660e78263370",
+    "zh:b412cc445a28a8bef73101c129f47588d35b954a4f46a7c410c741d8a1b6081d",
+    "zh:c9d8f0ed09284d778ebc69293698b8ca25f6196997c96364dbb7807839bf58fa",
+    "zh:d8b110a02ae394bd48c91956bdf8b1a2649129f350539024ce32d8ef12e3b3cb",
+    "zh:f6dbd0d8c20474572d0288229f24697ef35ae20a124197f75ad0fe28b70f17db",
+    "zh:ff297d55a10ce49b7503a68fc70f969d809f1fa6631bc6046060d67e3b786be8",
   ]
 }
 
 provider "registry.terraform.io/aminueza/minio" {
-  version     = "1.20.1"
-  constraints = "1.20.1"
+  version     = "2.0.1"
+  constraints = "2.0.1"
   hashes = [
-    "h1:1cEgyaI7e3Pb0jtgOto+x7TzbHxWw3OaHCC/27za8zU=",
-    "h1:5QCuWu90Thc2pha40g4R2DbtoPg8n2QHj5BnwFoX4R0=",
-    "h1:B68WdH33/xalFH4KsQF1A0JlsMVPpbzRSQHBQzHtjoE=",
-    "h1:BC4POR/Eq9nSboSYvDJEuCnlMx/XVG21cExaHMh1R2g=",
-    "h1:FJhUOeKJAGtrfNJ1EMNnIqr6ueHI6EoXxM102mDuPTU=",
-    "h1:eRwOnTkPm/fRHBsXkUv5qAv/F7Y1oNO9N09ptxHY35k=",
-    "h1:eaZrxzNZW5OPcmlVJ7hP+gWba2yqYMnxMkOWkGK6fBc=",
-    "h1:p8kIjyn8ChGOGYOCLMWIGQFZooBlmmmbYunve5+rDU8=",
-    "h1:pdscZQSSwxXcyWDv2LHbc7jw9sw2Iw5Ynp1r93A8IOk=",
-    "h1:uMPObalQ2/MHVwK2ehAgR2ezoAQHHe4XbsAgAqgj57o=",
-    "h1:yQKgVtw3p/6HTME7dJjFP5DXn0lw3sleiGXAZbQlyxw=",
-    "h1:zVTFEX5t8sg1McdbO5aW2tvKV+9i6IWSrc3/QCTQW6Y=",
-    "zh:06f330bd04968f2c99e9a34484f65922b6d5b6ec21913f1f65f6c76f44d7bc95",
-    "zh:0a29ca3cfadb83d6b895fc6924430ecbf23759faf4ed0bd5bf843c3b91fd8491",
-    "zh:1fff88ee5a33a92ee9e39d773760dc1df453efc3ece329a10b4cda7c99e944dc",
-    "zh:3f7d661c7dac6f64f73560db5fd255a6e2ce4e3d4a7407e24a86244ed3c72723",
-    "zh:58c43bf6f63e71c5af8b37e521ff2fc12a53feb9a0c5da67119f94cb68efc964",
-    "zh:6694e5f02a56bfd3ac16163875faa30279067630b66ea495719b425192de6aa7",
-    "zh:a5eb4ff1233ca6032a1b31ddedf30e78117e77c069a46f00301a0d1f626e4f59",
-    "zh:aa525578f363153f688fa6c169e974d696815fcef439cb93e0219c7842d3e1b8",
-    "zh:bb3cc90f06af5b3f5ec17d00249bbfa00fcf888ca38f784aa51a618a3245a51d",
-    "zh:c81a2d320fd49a75f4a0ac2d24648caac80b9c15622f6c120c73edbd26ba160b",
-    "zh:da030ff6495c9a2f91a548a9895ace525506514f5f5a5285113ba07684163817",
-    "zh:f3d3c925b793c4b614c382b8daa8ee5678e035b78fa39d19ad8ce674124cda65",
+    "h1:34tfS48+4g+KaDMpAi70r5lcp10Le1OXSISIZvpVjDs=",
+    "zh:0d3d3b56c4ea77118fab48bd0fe2ea4e470218b1c0c5af036b7ada18dd2b54c7",
+    "zh:1a8f025abc57d1b3e011cdb98d83276cf09c05766c00913e441cde428e8f600c",
+    "zh:25786c966cf8348063858c0a3d2f8536a5d9ec1660a94a6a9eb1bbbb9575d8a4",
+    "zh:6aaf73765bf815cb92e7dcd175f81e52cf06b800de956eee5b6573aafc3732a3",
+    "zh:8c75ca2180761c2af53a989a31fe0f5cdd49354894a239a254524e313fb7aa17",
+    "zh:94baebdf52305512e700c7ec8b6c98f030069a823371e8a4c0382877c45ca06f",
+    "zh:a57d46abbdb49bd07eeb77945a535cd171f9a671c11355d21015241158796e0a",
+    "zh:dffaa97cf15b746c9761073fd219bec230de1dd9f011d315f2414e2213462efa",
+    "zh:e267eb315ba9b2d55759bc04341772ab7d0678a1da6810d769d8bf9a5280c87b",
+    "zh:e3206eda408253174b90856ee9b11e3578c65bc63a918f6824be064b6895cf70",
+    "zh:e8d50cf4a7304cf353a1d9d939b2652c53a896c1478b731d6e110821f63e4c71",
+    "zh:fa8cd7b5204e082297d7c64999a6fcd4586c69b3595743ce79d9b119dc18c207",
   ]
 }
 
