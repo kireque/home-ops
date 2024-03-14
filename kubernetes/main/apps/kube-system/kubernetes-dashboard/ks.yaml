@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cert-manager
-  path: ./kubernetes/apps/kube-system/kubernetes-dashboard/app
+  path: ./kubernetes/main/apps/kube-system/kubernetes-dashboard/app
   prune: true
   sourceRef:
     kind: GitRepository
