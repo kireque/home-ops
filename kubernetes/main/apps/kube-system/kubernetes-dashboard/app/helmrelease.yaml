@@ -50,50 +50,49 @@ spec:
   values:
 
     app:
+      mode: 'dashboard'
+      image:
+        pullPolicy: IfNotPresent
       ingress:
         enabled: true
         hosts:
-        - kubernetes.econline.nl
+          - kubernetes.econline.nl
         ingressClassName: "internal-nginx"
+        useDefaultIngressClass: false
+        useDefaultAnnotations: false
         pathType: ImplementationSpecific
-        secretName: kubernetes-dashboard-tls-production
+        path: /
         issuer:
           name: letsencrypt-production
           scope: cluster
-        labels: {}
+        tls:
+          secretName: "kubernetes-dashboard-tls-production"
         annotations: 
           hajimari.io/icon: carbon:kubernetes
           hajimari.io/info: Centralized Kubernetes Management
           hajimari.io/appName: Kubernetes Dashboard
           hajimari.io/group: Resources
-        paths:
-          web: /
-          api: /api
 
-    web:
-      env: 
-        TZ: ${TIMEZONE}
-
-    api:
-      containers:
-        args:
-          - "--enable-skip-login"
-          - "--disable-settings-authorizer"
-          - "--enable-insecure-login"
-          - "--token-ttl=43200"
+    # api:
+    #   containers:
+    #     args:
+    #       - "--enable-skip-login"
+    #       - "--disable-settings-authorizer"
+    #       - "--enable-insecure-login"
+    #       - "--token-ttl=43200"
 
     metricsScraper:
       enabled: false
     metrics-server:
       enabled: false
-      args:
-        - --kubelet-preferred-address-types=InternalIP
-        - --kubelet-insecure-tls
+
     cert-manager:
       enabled: false
       installCRDs: false
+
     nginx:
       enabled: false
 
-
-  
+    extras:
+      serviceMonitor:
+        enabled: true
