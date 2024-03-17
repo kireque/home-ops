@@ -16,7 +16,6 @@ spec:
         kind: HelmRepository
         name: kubernetes-dashboard
         namespace: flux-system
-      interval: 10m
 
   install:
     timeout: 10m
