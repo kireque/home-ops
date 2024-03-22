@@ -38,7 +38,7 @@ spec:
         enabled: true
         annotations:
           hajimari.io/enable: "false"
-        ingressClassName: internal
+        ingressClassName: "internal-nginx"
         hostname: &host "thanos.econline.nl"
         tls: true
         extraTls:
