@@ -1,13 +1,11 @@
-
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta2
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: kubernetes-dashboard
   namespace: kube-system
-
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       chart: kubernetes-dashboard
@@ -16,78 +14,30 @@ spec:
         kind: HelmRepository
         name: kubernetes-dashboard
         namespace: flux-system
-      interval: 10m
-
+  maxHistory: 2
   install:
-    timeout: 10m
-    replace: true
-    crds: CreateReplace
     createNamespace: true
     remediation:
       retries: 3
-
   upgrade:
+    cleanupOnFail: true
     remediation:
-      remediateLastFailure: true
       retries: 3
-      strategy: rollback
-    cleanupOnFail: true
-    crds: CreateReplace
-
-  test:
-    enable: true
-
-  rollback:
-    recreate: true
-    force: true
-    cleanupOnFail: true
-
   uninstall:
     keepHistory: false
-    
-  maxHistory: 1
-
   values:
-
-    app:
-      image:
-        pullPolicy: IfNotPresent
-      
-      ingress:
-        enabled: true
-        annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: logos:kubernetes
-          hajimari.io/info: Kubernetes dashboard
-          hajimari.io/group: admin
-        host:
-          name: &host kubernetes.econline.nl
-          path: "/"
-        tls:
-          - hosts:
-              - *host
-      # protocolHttp: true
-
-    # api:
-    #   containers:
-    #     args:
-    #       - "--enable-skip-login"
-    #       - "--disable-settings-authorizer"
-    #       - "--enable-insecure-login"
-    #       - "--token-ttl=43200"
-
+    extraArgs:
+      - --enable-insecure-login
+      - --enable-skip-login
+      - --disable-settings-authorizer
+    ingress:
+      enabled: true
+      className: "internal-nginx"
+      annotations:
+      hosts:
+        - &host "kubernetes.econline.nl"
+      tls:
+        - hosts:
+            - *host
     metricsScraper:
-      enabled: false
-    metrics-server:
-      enabled: false
-
-    cert-manager:
-      enabled: false
-      installCRDs: false
-
-    nginx:
-      enabled: false
-
-    extras:
-      serviceMonitor:
-        enabled: true
+      enabled: true
