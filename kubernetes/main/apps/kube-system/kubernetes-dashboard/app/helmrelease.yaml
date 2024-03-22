@@ -60,16 +60,13 @@ spec:
           hajimari.io/icon: logos:kubernetes
           hajimari.io/info: Kubernetes dashboard
           hajimari.io/group: admin
-          nginx.ingress.kubernetes.io/proxy-body-size: "100m"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            auth_request_set $required_groups 'kubernetes_dashboard';
         host:
           name: &host kubernetes.econline.nl
           path: "/"
         tls:
           - hosts:
               - *host
-      protocolHttp: true
+      # protocolHttp: true
 
     # api:
     #   containers:
