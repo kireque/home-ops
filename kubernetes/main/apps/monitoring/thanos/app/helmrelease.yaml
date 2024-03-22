@@ -93,7 +93,7 @@ spec:
         enabled: true
       persistence:
         enabled: true
-        storageClass: "openebs-hostpath"
+        storageClass: "ceph-filesystem"
         size: 512Mi
       resources:
         requests:
