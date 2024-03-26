@@ -328,7 +328,7 @@ spec:
 
     # envFromSecret: grafana-secret
 
-    grafana.ini:
+    # grafana.ini:
       # auth.generic_oauth:
       #   icon: signin
       #   login_attribute_path: preferred_username
