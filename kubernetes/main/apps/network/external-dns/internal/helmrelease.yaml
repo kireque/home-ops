@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: externaldns-internal
+  name: external-dns-internal
 spec:
   interval: 30m
   chart:
@@ -17,7 +17,7 @@ spec:
       interval: 30m
 
   values:
-    fullnameOverride: &name externaldns-internal
+    fullnameOverride: &name external-dns-internal
 
     domainFilters:
       - econline.nl
@@ -36,16 +36,16 @@ spec:
       - name: EXTERNAL_DNS_RFC2136_TSIG_SECRET_ALG
         valueFrom:
           secretKeyRef:
-            name: externaldns-internal-secrets
+            name: external-dns-internal-secrets
             key: bind_rndc_algorithm
       - name: EXTERNAL_DNS_RFC2136_TSIG_SECRET
         valueFrom:
           secretKeyRef:
-            name: externaldns-internal-secrets
+            name: external-dns-internal-secrets
             key: bind_rndc_secret
 
     podAnnotations:
-      secret.reloader.stakater.com/reload: externaldns-internal-secrets
+      secret.reloader.stakater.com/reload: external-dns-internal-secrets
 
     policy: sync
     provider: rfc2136
