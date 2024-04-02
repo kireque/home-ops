@@ -102,11 +102,10 @@ spec:
 
     persistence:
       config:
+        enabled: true
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         size: 1Gi
-        globalMounts:
-          - path: /config
 
       media:
         type: nfs
