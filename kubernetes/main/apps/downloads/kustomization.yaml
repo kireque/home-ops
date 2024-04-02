@@ -7,5 +7,6 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   - ./networkpolicy.yaml
+  - ./pvc-nas-media.yaml
   # Flux-Kustomizations
   - ./sabnzbd/ks.yaml
