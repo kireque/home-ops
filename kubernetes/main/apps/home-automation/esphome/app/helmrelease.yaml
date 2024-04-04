@@ -77,7 +77,10 @@ spec:
 
     persistence:
       config:
-        existingClaim: esphome-config
+        enabled: true
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
         advancedMounts:
           esphome:
             app:
