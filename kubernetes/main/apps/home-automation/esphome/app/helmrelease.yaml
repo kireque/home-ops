@@ -65,7 +65,7 @@ spec:
       app:
         className: "internal-nginx"
         hosts:
-          - host: &hostName esphome.econline.nl
+          - host: &hostName esphome2.econline.nl
             paths:
               - path: /
                 service:
