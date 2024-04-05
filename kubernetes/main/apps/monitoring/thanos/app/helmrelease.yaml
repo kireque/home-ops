@@ -18,7 +18,7 @@ spec:
       interval: 30m
   values:
     objstoreConfig:
-      type: s3
+      type: azure
 
     query:
       enabled: true
