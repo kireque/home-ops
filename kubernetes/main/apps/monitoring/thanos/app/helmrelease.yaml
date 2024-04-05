@@ -26,7 +26,7 @@ spec:
         sidecarsService: kube-prometheus-stack-thanos-discovery
         sidecarsNamespace: monitoring
       stores:
-        - synology.home.econline.nl:9000
+        - thanos-storegateway.monitoring.svc.cluster.local:10901
       replicaLabels:
         - "__replica__" # must match with kube-prometheus-stack value `.prometheus.prometheusSpec.replicaExternalLabelName`
       resources:
