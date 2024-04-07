@@ -10,7 +10,7 @@ spec:
     schedule: "0 * * * *"
   restic:
     copyMethod: Snapshot
-    repository: ${APP}-volsync-azure
+    repository: ${APP}-volsync-minio
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-openebs-hostpath}"
     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"]
     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
