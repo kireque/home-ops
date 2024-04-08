@@ -81,6 +81,8 @@ spec:
       dashboard:
         enabled: true
         urlPrefix: /
+        ssl: false
+        prometheusEndpoint: http://thanos-query-frontend.monitoring.svc.cluster.local:10902
 
       storage:
         useAllNodes: false
@@ -101,10 +103,6 @@ spec:
     ingress:
       dashboard:
         ingressClassName: "internal-nginx"
-        annotations:
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            proxy_ssl_protocols TLSv1.3;
         host:
           name: &host rook-main.econline.nl
           path: "/"
