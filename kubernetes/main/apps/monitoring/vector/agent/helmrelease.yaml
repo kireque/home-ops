@@ -32,8 +32,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/onedr0p/vector
-              tag: 0.34.1-debian
+              repository: docker.io/timberio/vector
+              tag: 0.37.1-alpine
             args:
               - "--config"
               - "/etc/vector/vector.yaml"
