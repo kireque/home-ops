@@ -83,8 +83,6 @@ spec:
         prom.home.arpa/kps: allow
         ingress.home.arpa/nginx-internal: allow
         egress.home.arpa/kubedns: allow # FIXME: Remove when clusterNetworkPolicy is in place
-      podAnnotations:
-        configmap.reloader.stakater.com/reload: thanos-cache-configmap
       ingress:
         enabled: true
         ingressClassName: internal-nginx
@@ -125,12 +123,6 @@ spec:
         size: 15Gi
     storeGateway:
       replicas: 2
-      extraEnv:
-        - name: THANOS_CACHE_CONFIG
-          valueFrom:
-            configMapKeyRef:
-              name: &configMap thanos-cache-configmap
-              key: cache.yaml
       extraArgs:
         - --index-cache.config=$(THANOS_CACHE_CONFIG)
       podLabels:
@@ -138,8 +130,6 @@ spec:
         prom.home.arpa/kps: allow
         egress.home.arpa/minio: allow
         egress.home.arpa/kubedns: allow # FIXME: Remove when clusterNetworkPolicy is in place
-      podAnnotations:
-        configmap.reloader.stakater.com/reload: thanos-cache-configmap
       persistence:
         enabled: true
         storageClass: openebs-hostpath
