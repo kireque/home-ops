@@ -32,6 +32,7 @@ resources:
   - rook-ceph.yaml
   - spegel.yaml
   - stakater.yaml
+  - stevehipwell.yaml
   - vector.yaml
   - weave-gitops.yaml
   - windmill.yaml
