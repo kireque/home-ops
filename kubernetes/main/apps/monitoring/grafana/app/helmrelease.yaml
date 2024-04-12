@@ -121,7 +121,7 @@ spec:
         node-exporter-full:
           # renovate: dashboardName="Node Exporter Full"
           gnetId: 1860
-          revision: 33
+          revision: 36
           datasource: Prometheus
 
         node-feature-discovery:
@@ -187,17 +187,17 @@ spec:
         k8s-views-global:
           # renovate: dashboardName="Kubernetes / Views / Global"
           gnetId: 15757
-          revision: 36
+          revision: 37
           datasource: Prometheus
         k8s-views-nodes:
           # renovate: dashboardName="Kubernetes / Views / Nodes"
           gnetId: 15759
-          revision: 28
+          revision: 29
           datasource: Prometheus
         k8s-views-namespaces:
           # renovate: dashboardName="Kubernetes / Views / Namespaces"
           gnetId: 15758
-          revision: 32
+          revision: 34
           datasource: Prometheus
         k8s-views-pods:
           # renovate: dashboardName="Kubernetes / Views / Pods"
@@ -278,10 +278,13 @@ spec:
         apiVersion: 1
         datasources:
           - access: proxy
-            isDefault: true
             name: Prometheus
             type: prometheus
-            url: http://thanos-query.monitoring:9090
+            url: http://thanos-query-frontend.monitoring.svc.cluster.local:10902
+            isDefault: true
+            jsonData:
+              prometheusType: Thanos
+              timeInterval: 1m
           - access: proxy
             name: Loki
             type: loki
@@ -323,18 +326,17 @@ spec:
       GF_NEWS_NEWS_FEED_ENABLED: false
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
       GF_SECURITY_COOKIE_SAMESITE: grafana
-      GF_SERVER_ROOT_URL: https://grafana.econline.nl
-      GF_PANELS_DISABLE_SANITIZE_HTML: true
+      GF_SERVER_ROOT_URL: https://grafana.bjw-s.dev
 
-    # envFromSecret: grafana-secret
+    envFromSecret: grafana-secret
 
     # grafana.ini:
-      # auth.generic_oauth:
-      #   icon: signin
-      #   login_attribute_path: preferred_username
-      #   groups_attribute_path: groups
-      #   name_attribute_path: name
-      #   use_pkce: true
+    #   auth.generic_oauth:
+    #     icon: signin
+    #     login_attribute_path: preferred_username
+    #     groups_attribute_path: groups
+    #     name_attribute_path: name
+    #     use_pkce: true
 
     imageRenderer:
       enabled: true
@@ -380,7 +382,6 @@ spec:
       dashboards:
         enabled: true
         searchNamespace: ALL
-        labelValue: ""
         label: grafana_dashboard
         folderAnnotation: grafana_folder
         provider:
