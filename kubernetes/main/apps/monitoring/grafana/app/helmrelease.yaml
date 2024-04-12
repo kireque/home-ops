@@ -328,7 +328,7 @@ spec:
       GF_SECURITY_COOKIE_SAMESITE: grafana
       GF_SERVER_ROOT_URL: https://grafana.bjw-s.dev
 
-    envFromSecret: grafana-secret
+    # envFromSecret: grafana-secret
 
     # grafana.ini:
     #   auth.generic_oauth:
