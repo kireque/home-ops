@@ -1,3 +1,4 @@
+---
 receivers:
   - name: "null"
   - name: "pushover"
@@ -56,3 +57,4 @@ inhibit_rules:
     target_matchers:
       - severity = "warning"
     equal: ["alertname", "namespace"]
+    
