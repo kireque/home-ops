@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: kube-prometheus-stack
-      version: 58.0.1
+      version: 57.1.0
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
@@ -98,6 +98,10 @@ spec:
     grafana:
       enabled: false
       forceDeployDashboards: true
+      sidecar:
+        dashboards:
+          annotations:
+            grafana_folder: Kubernetes
 
     ###
     ### Prometheus operator values
@@ -165,7 +169,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: openebs-hostpath
+              storageClassName: ceph-block
               resources:
                 requests:
                   storage: 20Gi
@@ -184,19 +188,3 @@ spec:
 
       thanosServiceMonitor:
         enabled: true
-
-  postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              version: v1
-              kind: ConfigMap
-              labelSelector: grafana_dashboard in (1)
-            patch: |-
-              apiVersion: v1
-              kind: ConfigMap
-              metadata:
-                name: not-used
-                namespace: not-used
-                annotations:
-                  grafana_folder: Kubernetes
