@@ -76,8 +76,6 @@ spec:
     queryFrontend:
       enabled: true
       replicas: 2
-      extraArgs:
-        - --query-range.response-cache-config=$(THANOS_CACHE_CONFIG)
       podLabels:
         db.home.arpa/dragonfly: "dragonfly"
         prom.home.arpa/kps: allow
@@ -123,8 +121,6 @@ spec:
         size: 15Gi
     storeGateway:
       replicas: 2
-      extraArgs:
-        - --index-cache.config=$(THANOS_CACHE_CONFIG)
       podLabels:
         db.home.arpa/dragonfly: "dragonfly"
         prom.home.arpa/kps: allow
