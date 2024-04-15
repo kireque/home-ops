@@ -71,7 +71,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: ingress-ext.econline.nl
         hosts:
-          - host: &hostName hass.bjw-s.dev
+          - host: &hostName hass.econline.nl
             paths:
               - path: /
                 service:
