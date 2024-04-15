@@ -109,11 +109,11 @@ spec:
               - path: /config
 
       media:
-        type: nfs
-        server: nas.home.econline.nl
-        path: /volume3/Download
-        globalMounts:
-          - path: /data/nas-media
+        existingClaim: nas-media
+        advancedMounts:
+          sabnzbd:
+            app:
+              - path: /media
 
       temp:
         type: emptyDir
