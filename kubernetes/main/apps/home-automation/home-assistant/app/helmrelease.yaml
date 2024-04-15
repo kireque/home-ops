@@ -71,7 +71,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: ingress-ext.econline.nl
         hosts:
-          - host: &hostName hass.econline.nl
+          - host: &hostName hass.bjw-s.dev
             paths:
               - path: /
                 service:
@@ -83,10 +83,7 @@ spec:
 
     persistence:
       config:
-        enabled: true
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
+        existingClaim: home-assistant-config
         advancedMounts:
           home-assistant:
             app:
