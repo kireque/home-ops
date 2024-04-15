@@ -45,7 +45,7 @@ spec:
                 sabnzbd.downloads.svc,
                 sabnzbd.downloads.svc.cluster,
                 sabnzbd.downloads.svc.cluster.local,
-                sabnzbd.econline.nl
+                sabnzbd.bjw-s.dev
               SABNZBD__API_KEY:
                 valueFrom:
                   secretKeyRef:
@@ -90,7 +90,7 @@ spec:
       app:
         className: "internal-nginx"
         hosts:
-          - host: &hostName sabnzbd.econline.nl
+          - host: &hostName sabnzbd.bjw-s.dev
             paths:
               - path: /
                 service:
@@ -102,17 +102,18 @@ spec:
 
     persistence:
       config:
-        enabled: true
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-
-      media:
-        existingClaim: nas-media
+        existingClaim: sabnzbd-config
         advancedMounts:
           sabnzbd:
             app:
-              - path: /media
+              - path: /config
+
+      media:
+        type: nfs
+        server: nas.home.econline.nl
+        path: /volume3/Download
+        globalMounts:
+          - path: /data/nas-media
 
       temp:
         type: emptyDir
