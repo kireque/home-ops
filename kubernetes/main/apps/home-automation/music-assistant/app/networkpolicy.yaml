@@ -16,3 +16,19 @@ spec:
         - ports:
             - port: "8095"
               protocol: TCP
+  egress:
+    - toEntities:
+        - world
+      toPorts:
+        - ports:
+            - port: "8009"
+        - ports:
+            - port: "8008"
+        - ports:
+            - port: "8443"
+        - ports:
+            - port: "1900"
+        - ports:
+            - port: "32216"
+        - ports:
+            - port: "5353"
