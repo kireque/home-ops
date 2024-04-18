@@ -62,59 +62,9 @@ spec:
       password:
         type: AlphaNumeric
     # Applications
-    - name: atuin
-      databases:
-        - atuin
-      password:
-        type: AlphaNumeric
-    - name: authelia
-      databases:
-        - authelia
-      password:
-        type: AlphaNumeric
-    - name: authentik
-      databases:
-        - authentik
-      password:
-        type: AlphaNumeric
-    - name: autobrr
-      databases:
-        - autobrr
-      password:
-        type: AlphaNumeric
     - name: dsmr-reader
       databases:
         - dsmr-reader
-      password:
-        type: AlphaNumeric
-    - name: linkding
-      databases:
-        - linkding
-      password:
-        type: AlphaNumeric
-    - name: lldap
-      databases:
-        - lldap
-      password:
-        type: AlphaNumeric
-    - name: miniflux
-      databases:
-        - miniflux
-      password:
-        type: AlphaNumeric
-    - name: tandoor
-      databases:
-        - tandoor
-      password:
-        type: AlphaNumeric
-    - name: wallabag
-      databases:
-        - wallabag
-      password:
-        type: AlphaNumeric
-    - name: zipline
-      databases:
-        - zipline
       password:
         type: AlphaNumeric
 
@@ -156,7 +106,7 @@ spec:
         - name: repo1 # Minio
           s3: &minio
             bucket: "crunchy-postgres"
-            endpoint: "http://s3.home.econline.nl:9000"
+            endpoint: "http:\\s3.home.econline.nl:9000"
             region: "us-east-1"
           schedules:
             full: "0 1 * * 0" # Sunday at 01:00
