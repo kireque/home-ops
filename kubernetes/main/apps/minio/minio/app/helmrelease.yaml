@@ -44,7 +44,7 @@ spec:
               MINIO_UPDATE: "off"
             envFrom:
               - secretRef:
-                  name: *app
+                  name: minio-secret
             args:
               - server
               - /data
