@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: &app minio
+  name: minio
 spec:
   interval: 30m
   chart:
@@ -25,15 +25,13 @@ spec:
   values:
     controllers:
       minio:
-        labels:
-          nfsMount: "true"
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: quay.io/minio/minio
-              tag: RELEASE.2024-04-18T19-09-19Z
+              tag: RELEASE.2024-04-18T19-09-19Z@sha256:036a068d7d6b69400da6bc07a480bee1e241ef3c341c41d988ed11f520f85124
             env:
               MINIO_API_CORS_ALLOW_ORIGIN: https://minio.econline.nl,https://s3.econline.nl
               MINIO_BROWSER_REDIRECT_URL: https://minio.econline.nl
@@ -45,11 +43,7 @@ spec:
             envFrom:
               - secretRef:
                   name: minio-secret
-            args:
-              - server
-              - /data
-              - --console-address
-              - :9001
+            args: ["server", "/data", "--console-address", ":9001"]
             probes:
               liveness: &probes
                 enabled: true
@@ -64,17 +58,26 @@ spec:
                   failureThreshold: 6
               readiness: *probes
             securityContext:
-              privileged: true
-              runAsUser: 99
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                memory: 100Mi
                 cpu: 100m
               limits:
-                memory: 3Gi
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: *app
+        controller: minio
         ports:
           http:
             port: 9001
@@ -82,7 +85,7 @@ spec:
             port: 9000
     serviceMonitor:
       app:
-        serviceName: *app
+        serviceName: minio
         endpoints:
           - port: s3
             scheme: http
@@ -99,21 +102,16 @@ spec:
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *hostName
-      api:
-        enabled: true
-        className: internal-nginx
-        hosts:
-          - host: &s3Host s3.econline.nl
+          - host: &hostNameS3 s3.econline.nl
             paths:
               - path: /
                 service:
                   identifier: app
                   port: s3
         tls:
-          - hosts: [*s3Host]
+          - hosts:
+              - *hostName
+              - *hostNameS3
     persistence:
       data:
         enabled: true
