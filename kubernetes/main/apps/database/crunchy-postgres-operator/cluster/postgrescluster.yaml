@@ -107,7 +107,7 @@ spec:
         - name: repo1 # Minio
           s3: &minio
             bucket: "crunchy-postgres"
-            endpoint: "s3.home.econline.nl:9000"
+            endpoint: "s3.econline.nl"
             region: "us-east-1"
           schedules:
             full: "0 1 * * 0" # Sunday at 01:00
