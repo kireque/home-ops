@@ -31,6 +31,16 @@ spec:
       app.kubernetes.io/created-by: volsync
   egress:
     # Minio
+    - toEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: ingress-nginx
+            app.kubernetes.io/instance: nginx-internal
+      toPorts:
+        - ports:
+            - port: "80"
+              protocol: TCP
+            - port: "443"
+              protocol: TCP
     - toCIDRSet:
         - cidr: 10.1.0.31/32
       toPorts:
