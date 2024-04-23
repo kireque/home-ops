@@ -119,6 +119,6 @@ spec:
         enabled: true
         type: nfs
         server: nas.home.econline.nl
-        path: /volume3/docker/monio_k8s
+        path: /volume3/docker/minio_k8s
         globalMounts:
           - path: /data
