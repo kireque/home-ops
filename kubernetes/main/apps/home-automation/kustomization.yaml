@@ -9,6 +9,7 @@ resources:
   - ./networkpolicy.yaml
   # Flux-Kustomizations
   - ./esphome/ks.yaml
+  - ./dsmr-reader/ks.yaml
   - ./home-assistant/ks.yaml
   - ./mosquitto/ks.yaml
   - ./music-assistant/ks.yaml
