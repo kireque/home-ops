@@ -67,6 +67,11 @@ spec:
         - dsmr-reader
       password:
         type: AlphaNumeric
+    - name: lldap
+      databases:
+        - lldap
+      password:
+        type: AlphaNumeric
 
   backups:
     pgbackrest:
