@@ -54,9 +54,9 @@ spec:
               - run
             env:
               LLDAP_HTTP_PORT: &port 80
-              LLDAP_HTTP_URL: https://lldap.bjw-s.dev
+              LLDAP_HTTP_URL: https://lldap.econline.nl
               LLDAP_LDAP_PORT: &ldapPort 389
-              LLDAP_LDAP_BASE_DN: dc=bjw-s,dc=dev
+              LLDAP_LDAP_BASE_DN: dc=econline,dc=nl
             envFrom:
               - secretRef:
                   name: lldap-secret
@@ -103,7 +103,7 @@ spec:
       app:
         className: "internal-nginx"
         hosts:
-          - host: &hostName lldap.bjw-s.dev
+          - host: &hostName lldap.econline.nl
             paths:
               - path: /
                 service:
