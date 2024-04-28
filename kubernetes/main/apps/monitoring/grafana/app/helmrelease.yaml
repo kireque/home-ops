@@ -308,17 +308,17 @@ spec:
       GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: false
       GF_ANALYTICS_REPORTING_ENABLED: false
       GF_AUTH_ANONYMOUS_ENABLED: true
-      # GF_AUTH_BASIC_ENABLED: false
-      # GF_AUTH_GENERIC_OAUTH_ENABLED: true
-      # GF_AUTH_GENERIC_OAUTH_API_URL: https://auth.bjw-s.dev/application/o/userinfo/
-      # GF_AUTH_GENERIC_OAUTH_AUTH_URL: https://auth.bjw-s.dev/application/o/authorize/
-      # GF_AUTH_GENERIC_OAUTH_CLIENT_ID: pe1N4ey6PAzdBbUy8RtWbOPtxpvCWUfhAGiDGuRa
-      # GF_AUTH_GENERIC_OAUTH_NAME: Authentik
-      # GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: "contains(groups[*], 'bjw-s Admins') && 'Admin' || 'Viewer'"
-      # GF_AUTH_GENERIC_OAUTH_SCOPES: openid profile email
-      # GF_AUTH_GENERIC_OAUTH_TOKEN_URL: https://auth.bjw-s.dev/application/o/token/
-      # GF_AUTH_OAUTH_AUTO_LOGIN: true
-      # GF_AUTH_SIGNOUT_REDIRECT_URL: https://auth.bjw-s.dev/application/o/grafana/end-session/
+      GF_AUTH_BASIC_ENABLED: false
+      GF_AUTH_GENERIC_OAUTH_ENABLED: true
+      GF_AUTH_GENERIC_OAUTH_API_URL: https://auth.econline.nl/application/o/userinfo/
+      GF_AUTH_GENERIC_OAUTH_AUTH_URL: https://auth.econline.nl/application/o/authorize/
+      GF_AUTH_GENERIC_OAUTH_CLIENT_ID: pe1N4ey6PAzdBbUy8RtWbOPtxpvCWUfhAGiDGuRa
+      GF_AUTH_GENERIC_OAUTH_NAME: Authentik
+      GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: "contains(groups[*], 'bjw-s Admins') && 'Admin' || 'Viewer'"
+      GF_AUTH_GENERIC_OAUTH_SCOPES: openid profile email
+      GF_AUTH_GENERIC_OAUTH_TOKEN_URL: https://auth.econline.nl/application/o/token/
+      GF_AUTH_OAUTH_AUTO_LOGIN: true
+      GF_AUTH_SIGNOUT_REDIRECT_URL: https://auth.econline.nl/application/o/grafana/end-session/
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
       GF_EXPLORE_ENABLED: true
       GF_FEATURE_TOGGLES_ENABLE: publicDashboards
@@ -326,7 +326,7 @@ spec:
       GF_NEWS_NEWS_FEED_ENABLED: false
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
       GF_SECURITY_COOKIE_SAMESITE: grafana
-      GF_SERVER_ROOT_URL: https://grafana.bjw-s.dev
+      GF_SERVER_ROOT_URL: https://grafana.econline.nl
 
     # envFromSecret: grafana-secret
 
