@@ -34,8 +34,11 @@ spec:
       enabled: true
       className: "internal-nginx"
       annotations:
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
       hosts:
         - &host "kubernetes.econline.nl"
+      paths:
+        - /
       tls:
         - hosts:
             - *host

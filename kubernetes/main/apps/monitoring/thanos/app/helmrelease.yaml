@@ -49,10 +49,6 @@ spec:
       enabled: true
     compact:
       enabled: true
-      podLabels:
-        prom.home.arpa/kps: allow
-        egress.home.arpa/minio: allow
-        egress.home.arpa/kubedns: allow # FIXME: Remove when clusterNetworkPolicy is in place
       extraArgs:
         - --compact.concurrency=4
         - --delete-delay=30m
@@ -64,23 +60,12 @@ spec:
         storageClass: openebs-hostpath
         size: 15Gi
     query:
-      podLabels:
-        db.home.arpa/dragonfly: "dragonfly"
-        prom.home.arpa/kps: allow
-        egress.home.arpa/lan: allow
-        egress.home.arpa/minio: allow
-        egress.home.arpa/kubedns: allow # FIXME: Remove when clusterNetworkPolicy is in place
       replicas: 2
       extraArgs:
         - --alert.query-url=http://thanos.econline.nl
     queryFrontend:
       enabled: true
       replicas: 2
-      podLabels:
-        db.home.arpa/dragonfly: "dragonfly"
-        prom.home.arpa/kps: allow
-        ingress.home.arpa/nginx-internal: allow
-        egress.home.arpa/kubedns: allow # FIXME: Remove when clusterNetworkPolicy is in place
       ingress:
         enabled: true
         ingressClassName: internal-nginx
@@ -92,10 +77,6 @@ spec:
     rule:
       enabled: true
       replicas: 2
-      podLabels:
-        prom.home.arpa/kps: allow
-        egress.home.arpa/minio: allow
-        egress.home.arpa/kubedns: allow # FIXME: Remove when clusterNetworkPolicy is in place
       extraArgs: ["--web.prefix-header=X-Forwarded-Prefix"]
       alertmanagersConfig:
         value: |-
@@ -121,11 +102,6 @@ spec:
         size: 15Gi
     storeGateway:
       replicas: 2
-      podLabels:
-        db.home.arpa/dragonfly: "dragonfly"
-        prom.home.arpa/kps: allow
-        egress.home.arpa/minio: allow
-        egress.home.arpa/kubedns: allow # FIXME: Remove when clusterNetworkPolicy is in place
       persistence:
         enabled: true
         storageClass: openebs-hostpath

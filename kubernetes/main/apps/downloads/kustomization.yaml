@@ -6,7 +6,6 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
-  - ./networkpolicy.yaml
   # Flux-Kustomizations
   - ./prowlarr/ks.yaml
   - ./radarr/ks.yaml

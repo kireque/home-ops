@@ -16,7 +16,3 @@ spec:
   values:
     fullnameOverride: crunchy-userinit-controller
 
-    podLabels:
-      egress.home.arpa/apiserver: allow
-      db.home.arpa/pg: postgres
-      egress.home.arpa/kubedns: allow # FIXME: Remove when clusterNetworkPolicy is in place
