@@ -21,6 +21,7 @@ spec:
       radarr:
         annotations:
           reloader.stakater.com/auto: "true"
+        labels:
           automaticSchedular: "true"
         pod:
           securityContext:
