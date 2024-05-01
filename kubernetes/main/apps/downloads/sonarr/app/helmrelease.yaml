@@ -22,6 +22,9 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
+        labels:
+          automaticSchedular: "true"
+
         pod:
           securityContext:
             runAsUser: 2000
