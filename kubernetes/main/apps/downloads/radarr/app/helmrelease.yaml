@@ -4,8 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: radarr
-  labels:
-    automaticScheduling: "true"
 spec:
   interval: 30m
   chart:
@@ -23,7 +21,7 @@ spec:
       radarr:
         annotations:
           reloader.stakater.com/auto: "true"
-
+          automaticSchedular: "true"
         pod:
           securityContext:
             runAsUser: 2000
