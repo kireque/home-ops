@@ -171,7 +171,7 @@ spec:
             name: thanos-objstore-secret
             key: objstore.yml
           # renovate: datasource=docker depName=quay.io/thanos/thanos
-          version: "0.34.1"
+          version: "0.35.0"
         walCompression: true
 
       thanosService:
