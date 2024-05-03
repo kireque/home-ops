@@ -7,3 +7,4 @@ resources:
   # Flux-Kustomizations
   - ./cilium/ks.yaml
   - ./kubernetes-dashboard/ks.yaml
+  - ./metrics-server/ks.yaml
