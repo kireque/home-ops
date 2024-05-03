@@ -81,7 +81,7 @@ access_control:
         - echo-server.econline.nl
       subject:
         - ["user:erik"]
-      policy: one_factor
+      policy: two_factor
 
 identity_validation:
   reset_password:
