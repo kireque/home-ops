@@ -46,11 +46,14 @@ storage:
   encryption_key: "{{ .authelia_storage_encryption_key }}"
 
 notifier:
-  disable_startup_check: true
+  #disable_startup_check: true
   smtp:
-    address: smtp-relay.default.svc.cluster.local:25
-    sender: Authelia <authelia@econline.nl>
-    disable_require_tls: true
+    username: "{{ .authelia_notifier_smtp_username }}"
+    password: "{{ .authelia_notifier_smtp_password }}"
+    host: smtp.gmail.com
+    port: 587
+    sender: "{{ .authelia_notifier_smtp_username }}"
+    subject: "[2FA] {title}"
 
 totp:
   disable: false
