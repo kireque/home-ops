@@ -50,10 +50,9 @@ notifier:
   smtp:
     username: "{{ .authelia_notifier_smtp_username }}"
     password: "{{ .authelia_notifier_smtp_password }}"
-    host: smtp.gmail.com
-    address: 587
+    address: "smtp://smtp.gmail.com:587"
     sender: "{{ .authelia_notifier_smtp_username }}"
-    subject: "[2FA] {title}"
+    subject: "[Authelia] {title}"
 
 totp:
   disable: false
