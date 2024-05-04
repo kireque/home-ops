@@ -29,4 +29,5 @@ resources:
   - spegel.yaml
   - stakater.yaml
   - stevehipwell.yaml
+  - weave-gitops.yaml
   - vector.yaml
