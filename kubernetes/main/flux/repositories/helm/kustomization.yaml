@@ -1,20 +1,16 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - actions-runner-controller.yaml
   - angelnu.yaml
-  - authentik.yaml
   - backube.yaml
-  - bitnami.yaml
   - bjw-s.yaml
   - cilium.yaml
   - crunchydata.yaml
-  - democratic-csi.yaml
   - external-secrets.yaml
-  - ext-postgres-operator.yaml
   - grafana.yaml
-  - hajimari.yaml
   - ingress-nginx.yaml
   - intel.yaml
   - jetstack.yaml
@@ -34,6 +30,3 @@ resources:
   - stakater.yaml
   - stevehipwell.yaml
   - vector.yaml
-  - weave-gitops.yaml
-  - windmill.yaml
-  - zalando-postgres-operator.yaml
