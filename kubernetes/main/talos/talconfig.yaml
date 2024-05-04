@@ -1,18 +1,17 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 clusterName: ${clusterName}
-endpoint: "https://${clusterName}.${clusterDNSSuffix}:6443"
+endpoint: "https://${clusterEndpointIP}:6443"
 
-# renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
+# renovate: depName=ghcr.io/siderolabs/installer datasource=docker
 talosVersion: v1.7.1
-# renovate: depName=kubernetes/kubernetes datasource=github-releases extractVersion=^v(?<version>.*)$
-kubernetesVersion: 1.29.3
+# renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
+kubernetesVersion: v1.30.0
 
 cniConfig:
   name: none
 
 additionalApiServerCertSans: &san
-  - ${clusterEndpointIP}
   - ${clusterName}.${clusterDNSSuffix}
   - "127.0.0.1" # KubePrism
 additionalMachineCertSans: *san
@@ -36,6 +35,8 @@ nodes:
             - hardwareAddr: 1c:69:7a:a4:0a:0b
               driver: e1000e
         dhcp: true
+        vip:
+          ip: ${clusterEndpointIP}
         vlans:
           - &vlan40
             vlanId: 40
@@ -74,13 +75,10 @@ nodes:
             - hardwareAddr: 1c:69:7a:67:aa:34
               driver: e1000e
         dhcp: true
+        vip:
+          ip: ${clusterEndpointIP}
         vlans:
-          - &vlan40
-            vlanId: 40
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
+          - *vlan40
     patches:
       - *kubelet_extra_mounts
 
@@ -102,19 +100,18 @@ nodes:
             - hardwareAddr: 1c:69:7a:a3:69:26
               driver: e1000e
         dhcp: true
+        vip:
+          ip: ${clusterEndpointIP}
         vlans:
-          - &vlan40
-            vlanId: 40
-            mtu: 1500
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 4096
+          - *vlan40
     patches:
       - *kubelet_extra_mounts
 
 controlPlane:
   schematic:
     customization:
+      extraKernelArgs:
+        - net.ifnames=1
       systemExtensions:
         officialExtensions:
           - siderolabs/intel-ucode
@@ -198,12 +195,22 @@ controlPlane:
       - op: remove
         path: /cluster/apiServer/admissionControl
 
+    # Enable K8s Talos API Access
+    - |-
+      machine:
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - system-upgrade
+
     # Kubelet configuration
     - |-
       machine:
         kubelet:
           extraArgs:
-            feature-gates: GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
             rotate-server-certificates: "true"
           extraConfig:
             maxPods: 150
