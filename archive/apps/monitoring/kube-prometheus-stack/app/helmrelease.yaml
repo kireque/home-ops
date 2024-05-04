@@ -1,9 +1,9 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: kube-prometheus-stack
-  namespace: monitoring
 spec:
   interval: 30m
   maxHistory: 2
@@ -11,15 +11,20 @@ spec:
   chart:
     spec:
       chart: kube-prometheus-stack
-      version: 52.1.0
+      version: 58.3.3
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
         namespace: flux-system
       interval: 30m
+  install:
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
   values:
     crds:
       enabled: true
+    cleanPrometheusOperatorObjectNames: true
 
     ###
     ### Component values
@@ -95,9 +100,8 @@ spec:
       forceDeployDashboards: true
       sidecar:
         dashboards:
-          multicluster:
-            etcd:
-              enabled: true
+          annotations:
+            grafana_folder: Kubernetes
 
     ###
     ### Prometheus operator values
@@ -128,7 +132,7 @@ spec:
         ingressClassName: internal-nginx
         pathType: Prefix
         hosts:
-          - &host_prometheus prometheus.${SECRET_DOMAIN}
+          - &host_prometheus prometheus-${CLUSTER_NAME}.econline.nl
         tls:
           - hosts:
               - *host_prometheus
@@ -139,10 +143,13 @@ spec:
             name: alertmanager
             port: 9093
             apiVersion: v2
-
         enableAdminAPI: true
+        enableFeatures:
+          - auto-gomaxprocs
+          - memory-snapshot-on-shutdown
+          - new-service-discovery-manager
         externalLabels:
-          cluster: main
+          cluster: ${CLUSTER_NAME}
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         replicas: 1
@@ -154,9 +161,10 @@ spec:
           limits:
             memory: 3760M
         retention: 2d
-        retentionSize: "6GB"
+        retentionSize: "15GB"
         ruleSelectorNilUsesHelmValues: false
-        scrapeInterval: 1m
+        scrapeConfigSelectorNilUsesHelmValues: false
+        scrapeInterval: 1m # Must match interval in Grafana Helm chart
         serviceMonitorSelectorNilUsesHelmValues: false
         storageSpec:
           volumeClaimTemplate:
@@ -164,13 +172,14 @@ spec:
               storageClassName: ceph-block
               resources:
                 requests:
-                  storage: 10Gi
+                  storage: 20Gi
         thanos:
-          image: quay.io/thanos/thanos:v0.31.0@sha256:e7d337d6ac2aea3f0f9314ec9830291789e16e2b480b9d353be02d05ce7f2a7e
+          image: quay.io/thanos/thanos:v0.35.0
           objectStorageConfig:
-            name: thanos-objstore-secret
-            key: objstore.yml
-          # renovate: datasource=docker depName=quay.io/thanos/thanos
+            existingSecret:
+              name: kube-prometheus-stack-secret
+              key: objstore.yml
+          # renovate: depName=quay.io/thanos/thanos datasource=docker
           version: "0.35.0"
         walCompression: true
 
@@ -179,19 +188,3 @@ spec:
 
       thanosServiceMonitor:
         enabled: true
-
-  postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              version: v1
-              kind: ConfigMap
-              labelSelector: grafana_dashboard in (1)
-            patch: |-
-              apiVersion: v1
-              kind: ConfigMap
-              metadata:
-                name: not-used
-                namespace: not-used
-                annotations:
-                  grafana_folder: Kubernetes
