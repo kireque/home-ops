@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
 
       - name: Get changed files
         id: changed-files
@@ -51,9 +53,6 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     needs:
       - changed-files
     if: ${{ needs.changed-files.outputs.matrix != '[]' }}
