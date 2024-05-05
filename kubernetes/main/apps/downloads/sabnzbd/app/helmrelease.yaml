@@ -18,7 +18,7 @@ spec:
 
   values:
     controllers:
-      sabnzbd:
+      app:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -83,14 +83,14 @@ spec:
                   - ALL
 
     service:
-      sabnzbd:
+      app:
         controller: sabnzbd
         ports:
           http:
             port: *port
 
     ingress:
-      sabnzbd:
+      app:
         className: "internal-nginx"
         hosts:
           - host: &hostName sabnzbd.econline.nl
@@ -107,8 +107,8 @@ spec:
       config:
         existingClaim: sabnzbd-config
         advancedMounts:
-          sabnzbd:
-            sabnzbd:
+          app:
+            app:
               - path: /config
 
       media:
@@ -121,6 +121,6 @@ spec:
       temp:
         type: emptyDir
         advancedMounts:
-          sabnzbd:
-            sabnzbd:
+          app:
+            app:
               - path: /tmp
