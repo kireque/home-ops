@@ -1,16 +1,15 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: sabnzbd
-  namespace: downloads
 spec:
   interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 3.1.0
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -18,78 +17,107 @@ spec:
         namespace: flux-system
 
   values:
-    controller:
-      type: statefulset
-      annotations:
-        reloader.stakater.com/auto: "true"
+    controllers:
+      sabnzbd:
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    image:
-      repository: ghcr.io/onedr0p/sabnzbd
-      tag: 4.1.0@sha256:1c1650511f96108e81d677abe8a2e491507caa023fdc5c2bfc99df087634c9f3
+        pod:
+          securityContext:
+            runAsUser: 2000
+            runAsGroup: 2000
+            runAsNonRoot: true
+            fsGroup: 2000
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+              - 65542 # gladius:external-services
 
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-      supplementalGroups:
-        - 65539
-
-    env:
-      SABNZBD__PORT: &port 8080
-      SABNZBD__HOST_WHITELIST_ENTRIES: >-
-        sabnzbd,
-        sabnzbd.downloads,
-        sabnzbd.downloads.svc,
-        sabnzbd.downloads.svc.cluster,
-        sabnzbd.downloads.svc.cluster.local,
-        sabnzbd.${SECRET_DOMAIN}
-      SABNZBD__API_KEY:
-        valueFrom:
-          secretKeyRef:
-            name: sabnzbd-secret
-            key: api_key
-      SABNZBD__NZB_KEY:
-        valueFrom:
-          secretKeyRef:
-            name: sabnzbd-secret
-            key: nzb_key
+        containers:
+          app:
+            image:
+              repository: ghcr.io/onedr0p/sabnzbd
+              tag: 4.3.1@sha256:10aa04902725e2fb8325b71fc6bbdf3399e63d6520028c2571220d54fd928aee
+            env:
+              SABNZBD__PORT: &port 8080
+              SABNZBD__HOST_WHITELIST_ENTRIES: >-
+                sabnzbd,
+                sabnzbd.downloads,
+                sabnzbd.downloads.svc,
+                sabnzbd.downloads.svc.cluster,
+                sabnzbd.downloads.svc.cluster.local,
+                sabnzbd.econline.nl
+              SABNZBD__API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: sabnzbd-secret
+                    key: api_key
+              SABNZBD__NZB_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: sabnzbd-secret
+                    key: nzb_key
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            resources:
+              requests:
+                cpu: 5m
+                memory: 1024Mi
+              limits:
+                memory: 6144Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
 
     service:
-      main:
+      app:
+        controller: sabnzbd
         ports:
           http:
             port: *port
 
     ingress:
-      main:
-        enabled: true
-        ingressClassName: internal-nginx
+      app:
+        className: "internal-nginx"
         hosts:
-          - host: &host "sabnzbd.${SECRET_DOMAIN}"
+          - host: &hostName sabnzbd.econline.nl
             paths:
               - path: /
+                service:
+                  identifier: app
+                  port: http
         tls:
           - hosts:
-              - *host
+              - *hostName
 
     persistence:
+      config:
+        existingClaim: sabnzbd-config
+        advancedMounts:
+          sabnzbd:
+            app:
+              - path: /config
+
       media:
-        enabled: true
-        existingClaim: nas-media
-        mountPath: /data/nas-media
+        type: nfs
+        server: nas.home.econline.nl
+        path: /volume3/Download
+        globalMounts:
+          - path: /data/nas-media
 
-    resources:
-      requests:
-        cpu: 5m
-        memory: "1024M"
-      limits:
-        memory: "4096M"
-
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: ceph-block
+      temp:
+        type: emptyDir
+        advancedMounts:
+          sabnzbd:
+            app:
+              - path: /tmp
