@@ -38,7 +38,7 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
 
         containers:
-          app:
+          music-assistant:
             image:
               repository: ghcr.io/music-assistant/server
               tag: 2.0.0b144
