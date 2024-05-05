@@ -83,14 +83,14 @@ spec:
                   - ALL
 
     service:
-      app:
+      sabnzbd:
         controller: sabnzbd
         ports:
           http:
             port: *port
 
     ingress:
-      app:
+      sabnzbd:
         className: "internal-nginx"
         hosts:
           - host: &hostName sabnzbd.econline.nl
@@ -108,7 +108,7 @@ spec:
         existingClaim: sabnzbd-config
         advancedMounts:
           sabnzbd:
-            app:
+            sabnzbd:
               - path: /config
 
       media:
@@ -122,5 +122,5 @@ spec:
         type: emptyDir
         advancedMounts:
           sabnzbd:
-            app:
+            sabnzbd:
               - path: /tmp
