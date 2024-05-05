@@ -30,7 +30,7 @@ spec:
               effect: NoSchedule
 
         containers:
-          vector:
+          app:
             image:
               repository: docker.io/timberio/vector
               tag: 0.37.1-alpine

@@ -43,7 +43,7 @@ spec:
                 chmod 0600 /mosquitto/external_config/mosquitto_pwd;
 
         containers:
-          mosquitto:
+          app:
             image:
               repository: public.ecr.aws/docker/library/eclipse-mosquitto
               tag: 2.0.18

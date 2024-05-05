@@ -23,7 +23,7 @@ spec:
           reloader.stakater.com/auto: "true"
 
         containers:
-          dsmr-reader:
+          app:
             image:
               repository: ghcr.io/xirixiz/dsmr-reader-docker
               tag: 5.11.0-2024.04.03

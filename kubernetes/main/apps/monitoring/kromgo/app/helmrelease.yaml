@@ -38,7 +38,7 @@ spec:
                   app.kubernetes.io/name: kromgo
 
         containers:
-          kromgo:
+          app:
             image:
               repository: ghcr.io/kashalls/kromgo
               tag: 0.3.1

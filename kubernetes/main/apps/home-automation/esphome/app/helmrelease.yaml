@@ -32,7 +32,7 @@ spec:
               }]
 
         containers:
-          esphome:
+          app:
             image:
               repository: ghcr.io/esphome/esphome
               tag: 2024.4.2
