@@ -78,9 +78,9 @@ spec:
         use-forwarded-headers: "true"
 
       metrics:
-        enabled: false
+        enabled: true
         serviceMonitor:
-          enabled: false
+          enabled: true
           namespace: network
           namespaceSelector:
             any: true
