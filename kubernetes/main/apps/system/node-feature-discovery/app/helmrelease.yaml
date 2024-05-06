@@ -20,6 +20,8 @@ spec:
   upgrade:
     crds: CreateReplace
   values:
+    prometheus:
+      enable: true
     master:
       resources:
         requests:
@@ -41,5 +43,3 @@ spec:
           memory: 48Mi
         limits:
           memory: 48Mi
-    prometheus:
-      enable: true
