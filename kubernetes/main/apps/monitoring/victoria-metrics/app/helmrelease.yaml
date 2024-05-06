@@ -244,7 +244,7 @@ spec:
     defaultRules:
       create: true
       rules:
-        etcd: false
+        etcd: true
         general: true
         k8s: true
         kubeApiserver: true
@@ -259,11 +259,12 @@ spec:
         kubernetesResources: true
         kubernetesStorage: true
         kubernetesSystem: true
-        kubeScheduler: false
+        kubeScheduler: true
         kubeStateMetrics: true
         network: true
         node: true
         vmagent: true
-        vmsingle: false
+        vmsingle: true
+        vmcluster: true
         vmhealth: true
-        alertmanager: false
+        alertmanager: true
