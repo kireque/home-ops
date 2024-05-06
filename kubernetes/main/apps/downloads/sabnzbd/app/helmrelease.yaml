@@ -18,7 +18,7 @@ spec:
 
   values:
     controllers:
-      app:
+      sabnzbd:
         annotations:
           reloader.stakater.com/auto: "true"
 
@@ -107,10 +107,9 @@ spec:
       config:
         existingClaim: sabnzbd-config
         advancedMounts:
-          app:
+          sabnzbd:
             app:
               - path: /config
-
       media:
         type: nfs
         server: nas.home.econline.nl
@@ -121,6 +120,6 @@ spec:
       temp:
         type: emptyDir
         advancedMounts:
-          app:
+          sabnzbd:
             app:
               - path: /tmp
