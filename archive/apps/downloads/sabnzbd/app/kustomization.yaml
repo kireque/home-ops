@@ -1,11 +1,8 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: downloads
 resources:
-  - ./externalsecret.yaml
   - ./helmrelease.yaml
-  # - ./volsync.yaml
-commonLabels:
-  app.kubernetes.io/name: sabnzbd
-  app.kubernetes.io/instance: sabnzbd
+  - ./externalsecret.yaml
+  - ../../../../templates/volsync
