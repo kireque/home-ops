@@ -12,6 +12,7 @@ resources:
   - ./loki/ks.yaml
   - ./node-exporter/ks.yaml
   - ./prometheus-operator/ks.yaml
+  - ./smartctl-exporter/ks.yaml
   - ./unpoller/ks.yaml
   - ./vector/ks.yaml
   - ./victoria-metrics/ks.yaml
