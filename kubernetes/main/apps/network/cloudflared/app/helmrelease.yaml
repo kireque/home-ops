@@ -104,6 +104,7 @@ spec:
     serviceMonitor:
       app:
         serviceName: cloudflared
+        enabled: false
         endpoints:
           - port: http
             scheme: http
