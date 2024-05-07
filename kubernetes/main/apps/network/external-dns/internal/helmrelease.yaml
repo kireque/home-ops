@@ -58,7 +58,7 @@ spec:
         memory: 90M
 
     serviceMonitor:
-      enabled: false
+      enabled: true
 
     sources:
       - ingress
