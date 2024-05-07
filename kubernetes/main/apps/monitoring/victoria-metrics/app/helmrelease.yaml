@@ -41,7 +41,7 @@ spec:
               cpu: 100m
               memory: 512Mi
             limits:
-              cpu: 500m
+              # cpu: 500m
               memory: 1536Mi
           topologySpreadConstraints:
             - maxSkew: 1
@@ -67,7 +67,7 @@ spec:
               cpu: 100m
               memory: 256Mi
             limits:
-              cpu: 750m
+              # cpu: 750m
               memory: 256Mi
           topologySpreadConstraints:
             - maxSkew: 1
@@ -96,7 +96,7 @@ spec:
               cpu: 100m
               memory: 256Mi
             limits:
-              cpu: 500m
+              # cpu: 500m
               memory: 256Mi
           topologySpreadConstraints:
             - maxSkew: 1
@@ -118,7 +118,7 @@ spec:
             cpu: 50m
             memory: 128Mi
           limits:
-            cpu: 150m
+            # cpu: 150m
             memory: 256Mi
         topologySpreadConstraints:
           - maxSkew: 1
@@ -152,7 +152,7 @@ spec:
             cpu: 50m
             memory: 256Mi
           limits:
-            cpu: 400m
+            # cpu: 400m
             memory: 512Mi
         topologySpreadConstraints:
           - maxSkew: 1
