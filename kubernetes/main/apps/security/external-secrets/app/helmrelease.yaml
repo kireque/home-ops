@@ -20,19 +20,19 @@ spec:
     replicaCount: 3
     leaderElect: true
     grafana:
-      enabled: false
+      enabled: true
     serviceMonitor:
-      enabled: false
+      enabled: true
       interval: 1m
     backgroundController:
       serviceMonitor:
-        enabled: false
+        enabled: true
         interval: 1m
     cleanupController:
       serviceMonitor:
-        enabled: false
+        enabled: true
         interval: 1m
     reportsController:
       serviceMonitor:
-        enabled: false
+        enabled: true
         interval: 1m
