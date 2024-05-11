@@ -134,7 +134,7 @@ spec:
       # Configure a service for the code-server sidecar
       code:
         type: ClusterIP
-        controller: main
+        controller: zigbee2mqtt
         ports:
           http:
             port: 8081
