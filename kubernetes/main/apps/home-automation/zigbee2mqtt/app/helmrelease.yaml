@@ -101,6 +101,26 @@ spec:
               limits:
                 memory: 384Mi
 
+          # Configure the code-server sidecar
+          code:
+            dependsOn: app
+            image:
+              # -- image repository
+              repository: ghcr.io/coder/code-server
+              # -- image tag
+              # this example is not automatically updated, so be sure to use the latest image
+              tag: 4.19.0
+            args:
+              - --auth
+              - "none"
+              - --user-data-dir
+              - "/config/.vscode"
+              - --extensions-dir
+              - "/config/.vscode"
+              - --port
+              - "8081"
+              - "/config"
+
     service:
       app:
         controller: zigbee2mqtt
@@ -110,6 +130,14 @@ spec:
             port: 8080
           metrics:
             port: 9000
+
+      # Configure a service for the code-server sidecar
+      code:
+        type: ClusterIP
+        controller: main
+        ports:
+          http:
+            port: 8081
 
     ingress:
       app:
@@ -124,6 +152,20 @@ spec:
         tls:
           - hosts:
               - *hostName
+      # Configure an Ingress for the code-server sidecar
+      code:
+        className: "internal-nginx"
+        hosts:
+          - host: &hostName-code hass-zigbee2mqtt.econline.nl
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: code
+                  port: http
+        tls:
+          - hosts:
+              - *hostName-code
 
     persistence:
       data:
