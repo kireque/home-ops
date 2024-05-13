@@ -6,12 +6,12 @@ metadata:
   name: &appname scaler
   namespace: flux-system
 spec:
-  targetNamespace: downloads
+  targetNamespace: system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./kubernetes/main/apps/downloads/scaler/app"
+  path: "./kubernetes/main/apps/system/scaler/app"
   prune: true
   sourceRef:
     kind: GitRepository
