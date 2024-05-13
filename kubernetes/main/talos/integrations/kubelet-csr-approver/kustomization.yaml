@@ -16,3 +16,4 @@ commonAnnotations:
   meta.helm.sh/release-namespace: system-controllers
 commonLabels:
   app.kubernetes.io/managed-by: Helm
+
