@@ -3,7 +3,6 @@ version: "3"
 
 vars:
   KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
-  ANSIBLE_DIR: "{{.ROOT_DIR}}/infrastructure/ansible"
   TERRAFORM_DIR: "{{.ROOT_DIR}}/infrastructure/terraform"
 
 includes:
@@ -16,12 +15,18 @@ includes:
   externalsecrets:
     taskfile: .taskfiles/externalsecrets
     dir: .taskfiles/externalsecrets
+  postgres:
+    taskfile: ".taskfiles/postgres"
+    dir: .taskfiles/postgres
   rook:
     taskfile: ".taskfiles/rook"
     dir: .taskfiles/rook
   sops:
     taskfile: ".taskfiles/sops"
     dir: .taskfiles/sops
+  talos:
+    taskfile: ".taskfiles/talos"
+    dir: .taskfiles/talos
   volsync:
     taskfile: ".taskfiles/volsync"
     dir: .taskfiles/volsync

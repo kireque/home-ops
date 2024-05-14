@@ -21,8 +21,8 @@ nodes:
     ipAddress: 10.1.1.31
     controlPlane: true
     installDiskSelector:
-      size: "<= 256GB"
-      model: "SEAGATE ST240FP0"
+      size: "<= 512GB"
+      model: "CT500MX500SSD1"
     # machineDisks:
     #   - device: /dev/sda
     #     partitions:
