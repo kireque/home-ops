@@ -50,7 +50,7 @@ spec:
         memory: 42M
 
     serviceMonitor:
-      enabled: false
+      enabled: true
 
     sources:
       - ingress

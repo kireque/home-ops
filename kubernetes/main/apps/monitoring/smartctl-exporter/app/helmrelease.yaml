@@ -36,7 +36,7 @@ spec:
         - /dev/sdb
         - /dev/nvme0n1
     serviceMonitor:
-      enabled: false
+      enabled: true
       relabelings:
         - action: labeldrop
           regex: (pod)

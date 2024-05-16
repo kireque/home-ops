@@ -210,7 +210,7 @@ spec:
         memory: 127M
 
     serviceMonitor:
-      enabled: false
+      enabled: true
 
     sidecar:
       dashboards:
