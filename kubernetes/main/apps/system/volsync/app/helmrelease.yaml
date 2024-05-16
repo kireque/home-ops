@@ -18,5 +18,5 @@ spec:
   values:
     manageCRDs: true
     metrics:
-      enabled: true
+      enabled: false
       disableAuth: true
