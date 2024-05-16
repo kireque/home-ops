@@ -380,7 +380,7 @@ spec:
       autoMount: true
 
     serviceMonitor:
-      enabled: true
+      enabled: false
 
     sidecar:
       dashboards:
