@@ -44,6 +44,6 @@ spec:
         - "9.9.9.9"
 
     prometheus:
-      enabled: false
+      enabled: true
       servicemonitor:
-        enabled: false
+        enabled: true
