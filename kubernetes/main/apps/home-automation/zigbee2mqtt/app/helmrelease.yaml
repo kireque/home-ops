@@ -133,9 +133,7 @@ spec:
     persistence:
       data:
         existingClaim: zigbee2mqtt-data
-        # advancedMounts:
-        #   zigbee2mqtt:
-        #     app:
-        #       - path: /data
-        globalMounts:
-          - path: /data
+        advancedMounts:
+          zigbee2mqtt:
+            app:
+              - path: /data
