@@ -67,12 +67,12 @@ spec:
               - --auth
               - "none"
               - --user-data-dir
-              - "/data/.vscode"
+              - "/config/.vscode"
               - --extensions-dir
-              - "/data/.vscode"
+              - "/config/.vscode"
               - --port
               - "8081"
-              - "/data"
+              - "/config"
 
     service:
       app:
@@ -129,7 +129,7 @@ spec:
         #     app:
         #       - path: /config
         globalMounts:
-          - path: /data
+          - path: /config
 
       deploy-key:
         type: secret
