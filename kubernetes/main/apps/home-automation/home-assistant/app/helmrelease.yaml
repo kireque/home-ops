@@ -82,7 +82,7 @@ spec:
       # Configure a service for the code-server sidecar
       code:
         type: ClusterIP
-        controller: main
+        controller: home-assistant
         ports:
           http:
             port: 8081
