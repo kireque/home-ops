@@ -123,10 +123,13 @@ spec:
     persistence:
       config:
         existingClaim: home-assistant-config
-        advancedMounts:
-          home-assistant:
-            app:
-              - path: /config
+        # advancedMounts:
+        #   home-assistant:
+        #     app:
+        #       - path: /config
+        globalMounts:
+          - path: /data
+
       deploy-key:
         type: secret
         name: home-assistant-secret
