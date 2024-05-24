@@ -16,15 +16,6 @@ spec:
         name: bjw-s
         namespace: flux-system
   values:
-    # Configure options applied to all pods
-    defaultPodOptions:
-      automountServiceAccountToken: false
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: "OnRootMismatch"
-
     controllers:
       home-assistant:
         annotations:
@@ -38,6 +29,11 @@ spec:
                 "namespace": "network",
                 "ips": ["10.1.4.151/24"]
               }]
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            fsGroup: 0
+            fsGroupChangePolicy: OnRootMismatch
 
         containers:
           app:
