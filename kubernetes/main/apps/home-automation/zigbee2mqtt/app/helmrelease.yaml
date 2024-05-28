@@ -120,15 +120,12 @@ spec:
       app:
         className: "internal-nginx"
         hosts:
-          - host: &hostName zigbee2mqtt.econline.nl
+          - host: zigbee2mqtt.econline.nl
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *hostName
 
     persistence:
       data:

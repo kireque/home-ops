@@ -95,15 +95,12 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: ingress-ext.econline.nl
         hosts:
-          - host: &hostName hass.econline.nl
+          - host: hass.econline.nl
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *hostName
 
       # Configure an Ingress for the code-server sidecar
       code:

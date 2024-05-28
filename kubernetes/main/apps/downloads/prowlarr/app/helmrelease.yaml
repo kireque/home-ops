@@ -84,15 +84,12 @@ spec:
       app:
         className: "internal-nginx"
         hosts:
-          - host: &hostName prowlarr.econline.nl
+          - host: prowlarr.econline.nl
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *hostName
 
     persistence:
       config:

@@ -70,15 +70,12 @@ spec:
       app:
         className: "internal-nginx"
         hosts:
-          - host: &hostName music-assistant.econline.nl
+          - host: music-assistant.econline.nl
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *hostName
 
     persistence:
       data:

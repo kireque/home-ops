@@ -98,22 +98,18 @@ spec:
       app:
         className: "internal-nginx"
         hosts:
-          - host: &hostName minio.econline.nl
+          - host: minio.econline.nl
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-          - host: &hostNameS3 s3.econline.nl
+          - host: s3.econline.nl
             paths:
               - path: /
                 service:
                   identifier: app
                   port: s3
-        tls:
-          - hosts:
-              - *hostName
-              - *hostNameS3
     persistence:
       data:
         enabled: true
