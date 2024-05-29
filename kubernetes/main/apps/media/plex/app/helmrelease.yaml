@@ -21,6 +21,9 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
 
+        labels:
+          automaticSchedular: "true"
+
         pod:
           nodeSelector:
             intel.feature.node.kubernetes.io/gpu: "true"
