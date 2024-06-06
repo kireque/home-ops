@@ -134,7 +134,7 @@ spec:
             port: 9000
 
       code:
-        controller: home-assistant
+        controller: zigbee2mqtt
         ports:
           http:
             port: 8081
@@ -153,7 +153,7 @@ spec:
       code:
         className: "internal-nginx"
         hosts:
-          - host: &host-code zigbee2mqtt-code.econline.nl
+          - host: zigbee2mqtt-code.econline.nl
             paths:
               - path: /
                 pathType: Prefix
