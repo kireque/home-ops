@@ -1,9 +1,9 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: external-dns-external
+  name: externaldns-external
 spec:
   interval: 30m
   chart:
@@ -15,46 +15,43 @@ spec:
         name: kubernetes-sigs-external-dns
         namespace: flux-system
       interval: 30m
-
+  install:
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
   values:
-    fullnameOverride: &name external-dns-external
-
+    fullnameOverride: &name externaldns-external
     domainFilters:
       - econline.nl
-
     env:
       - name: CF_API_TOKEN
         valueFrom:
           secretKeyRef:
-            name: external-dns-external-secrets
+            name: externaldns-external-secrets
             key: cloudflare_api_token
-
     extraArgs:
+      - --cloudflare-dns-records-per-page=1000
+      - --cloudflare-proxied
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
-      - --cloudflare-proxied
+      - --events
+      - --ignore-ingress-tls-spec
       - --ingress-class=external-nginx
-
     podAnnotations:
-      secret.reloader.stakater.com/reload: external-dns-external-secrets
-
+      secret.reloader.stakater.com/reload: externaldns-external-secrets
     policy: sync
     provider: cloudflare
-
     resources:
       requests:
         cpu: 13m
         memory: 42M
       limits:
         memory: 42M
-
     serviceMonitor:
       enabled: true
-
     sources:
       - ingress
       - crd
-
     txtOwnerId: main
     txtPrefix: "k8s."
 
