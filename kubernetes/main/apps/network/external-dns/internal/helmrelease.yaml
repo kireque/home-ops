@@ -17,7 +17,7 @@ spec:
       interval: 30m
 
   values:
-    fullnameOverride: &name externaldns-internal
+    fullnameOverride: &name external-dns-internal
 
     domainFilters:
       - econline.nl
@@ -45,7 +45,7 @@ spec:
             key: bind_rndc_secret
 
     podAnnotations:
-      secret.reloader.stakater.com/reload: externaldns-internal-secrets
+      secret.reloader.stakater.com/reload: external-dns-internal-secrets
 
     policy: sync
     provider: rfc2136
