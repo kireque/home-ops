@@ -4,9 +4,9 @@ clusterName: ${clusterName}
 endpoint: "https://${clusterEndpointIP}:6443"
 
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-talosVersion: 1.7.4
+talosVersion: v1.7.4
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: 1.30.1
+kubernetesVersion: v1.30.1
 
 cniConfig:
   name: none
