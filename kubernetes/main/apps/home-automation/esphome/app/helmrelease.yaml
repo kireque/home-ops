@@ -61,7 +61,7 @@ spec:
       app:
         className: "internal-nginx"
         annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-int.bjw-s.dev
+          external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
         hosts:
           - host: esphome2.econline.nl
             paths:
