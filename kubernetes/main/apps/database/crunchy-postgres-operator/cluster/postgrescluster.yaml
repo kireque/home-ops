@@ -111,7 +111,7 @@ spec:
           schedules:
             full: "0 21 * * 0" # At 21:00, only on Sunday
             differential: "0 21 * * 1-6" # At 21:00, Monday through Saturday
-            incremental: "0 19-20 * * *" # Every hour, between 19:00 and 20:00, every day
+            incremental: "0 20 * * *" # At 20:00, every day
 
   dataSource:
     pgbackrest:
