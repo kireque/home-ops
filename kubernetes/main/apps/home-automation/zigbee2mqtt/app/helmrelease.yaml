@@ -142,6 +142,8 @@ spec:
     ingress:
       app:
         className: "internal-nginx"
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ingress-int.bjw-s.dev
         hosts:
           - host: zigbee2mqtt.econline.nl
             paths:
@@ -152,6 +154,8 @@ spec:
 
       code:
         className: "internal-nginx"
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ingress-int.bjw-s.dev
         hosts:
           - host: zigbee2mqtt-code.econline.nl
             paths:
