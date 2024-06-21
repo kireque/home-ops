@@ -15,7 +15,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: homeops-ops-kubernetes
+    name: home-ops-kubernetes
   wait: false
   dependsOn:
     - name: crunchy-postgres-operator-cluster
