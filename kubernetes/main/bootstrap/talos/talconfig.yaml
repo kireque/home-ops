@@ -23,10 +23,6 @@ nodes:
     installDiskSelector:
       size: "<= 512GB"
       model: "CT500MX500SSD1"
-    # machineDisks:
-    #   - device: /dev/sda
-    #     partitions:
-    #       - mountpoint: /var/mnt/sata
     networkInterfaces:
       - interface: bond0
         bond:
@@ -49,9 +45,9 @@ nodes:
         machine:
           kubelet:
             extraMounts:
-              - destination: /var/mnt/
+              - destination: /var/openebs/local
                 type: bind
-                source: /var/mnt/
+                source: /var/openebs/local
                 options:
                   - rbind
                   - rshared
@@ -63,10 +59,6 @@ nodes:
     installDiskSelector:
       size: "<= 512GB"
       model: "CT500MX500SSD1"
-    # machineDisks:
-    #   - device: /dev/sda
-    #     partitions:
-    #       - mountpoint: /var/mnt/sata
     networkInterfaces:
       - interface: bond0
         bond:
@@ -88,10 +80,6 @@ nodes:
     installDiskSelector:
       size: "<= 500GB"
       model: "VK0480GDJXV"
-    # machineDisks:
-    #   - device: /dev/sda
-    #     partitions:
-    #       - mountpoint: /var/mnt/sata
     networkInterfaces:
       - interface: bond0
         bond:
