@@ -6,7 +6,6 @@
       matchDatasources: ["docker"],
       matchPackageNames: [
         "ghcr.io/onedr0p/plex",
-        "ghcr.io/onedr0p/qbittorrent",
         "ghcr.io/xirixiz/dsmr-reader-docker",
       ],
       versioning: "loose",
@@ -38,7 +37,6 @@
     {
       description: "Custom versioning for miniflux",
       matchDatasources: ["docker"],
-      versioning: "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>)$",
       matchPackageNames: ["ghcr.io/miniflux/miniflux"],
     },
   ],
