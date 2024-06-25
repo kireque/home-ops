@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: actions-runner-controller-charts/gha-runner-scale-set
-      version: 0.9.2
+      version: 0.9.3
       sourceRef:
         kind: HelmRepository
         name: actions-runner-controller
@@ -58,6 +58,7 @@ spec:
       valuesKey: github_app_installation_id
       targetPath: githubConfigSecret.github_app_installation_id
     - kind: Secret
+
       name: actions-runner-controller-auth
       valuesKey: github_app_private_key
       targetPath: githubConfigSecret.github_app_private_key
