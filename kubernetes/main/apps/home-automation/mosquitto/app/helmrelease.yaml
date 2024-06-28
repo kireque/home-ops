@@ -62,7 +62,7 @@ spec:
                 cpu: 5m
                 memory: 10M
               limits:
-                memory: 10M
+                memory: 100M
 
     service:
       app:
