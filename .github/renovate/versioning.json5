@@ -4,7 +4,7 @@
     {
       description: "Loose versioning for non-semver packages",
       matchDatasources: ["docker"],
-      matchPackageNames: [
+      matchDepNames: [
         "ghcr.io/onedr0p/plex",
         "ghcr.io/xirixiz/dsmr-reader-docker",
       ],
@@ -13,31 +13,31 @@
     {
       description: "PEP440 versioning for radicale",
       matchDatasources: ["docker"],
-      matchPackageNames: ["tomsquest/docker-radicale"],
+      matchDepNames: ["tomsquest/docker-radicale"],
       versioning: "pep440",
     },
     {
       description: "Custom versioning for http-https-echo",
       matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/mendhak/http-https-echo"],
+      matchDepNames: ["ghcr.io/mendhak/http-https-echo"],
       versioning: "regex:^(?<major>\\d+)$",
     },
     {
       description: "Custom versioning for Minio",
       matchDatasources: ["docker"],
       versioning: "regex:^RELEASE\\.(?<major>\\d+)-(?<minor>\\d+)-(?<patch>\\d+)T.*Z(-(?<compatibility>.*))?$",
-      matchPackageNames: ["quay.io/minio/minio"],
+      matchDepNames: ["quay.io/minio/minio"],
     },
     {
       description: "Custom versioning for Scrypted",
       matchDatasources: ["docker"],
       versioning: "regex:^(?<compatibility>(?<nodeVersion>\\d{2})-(?<ubuntuVersion>.*?)-(?<scryptedFlavor>.*?))-v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$",
-      matchPackageNames: ["ghcr.io/koush/scrypted"],
+      matchDepNames: ["ghcr.io/koush/scrypted"],
     },
     {
       description: "Custom versioning for miniflux",
       matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/miniflux/miniflux"],
+      matchDepNames: ["ghcr.io/miniflux/miniflux"],
     },
   ],
 }

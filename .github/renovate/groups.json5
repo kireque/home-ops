@@ -25,7 +25,7 @@
     {
       description: "Cilium image and chart",
       groupName: "cilium",
-      matchPackageNames: [
+      matchDepNames: [
         "quay.io/cilium/cilium",
         "quay.io/cilium/operator-generic",
         "cilium",
@@ -39,7 +39,7 @@
     {
       description: "Actions Runner Controller charts",
       groupName: "ARC",
-      matchPackageNames: [
+      matchDepNames: [
         "actions-runner-controller-charts/gha-runner-scale-set-controller",
         "actions-runner-controller-charts/gha-runner-scale-set",
       ],
@@ -52,7 +52,7 @@
     {
       description: "Talos",
       groupName: "Talos",
-      matchPackageNames: [
+      matchDepNames: [
         "ghcr.io/siderolabs/installer",
         "ghcr.io/siderolabs/talosctl",
       ],
@@ -76,7 +76,7 @@
     {
       description: "Maker Management Platform",
       groupName: "maker-management-platform",
-      matchPackageNames: [
+      matchDepNames: [
         "ghcr.io/maker-management-platform/mmp-ui",
         "ghcr.io/maker-management-platform/agent",
       ],
