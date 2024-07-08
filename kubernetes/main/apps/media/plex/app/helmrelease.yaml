@@ -81,12 +81,15 @@ spec:
           nginx.ingress.kubernetes.io/backend-protocol: HTTPS
         className: "external-nginx"
         hosts:
-          - host: plex.econline.nl
+          - host: &hostName plex.econline.nl
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
+        tls:
+          - hosts:
+              - *hostName
 
     persistence:
       config:
