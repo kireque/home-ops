@@ -112,21 +112,6 @@ controlPlane:
         network:
           disableSearchDomain: true
 
-    # Force nameserver
-    - |-
-      machine:
-        network:
-          nameservers:
-            - 10.5.0.4
-
-    # Configure NTP
-    - |-
-      machine:
-        time:
-          disabled: false
-          servers:
-            - 10.1.1.1
-
     # Enable KubePrism
     - |-
       machine:
