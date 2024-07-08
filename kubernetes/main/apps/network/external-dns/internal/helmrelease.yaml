@@ -39,7 +39,7 @@ spec:
           - name: UNIFI_PASS
             valueFrom:
               secretKeyRef:
-                name: external-dns-unifi-secret
+                name: external-dns-internal-secrets
                 key: external_dns_password
         livenessProbe:
           httpGet:
