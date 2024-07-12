@@ -20,7 +20,7 @@ spec:
                 - "/scripts/scale-deployments.sh 0"
               volumeMounts:
                 - name: script-volume
-                  mountPath: /scripts
+                  mountPath: /scripts/scale-deployments.sh
                   subPath: scale-deployments.sh
                   readOnly: true
           volumes:
