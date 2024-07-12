@@ -19,7 +19,7 @@ spec:
               command:
                 - "/bin/bash"
                 - "-c"
-                - "/scripts/scale-deployments.sh 0"
+                - "/scripts/scale-deployments.sh 1"
               volumeMounts:
                 - name: script-volume
                   mountPath: /scripts/scale-deployments.sh
