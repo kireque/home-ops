@@ -17,7 +17,9 @@ spec:
             - name: kubectl-container
               image: bitnami/kubectl
               command:
-                - "/scripts/scale-deployments.sh 1"
+                - "/bin/bash"
+                - "-c"
+                - "/scripts/scale-deployments.sh 0"
               volumeMounts:
                 - name: script-volume
                   mountPath: /scripts/scale-deployments.sh
