@@ -25,6 +25,11 @@ spec:
                   readOnly: true
           volumes:
             - name: script-volume
-              configMap:
-                name: scale-deployments
-                defaultMode: 0755
+              projected:
+                defaultMode: 0775
+                sources:
+                  - configMap:
+                      name: scale-deployments
+                      items:
+                        - key: scale-deployments.sh
+                          path: scale-deployments.sh
