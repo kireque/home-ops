@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scale-down-mon-thu
+spec:
+  schedule: "55 23 * * 1-4" # At 23:55 Monday to Thursday
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1 # Automatically delete completed jobs
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: scale-job-account
+          restartPolicy: Never
+          containers:
+            - name: kubectl-container
+              image: bitnami/kubectl
+              command:
+                - "/scripts/scale-deployments.sh 0"
+              volumeMounts:
+                - name: script-volume
+                  mountPath: /scripts
+                  subPath: scale-deployments.sh
+                  readOnly: true
+          volumes:
+            - name: script-volume
+              configMap:
+                name: scale-deployments
+                defaultMode: 0755

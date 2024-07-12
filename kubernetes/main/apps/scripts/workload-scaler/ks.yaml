@@ -3,20 +3,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname scaler
+  name: &appname workload-scaler
   namespace: flux-system
 spec:
-  targetNamespace: system
+  targetNamespace: scripts
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./kubernetes/main/apps/system/scaler/app"
+  path: "./kubernetes/main/apps/scripts/workload-scaler/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
   wait: false
   dependsOn:
-    - name: rook-ceph-cluster
     - name: external-secrets-stores
