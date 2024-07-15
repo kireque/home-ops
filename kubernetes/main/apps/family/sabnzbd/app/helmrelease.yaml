@@ -1,0 +1,162 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sabnzbd
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.2.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  values:
+    controllers:
+      sabnzbd:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        pod:
+          securityContext:
+            runAsUser: 2000
+            runAsGroup: 2000
+            runAsNonRoot: true
+            fsGroup: 2000
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+              - 65542 # gladius:external-services
+
+        containers:
+          sabnzbd:
+            image:
+              repository: ghcr.io/onedr0p/sabnzbd
+              tag: 4.3.2@sha256:8e70a877c77805dfe93ce30a8da3362fbddf221ef806951d4e4634bb80dc87b5
+            env:
+              SABNZBD__PORT: &port 8080
+              SABNZBD__HOST_WHITELIST_ENTRIES: >-
+                sabnzbd,
+                sabnzbd.family,
+                sabnzbd.family.svc,
+                sabnzbd.family.svc.cluster,
+                sabnzbd.family.svc.cluster.local,
+                sabnzbd-cees2.econline.nl
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            resources:
+              requests:
+                cpu: 5m
+                memory: 1024Mi
+              limits:
+                memory: 6144Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+          # Configure the file-browser sidecar
+          filebrowser:
+            dependsOn: app
+            image:
+              repository: docker.io/filebrowser/filebrowser
+              tag: v2.30.0@sha256:1252d3e3d7c27598765a4cd08d68a8b4dda57753649870dcfd2fdcc2e3622709
+            env:
+              FB_DATABASE: /config/filebrowser.db
+              FB_ROOT: /eros
+              FB_LOG: stdout
+              FB_NOAUTH: true
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 80
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 2Gi
+
+    service:
+      app:
+        controller: sabnzbd
+        ports:
+          http:
+            port: *port
+
+      filebrowser:
+        controller: sabnzbd
+        ports:
+          http:
+            port: 80
+
+    ingress:
+      app:
+        className: "internal-nginx"
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
+        hosts:
+          - host: sabnzbd-cees2.econline.nl
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+
+      filebrowser:
+        className: "internal-nginx"
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
+        hosts:
+          - host: files-cees2.econline.nl
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: code
+                  port: http
+
+    persistence:
+      config:
+        existingClaim: family-sabnzbd-config
+        advancedMounts:
+          sabnzbd:
+            app:
+              - path: /config
+      temp:
+        type: emptyDir
+        globalMounts:
+          - path: /data
+
+      temp:
+        type: emptyDir
+        advancedMounts:
+          sabnzbd:
+            app:
+              - path: /tmp
