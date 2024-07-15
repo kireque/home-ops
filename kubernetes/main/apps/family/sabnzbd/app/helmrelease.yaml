@@ -145,10 +145,8 @@ spec:
     persistence:
       config:
         existingClaim: family-sabnzbd-config
-        advancedMounts:
-          sabnzbd:
-            sabnzbd:
-              - path: /config
+        globalMounts:
+          - path: /config
       data:
         type: emptyDir
         globalMounts:
@@ -156,7 +154,5 @@ spec:
 
       temp:
         type: emptyDir
-        advancedMounts:
-          sabnzbd:
-            sabnzbd:
-              - path: /tmp
+        globalMounts:
+          - path: /tmp
