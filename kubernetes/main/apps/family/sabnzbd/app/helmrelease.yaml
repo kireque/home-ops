@@ -71,7 +71,7 @@ spec:
 
           # Configure the file-browser sidecar
           filebrowser:
-            dependsOn: app
+            dependsOn: sabnzbd
             image:
               repository: docker.io/filebrowser/filebrowser
               tag: v2.30.0@sha256:1252d3e3d7c27598765a4cd08d68a8b4dda57753649870dcfd2fdcc2e3622709
