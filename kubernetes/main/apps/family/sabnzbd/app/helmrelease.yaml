@@ -69,7 +69,7 @@ spec:
                 drop:
                   - ALL
 
-          # Configure the file-browser sidecar
+          # Configure the filebrowser sidecar
           filebrowser:
             dependsOn: sabnzbd
             image:
@@ -139,7 +139,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: file-browser
+                  identifier: filebrowser
                   port: http
 
     persistence:
