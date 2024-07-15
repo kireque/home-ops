@@ -104,7 +104,7 @@ spec:
                 memory: 2Gi
 
     service:
-      app:
+      sabnzbd:
         controller: sabnzbd
         ports:
           http:
@@ -117,7 +117,7 @@ spec:
             port: 80
 
     ingress:
-      app:
+      sabnzbd:
         className: "internal-nginx"
         annotations:
           external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
@@ -126,7 +126,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: sabnzbd
                   port: http
 
       filebrowser:
@@ -139,7 +139,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: code
+                  identifier: file-browser
                   port: http
 
     persistence:
@@ -147,7 +147,7 @@ spec:
         existingClaim: family-sabnzbd-config
         advancedMounts:
           sabnzbd:
-            app:
+            sabnzbd:
               - path: /config
       data:
         type: emptyDir
@@ -158,5 +158,5 @@ spec:
         type: emptyDir
         advancedMounts:
           sabnzbd:
-            app:
+            sabnzbd:
               - path: /tmp
