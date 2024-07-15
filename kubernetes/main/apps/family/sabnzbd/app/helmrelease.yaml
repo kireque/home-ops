@@ -149,7 +149,7 @@ spec:
           sabnzbd:
             app:
               - path: /config
-      temp:
+      data:
         type: emptyDir
         globalMounts:
           - path: /data
