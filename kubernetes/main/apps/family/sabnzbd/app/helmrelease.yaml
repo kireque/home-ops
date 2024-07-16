@@ -163,7 +163,7 @@ spec:
         storageClass: openebs-hostpath
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
-        size: 1G
+        size: 2G
 
       temp:
         type: emptyDir
