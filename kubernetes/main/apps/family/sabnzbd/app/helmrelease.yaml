@@ -157,13 +157,16 @@ spec:
         existingClaim: family-sabnzbd-config
         globalMounts:
           - path: /config
-      data:
-        type: emptyDir
-        globalMounts:
-          - path: /data
-        sizeLimit: 500Mi
 
-      temp:
-        type: emptyDir
+      data:
+        enabled: true
+        storageClass: openebs-hostpath
+        type: persistentVolumeClaim
         globalMounts:
-          - path: /tmp
+          - path: /config
+        size: 1Gi
+
+        temp:
+          type: emptyDir
+          globalMounts:
+            - path: /tmp
