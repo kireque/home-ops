@@ -162,8 +162,7 @@ spec:
         enabled: true
         storageClass: openebs-hostpath
         type: persistentVolumeClaim
-        globalMounts:
-          - path: /config
+        accessMode: ReadWriteOnce
         size: 1Gi
 
         temp:
