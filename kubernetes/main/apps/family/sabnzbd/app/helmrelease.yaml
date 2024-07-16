@@ -159,11 +159,10 @@ spec:
           - path: /config
 
       data:
-        enabled: true
-        storageClass: openebs-hostpath
         type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
         size: 2G
+        globalMounts:
+          - path: /data
 
       temp:
         type: emptyDir
