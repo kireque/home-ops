@@ -165,7 +165,7 @@ spec:
         accessMode: ReadWriteOnce
         size: 1Gi
 
-        temp:
-          type: emptyDir
-          globalMounts:
-            - path: /tmp
+      temp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
