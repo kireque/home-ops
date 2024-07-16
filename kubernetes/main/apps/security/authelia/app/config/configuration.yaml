@@ -82,6 +82,13 @@ access_control:
       subject:
         - ["user:erik"]
       policy: two_factor
+    - domain:
+        - sabnzbd-cees2.econline.nl
+        - files-cees2.econline.nl
+      subject:
+        - ["user:cees"]
+      policy: one_factor
+      
 
 identity_validation:
   reset_password:
