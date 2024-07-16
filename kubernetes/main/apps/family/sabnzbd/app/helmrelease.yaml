@@ -40,12 +40,12 @@ spec:
             env:
               SABNZBD__PORT: &sabnzbdport 8080
               SABNZBD__HOST_WHITELIST_ENTRIES: >-
-                sabnzbd,
-                sabnzbd.family,
-                sabnzbd.family.svc,
-                sabnzbd.family.svc.cluster,
-                sabnzbd.family.svc.cluster.local,
-                sabnzbd-cees2.econline.nl
+                sabnzbd-cees,
+                sabnzbd-cees.family,
+                sabnzbd-cees.family.svc,
+                sabnzbd-cees.family.svc.cluster,
+                sabnzbd-cees.family.svc.cluster.local,
+                sabnzbd-cees.econline.nl
             probes:
               liveness:
                 enabled: true

@@ -83,8 +83,8 @@ access_control:
         - ["user:erik"]
       policy: two_factor
     - domain:
-        - sabnzbd-cees2.econline.nl
-        - files-cees2.econline.nl
+        - sabnzbd-cees.econline.nl
+        - files-cees.econline.nl
       subject:
         - ["user:cees"]
       policy: one_factor
