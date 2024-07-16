@@ -151,6 +151,7 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /data
+        sizeLimit: 500Mi
 
       temp:
         type: emptyDir
