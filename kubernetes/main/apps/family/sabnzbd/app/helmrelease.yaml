@@ -77,7 +77,7 @@ spec:
               tag: v2.30.0@sha256:1252d3e3d7c27598765a4cd08d68a8b4dda57753649870dcfd2fdcc2e3622709
             env:
               FB_DATABASE: /config/filebrowser.db
-              FB_ROOT: /eros
+              FB_ROOT: /data
               FB_LOG: stdout
               FB_NOAUTH: true
             probes:
