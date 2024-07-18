@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname zigbee2mqtt
+  name: &appname zigbee2mqtt-app
   namespace: flux-system
 spec:
   targetNamespace: home-automation
@@ -22,6 +22,34 @@ spec:
     - name: volsync
     - name: external-secrets-stores
     - name: mosquitto
+  postBuild:
+    substitute:
+      APP: *appname
+      VOLSYNC_CLAIM: zigbee2mqtt-data---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname zigbee2mqtt-code
+  namespace: flux-system
+spec:
+  targetNamespace: home-automation
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
+  path: "./kubernetes/main/apps/home-automation/zigbee2mqtt/code"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-ops-kubernetes
+  wait: false
+  dependsOn:
+    - name: rook-ceph-cluster
+    - name: volsync
+    - name: external-secrets-stores
+    - name: mosquitto
+    - name: zigbee2mqtt-app
   postBuild:
     substitute:
       APP: *appname
