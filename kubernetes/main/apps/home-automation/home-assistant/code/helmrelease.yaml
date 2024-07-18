@@ -72,12 +72,14 @@ spec:
             port: 8888
     ingress:
       app:
-        enabled: true
-        className: nginx
+        className: "internal-nginx"
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
         hosts:
           - host: &host hass-code.econline.nl
             paths:
               - path: /
+                pathType: Prefix
                 service:
                   identifier: app
                   port: http
