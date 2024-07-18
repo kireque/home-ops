@@ -42,7 +42,7 @@ spec:
     labels:
       app.kubernetes.io/name: &app home-assistant
   interval: 10m
-  path: ""./kubernetes/main/apps/home-automation/home-assistant/code"
+  path: "./kubernetes/main/apps/home-automation/home-assistant/code"
   prune: true
   sourceRef:
     kind: GitRepository
