@@ -28,9 +28,6 @@ spec:
   dependsOn:
     - name: home-assistant
   values:
-    defaultPodOptions:
-      nodeSelector:
-        nodo.feature.node.kubernetes.io/rflink: "true"
     controllers:
       home-assistant-code:
         annotations:
