@@ -81,10 +81,8 @@ spec:
     persistence:
       config:
         existingClaim: home-assistant-config
-        advancedMounts:
-          home-assistant:
-            app:
-              - path: /config
+        globalMounts:
+          - path: /config
 
       deploy-key:
         type: secret
