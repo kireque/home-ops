@@ -53,7 +53,7 @@ spec:
     - name: rook-ceph-cluster
     - name: volsync
     - name: external-secrets-stores
-    - name: home-assisant
+    - name: home-assistant
   postBuild:
     substitute:
       APP: *app
