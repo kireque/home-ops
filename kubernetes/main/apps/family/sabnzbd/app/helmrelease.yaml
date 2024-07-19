@@ -127,12 +127,15 @@ spec:
           nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
           nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
         hosts:
-          - host: sabnzbd-cees.econline.nl
+          - host: &hostSabnzbd sabnzbd-cees.econline.nl
             paths:
               - path: /
                 service:
                   identifier: sabnzbd
                   port: http
+        tls:
+          - hosts:
+              - *hostSabnzbd
 
       filebrowser:
         className: "external-nginx"
@@ -144,13 +147,16 @@ spec:
           nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
           nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
         hosts:
-          - host: files-cees.econline.nl
+          - host: &hostFilebrowser files-cees.econline.nl
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: filebrowser
                   port: http
+        tls:
+          - hosts:
+              - *hostFilebrowser
 
     persistence:
       config:
