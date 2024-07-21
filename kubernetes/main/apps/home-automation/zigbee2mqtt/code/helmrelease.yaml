@@ -59,18 +59,18 @@ spec:
             runAsGroup: 0
             fsGroup: 0
             fsGroupChangePolicy: OnRootMismatch
-                affinity:
-          podAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              - labelSelector:
-                  matchExpressions:
-                    - key: app.kubernetes.io/name
-                      operator: In
-                      values: ["zigbee2mqtt"]
-                    - key: app.kubernetes.io/instance
-                      operator: In
-                      values: ["zigbee2mqtt"]
-                topologyKey: kubernetes.io/hostname
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values: ["zigbee2mqtt"]
+                      - key: app.kubernetes.io/instance
+                        operator: In
+                        values: ["zigbee2mqtt"]
+                  topologyKey: kubernetes.io/hostname
     service:
       app:
         controller: *app
