@@ -83,7 +83,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
         hosts:
-          - host: &host zigbe2mqtt-code.econline.nl
+          - host: &host zigbee2mqtt-code.econline.nl
             paths:
               - path: /
                 pathType: Prefix
