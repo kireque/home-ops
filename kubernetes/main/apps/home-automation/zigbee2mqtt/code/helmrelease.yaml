@@ -93,7 +93,7 @@ spec:
               matchExpressions:
                 - key: app.kubernetes.io/name
                   operator: In
-                  values: ["hzigbee2mqtt"]
+                  values: ["zigbee2mqtt"]
                 - key: app.kubernetes.io/instance
                   operator: In
                   values: ["zigbee2mqtt"]
