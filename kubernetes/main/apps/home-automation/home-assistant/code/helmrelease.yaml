@@ -87,3 +87,16 @@ spec:
       config:
         enabled: true
         existingClaim: home-assistant-config
+
+    affinity:
+      podAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values: ["home-assistant"]
+                - key: app.kubernetes.io/instance
+                  operator: In
+                  values: ["home-assistant"]
+            topologyKey: kubernetes.io/hostname
