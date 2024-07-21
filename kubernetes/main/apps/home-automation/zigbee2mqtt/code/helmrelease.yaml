@@ -85,3 +85,16 @@ spec:
       config:
         enabled: true
         existingClaim: zigbee2mqtt-data
+
+    affinity:
+      podAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values: ["hzigbee2mqtt"]
+                - key: app.kubernetes.io/instance
+                  operator: In
+                  values: ["zigbee2mqtt"]
+            topologyKey: kubernetes.io/hostname
