@@ -50,7 +50,7 @@ spec:
     - name: volsync
     - name: external-secrets-stores
     - name: mosquitto
-    - name: zigbee2mqtt-app
+    - name: zigbee2mqtt
   postBuild:
     substitute:
       APP: *appname
