@@ -3,9 +3,10 @@
 log:
   level: 'debug'
 
-buffers:
-  read: 4096
-  write: 4096
+server:
+  buffers:
+    read: 4096
+    write: 4096
 
 authentication_backend:
   password_reset:
