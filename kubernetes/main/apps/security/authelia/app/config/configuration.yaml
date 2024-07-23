@@ -5,8 +5,8 @@ log:
 
 server:
   buffers:
-    read: 4096
-    write: 4096
+    read: 16384
+    write: 16384
 
 authentication_backend:
   password_reset:
