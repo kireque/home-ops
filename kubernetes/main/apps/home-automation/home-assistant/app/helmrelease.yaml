@@ -91,3 +91,16 @@ spec:
         globalMounts:
           - path: /root/.ssh/id_rsa
             subPath: GH_DEPLOY_KEY
+
+    affinity:
+      podAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values: ["home-assistant-code"]
+                - key: app.kubernetes.io/instance
+                  operator: In
+                  values: ["home-assistant-code"]
+            topologyKey: kubernetes.io/hostname
