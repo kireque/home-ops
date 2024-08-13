@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname home-assistant-app
+  name: &appname home-assistant
   namespace: flux-system
 spec:
   targetNamespace: home-automation
@@ -53,7 +53,7 @@ spec:
     - name: rook-ceph-cluster
     - name: volsync
     - name: external-secrets-stores
-    - name: home-assistant-app
+    - name: home-assistant
   postBuild:
     substitute:
       APP: *app
