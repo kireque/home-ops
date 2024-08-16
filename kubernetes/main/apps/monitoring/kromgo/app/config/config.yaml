@@ -1,14 +1,21 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/kashalls/kromgo/main/config.schema.json
+badge:
+  font: Verdana.ttf
+  size: 12
+
 metrics:
   - name: main_cluster_node_count
     query: count(count by (node) (kube_node_status_condition{cluster="main",condition="Ready"}))
+    title: Nodes
 
   - name: main_cluster_pod_count
     query: sum(kube_pod_status_phase{cluster="main", phase="Running"})
+    title: Pods
 
   - name: main_cluster_cpu_usage
     query: round(avg(instance:node_cpu_utilisation:rate5m{cluster="main"}) * 100, 0.1)
+    title: CPU
     suffix: "%"
     colors:
       - {color: "green", min: 0, max: 35}
@@ -17,6 +24,7 @@ metrics:
 
   - name: main_cluster_memory_usage
     query: round(sum(node_memory_MemTotal_bytes{cluster="main"} - node_memory_MemAvailable_bytes{cluster="main"}) / sum(node_memory_MemTotal_bytes{cluster="main"}) * 100, 0.1)
+    title: Memory
     suffix: "%"
     colors:
       - {color: green, min: 0, max: 35}
@@ -25,6 +33,7 @@ metrics:
 
   - name: main_cluster_age_days
     query: round((time() - max(kube_node_created{cluster="main"}) ) / 86400)
+    title: Age
     suffix: "d"
     colors:
       - {color: "green", min: 0, max: 180}
