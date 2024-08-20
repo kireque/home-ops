@@ -8,15 +8,7 @@ restrictedRepos:
     - ^safe-settings
     - .*-test"
     # Archived repos
-    - alfred-github-repos
-    - alfred-tmdb-search
-    - alfred-vscode-workspaces
-    - ansible-role-vyos
-    - docs
-    - dotfiles
-    - helm3-unittest
-    - klipper-config
-    - pmb
+    - vyos-config
 
 configvalidators:
   - plugin: collaborators
