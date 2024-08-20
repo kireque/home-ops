@@ -9,9 +9,9 @@ _... managed by Flux, Renovate and GitHub Actions_ :robot:
 Main k8s cluster stats:
 
 [![Kubernetes](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fkireque%2Fhome-ops%2Fmain%2Fkubernetes%2Fmain%2Fbootstrap%2Ftalos%2Ftalconfig.yaml&query=%24.kubernetesVersion&flat-square&logo=kubernetes&logoColor=white&label=k8s)
-](https://www.talos.dev/) &nbsp;
+](https://www.talos.dev/)&nbsp;
 [![Talos](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fkireque%2Fhome-ops%2Fmain%2Fkubernetes%2Fmain%2Fbootstrap%2Ftalos%2Ftalconfig.yaml&query=%24.talosVersion&flat-square&logo=kubernetes&logoColor=white&color=orange&label=talos)
-](https://www.talos.dev/) &nbsp;
+](https://www.talos.dev/)&nbsp;
 [![Age-Days](https://kromgo.econline.nl/cluster_age_days?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
 [![Node-Count](https://kromgo.econline.nl/cluster_node_count?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
 [![Pod-Count](https://kromgo.econline.nl/cluster_pod_count?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
