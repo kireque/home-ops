@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app onepassword-connect
+  name: onepassword-connect
 spec:
   interval: 30m
   chart:
@@ -14,14 +14,6 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     controllers:
       onepassword-connect:
@@ -32,16 +24,16 @@ spec:
           api:
             image:
               repository: docker.io/1password/connect-api
-              tag: 1.7.3@sha256:0601c7614e102eada268dbda6ba4b5886ce77713be2c332ec6a2fd0f028484ba
+              tag: 1.7.3
             env:
               XDG_DATA_HOME: &configDir /config
-              OP_HTTP_PORT: &apiPort 80
+              OP_HTTP_PORT: &apiPort 8080
               OP_BUS_PORT: 11220
               OP_BUS_PEERS: localhost:11221
               OP_SESSION:
                 valueFrom:
                   secretKeyRef:
-                    name: onepassword-connect-token
+                    name: onepassword-connect-secret
                     key: 1password-credentials.json
             probes:
               liveness:
@@ -62,21 +54,21 @@ spec:
                     path: /health
                     port: *apiPort
                   initialDelaySeconds: 15
-            resources: &resources
-              requests:
-                cpu: 10m
-              limits:
-                memory: 256M
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
                 drop:
-                  - ALL
+                  - "ALL"
+            resources: &resources
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256M
           sync:
             image:
               repository: docker.io/1password/connect-sync
-              tag: 1.7.3@sha256:2f17621c7eb27bbcb1f86bbc5e5a5198bf54ac3b9c2ffac38064d03c932b07d5
+              tag: 1.7.3
             env:
               XDG_DATA_HOME: *configDir
               OP_HTTP_PORT: &syncPort 8081
@@ -85,7 +77,7 @@ spec:
               OP_SESSION:
                 valueFrom:
                   secretKeyRef:
-                    name: onepassword-connect-token
+                    name: onepassword-connect-secret
                     key: 1password-credentials.json
             probes:
               liveness:
@@ -106,36 +98,25 @@ spec:
                     path: /health
                     port: *syncPort
                   initialDelaySeconds: 15
-            resources: *resources
             securityContext: *securityContext
-        pod:
-          securityContext:
-            runAsUser: 999
-            runAsGroup: 999
-            runAsNonRoot: true
-            fsGroup: 999
-            fsGroupChangePolicy: OnRootMismatch
-    ingress:
+            resources: *resources
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+    service:
       app:
-        className: internal-nginx
-        hosts:
-          - host: &host "{{ .Release.Name }}.econline.nl"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        controller: onepassword-connect
+        ports:
+          http:
+            port: *apiPort
     persistence:
       config:
         type: emptyDir
         globalMounts:
           - path: *configDir
-    service:
-      app:
-        controller: *app
-        ports:
-          http:
-            port: *apiPort
