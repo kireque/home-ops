@@ -85,13 +85,13 @@ access_control:
     - domain:
         - echo-server.econline.nl
       subject:
-        - ["user:erik"]
+        - ['group:econline Admins']
       policy: two_factor
     - domain:
         - sabnzbd-cees.econline.nl
         - files-cees.econline.nl
       subject:
-        - ["user:cees"]
+        - ['group:family']
       policy: one_factor
       
 
