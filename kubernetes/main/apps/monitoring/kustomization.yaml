@@ -16,4 +16,3 @@ resources:
   - ./prometheus-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./unpoller/ks.yaml
-  - ./victoria-metrics/ks.yaml
