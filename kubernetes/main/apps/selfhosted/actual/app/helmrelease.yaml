@@ -62,7 +62,7 @@ spec:
         controller: actual
         ports:
           http:
-            port: 5006
+            port: *httpPort
 
     ingress:
       app:
