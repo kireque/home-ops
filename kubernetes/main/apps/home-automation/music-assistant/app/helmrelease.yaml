@@ -30,12 +30,12 @@ spec:
                 "namespace": "network",
                 "ips": ["10.1.4.154/24"]
               }]
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            runAsNonRoot: true
-            fsGroup: 1000
-            fsGroupChangePolicy: OnRootMismatch
+          # securityContext:
+          #   runAsUser: 1000
+          #   runAsGroup: 1000
+          #   runAsNonRoot: true
+          #   fsGroup: 1000
+          #   fsGroupChangePolicy: OnRootMismatch
 
         containers:
           app:
