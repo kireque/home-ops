@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: grafana
         namespace: flux-system
-      version: 8.5.0
+      version: 8.5.1
   interval: 30m
   timeout: 20m
   values:
@@ -176,7 +176,7 @@ spec:
         ceph-cluster:
           # renovate: dashboardName="Ceph Cluster"
           gnetId: 2842
-          revision: 17
+          revision: 18
           datasource: Prometheus
         ceph-osd:
           # renovate: dashboardName="Ceph - OSD (Single)"
@@ -224,7 +224,7 @@ spec:
         k8s-views-pods:
           # renovate: dashboardName="Kubernetes / Views / Pods"
           gnetId: 15760
-          revision: 28
+          revision: 29
           datasource: Prometheus
         k8s-volumes:
           # renovate: dashboardName="K8s / Storage / Volumes / Cluster"
