@@ -90,6 +90,6 @@ spec:
       temp:
         type: emptyDir
         advancedMounts:
-          sabnzbd:
+          music-assistant:
             app:
               - path: /tmp
