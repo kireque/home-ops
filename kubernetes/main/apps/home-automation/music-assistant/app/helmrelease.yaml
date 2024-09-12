@@ -86,3 +86,10 @@ spec:
           music-assistant:
             app:
               - path: /data
+
+      temp:
+        type: emptyDir
+        advancedMounts:
+          sabnzbd:
+            app:
+              - path: /tmp
