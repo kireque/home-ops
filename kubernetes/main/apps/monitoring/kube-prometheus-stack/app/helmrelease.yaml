@@ -110,9 +110,9 @@ spec:
         enabled: true
         ingressClassName: internal-nginx
         annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-int.bjw-s.dev
+          external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
         hosts:
-          - prometheus.bjw-s.dev
+          - prometheus.econline.nl
         pathType: Prefix
 
       prometheusSpec:
