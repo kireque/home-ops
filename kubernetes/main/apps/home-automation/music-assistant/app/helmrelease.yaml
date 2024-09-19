@@ -90,6 +90,3 @@ spec:
 
       tmp:
         type: emptyDir
-
-      usr:
-        type: emptyDir
