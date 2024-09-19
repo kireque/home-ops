@@ -63,7 +63,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
         hosts:
-          - host: esphome2.econline.nl
+          - host: esphome.econline.nl
             paths:
               - path: /
                 service:
