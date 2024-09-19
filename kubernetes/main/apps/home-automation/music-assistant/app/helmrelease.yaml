@@ -87,3 +87,6 @@ spec:
           music-assistant:
             app:
               - path: /data
+
+      tmp:
+        type: emptyDir
