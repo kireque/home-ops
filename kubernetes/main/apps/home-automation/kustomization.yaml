@@ -10,5 +10,4 @@ resources:
   - ./dsmr-reader/ks.yaml
   - ./home-assistant/ks.yaml
   - ./mosquitto/ks.yaml
-  - ./music-assistant/ks.yaml
   - ./zigbee2mqtt/ks.yaml
