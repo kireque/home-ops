@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: quay.io/minio/minio
-              tag: RELEASE.2024-08-17T01-24-54Z@sha256:6f23072e3e222e64fe6f86b31a7f7aca971e5129e55cbccef649b109b8e651a1
+              tag: RELEASE.2024-09-13T20-26-02Z@sha256:cd04ea408e185cb50076ea1c3988d444119b19aaae15aab45387ccf14b2a2f86
             env:
               MINIO_API_CORS_ALLOW_ORIGIN: https://minio.econline.nl,https://s3.econline.nl
               MINIO_BROWSER_REDIRECT_URL: https://minio.econline.nl
