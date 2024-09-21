@@ -105,10 +105,10 @@ spec:
         # Robot vacuums
         - module: icmp
           name: valetudo-living-room-icmp
-          url: livingroom-vacuum.home.econline.nl
+          url: living-vacuum.home.econline.nl
         - module: http_2xx
           name: valetudo-living-room-http
-          url: "living-vacuum.home.econline.nl"
+          url: living-vacuum.home.econline.nl
 
         # Other devices
         - module: icmp
