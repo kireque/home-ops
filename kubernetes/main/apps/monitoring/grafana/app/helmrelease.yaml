@@ -94,16 +94,6 @@ spec:
 
     dashboards:
       default:
-        blocky:
-          # renovate: dashboardName="blocky"
-          gnetId: 13768
-          revision: 4
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: Prometheus
-            - name: "VAR_BLOCKY_URL"
-              value: 'http:\/\/10.5.0.7:4000'
-
         cert-manager:
           url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
           datasource: Prometheus
@@ -140,6 +130,10 @@ spec:
             - name: DS_PROMETHEUS
               value: Prometheus
 
+        smartctl-exporter-2:
+          url: https://raw.githubusercontent.com/blesswinsamuel/grafana-dashboards/refs/heads/main/dashboards/dist/smartctl.json
+          datasource: Prometheus
+
         speedtest-exporter-hub:
           # renovate: dashboardName="Speedtest-Exporter Dashboard"
           gnetId: 13665
@@ -165,12 +159,6 @@ spec:
               value: Prometheus
             - name: VAR_REPLICATIONDESTNAME
               value: '.*-bootstrap'
-
-        zfs:
-          # renovate: dashboardName="ZFS"
-          gnetId: 7845
-          revision: 4
-          datasource: Prometheus
 
       ceph:
         ceph-cluster:
@@ -285,35 +273,6 @@ spec:
           # renovate: dashboardName="UniFi-Poller: UAP Insights - Prometheus"
           gnetId: 11314
           revision: 10
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: Prometheus
-      victoriametrics:
-        vm-cluster:
-          # renovate: dashboardName="VictoriaMetrics - cluster"
-          gnetId: 11176
-          revision: 37
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: Prometheus
-        vm-operator:
-          # renovate: dashboardName="VictoriaMetrics - operator"
-          gnetId: 17869
-          revision: 2
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: Prometheus
-        vm-vmalert:
-          # renovate: dashboardName="VictoriaMetrics - vmalert"
-          gnetId: 14950
-          revision: 11
-          datasource:
-            - name: "DS_PROMETHEUS"
-              value: Prometheus
-        vm-vmagent:
-          # renovate: dashboardName="VictoriaMetrics - vmagent"
-          gnetId: 12683
-          revision: 19
           datasource:
             - name: "DS_PROMETHEUS"
               value: Prometheus
