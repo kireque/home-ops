@@ -76,6 +76,11 @@ spec:
         - lldap
       password:
         type: AlphaNumeric
+    - name: piped
+      databases:
+        - piped
+      password:
+        type: AlphaNumeric
 
   backups:
     pgbackrest:
