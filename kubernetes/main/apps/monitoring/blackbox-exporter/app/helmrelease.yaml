@@ -116,6 +116,10 @@ spec:
           url: office-zigbee-adapter.home.econline.nl
 
         - module: icmp
+          name: velux-gateway
+          url: hallway-velux-gateway.home.econline.nl
+
+        - module: icmp
           name: ping-cloudflare
           url: 1.1.1.1
           scrape_interval: 30s
