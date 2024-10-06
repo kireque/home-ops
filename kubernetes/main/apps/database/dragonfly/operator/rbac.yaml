@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/name: serviceaccount
     app.kubernetes.io/part-of: dragonfly-operator
   name: dragonfly-operator-controller-manager
-  namespace: dragonfly-operator-system
+  namespace: database
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -21,7 +21,7 @@ metadata:
     app.kubernetes.io/name: role
     app.kubernetes.io/part-of: dragonfly-operator
   name: dragonfly-operator-leader-election-role
-  namespace: dragonfly-operator-system
+  namespace: database
 rules:
   - apiGroups:
       - ""
@@ -180,7 +180,7 @@ metadata:
     app.kubernetes.io/name: rolebinding
     app.kubernetes.io/part-of: dragonfly-operator
   name: dragonfly-operator-leader-election-rolebinding
-  namespace: dragonfly-operator-system
+  namespace: database
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -188,7 +188,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: dragonfly-operator-controller-manager
-    namespace: dragonfly-operator-system
+    namespace: database
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -207,7 +207,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: dragonfly-operator-controller-manager
-    namespace: dragonfly-operator-system
+    namespace: database
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -226,4 +226,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: dragonfly-operator-controller-manager
-    namespace: dragonfly-operator-system
+    namespace: database
