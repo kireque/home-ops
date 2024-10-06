@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -10,18 +10,28 @@ spec:
     spec:
       chart: app-template
       version: 3.5.0
-      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
   values:
-    serviceAccount:
-      create: false
-      name: dragonfly-operator-controller-manager
     controllers:
       dragonfly-operator:
+        strategy: RollingUpdate
         pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            seccompProfile: { type: RuntimeDefault }
           topologySpreadConstraints:
             - maxSkew: 1
               topologyKey: kubernetes.io/hostname
@@ -30,44 +40,14 @@ spec:
                 matchLabels:
                   app.kubernetes.io/name: dragonfly-operator
         containers:
-          rbac-proxy:
-            image:
-              repository: gcr.io/kubebuilder/kube-rbac-proxy
-              tag: v0.16.0
-            args:
-              - "--secure-listen-address=0.0.0.0:8443"
-              - "--upstream=http://127.0.0.1:8080/"
-              - "--logtostderr=true"
-              - "--v=0"
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
-            resources:
-              requests:
-                cpu: 5m
-                memory: 64Mi
-              limits:
-                cpu: 500m
-                memory: 128Mi
           app:
             image:
-              repository: docker.dragonflydb.io/dragonflydb/operator
-              tag: v1.1.7
+              repository: ghcr.io/dragonflydb/operator
+              tag: v1.1.7@sha256:e702d917e7c52f15519253c21caec99a17c35eb280fbf10a7e72ca539d44e307
+            command: ["/manager"]
             args:
-              - "--health-probe-bind-address=:8081"
-              - "--metrics-bind-address=127.0.0.1:8080"
-              - "--leader-elect"
-            command:
-              - "/manager"
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
+              - --health-probe-bind-address=:8081
+              - --metrics-bind-address=:8080
             probes:
               liveness:
                 enabled: true
@@ -91,20 +71,32 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
-              startup:
-                enabled: false
             resources:
               requests:
                 cpu: 10m
-                memory: 64Mi
               limits:
-                cpu: 500m
                 memory: 128Mi
-        annotations:
-          reloader.stakater.com/auto: "true"
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
     service:
       app:
         controller: dragonfly-operator
         ports:
           http:
             port: *port
+          metrics:
+            port: 8080
+    serviceMonitor:
+      app:
+        serviceName: dragonfly-operator
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
+    serviceAccount:
+      create: true
+      name: dragonfly-operator
