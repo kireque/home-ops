@@ -16,8 +16,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-ops-kubernetes
-  wait: true
+  wait: false
   dependsOn:
     - name: prometheus-operator-crds
-    - name: external-secrets-stores
     - name: openebs
