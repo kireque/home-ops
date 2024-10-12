@@ -24,9 +24,9 @@ spec:
           reloader.stakater.com/auto: "true"
         pod:
           securityContext:
-            runAsUser: 101
-            runAsGroup: 101
-            fsGroup: 101
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
             fsGroupChangePolicy: "OnRootMismatch"
         containers:
           app:
@@ -42,9 +42,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
+
     service:
       app:
         controller: it-tools
