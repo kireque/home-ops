@@ -82,8 +82,8 @@ spec:
                 readOnly: true
       media:
         type: nfs
-        server: gladius.bjw-s.internal
-        path: /tank/Media
+        server: nas.home.econline.nl
+        path: /volume3/Download
         advancedMounts:
           ytdl-sub:
             app:
