@@ -88,7 +88,7 @@ spec:
           ytdl-sub:
             app:
               - path: /media/youtube
-                subPath: Library/Main/Youtube
+                subPath: Youtube
       tmp:
         type: emptyDir
         advancedMounts:
