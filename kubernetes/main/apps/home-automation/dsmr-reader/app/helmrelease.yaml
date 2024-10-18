@@ -29,9 +29,7 @@ spec:
               tag: 5.11.0-2024.04.03
             env:
               DJANGO_TIME_ZONE: "Europe/Amsterdam"
-              DSMRREADER_REMOTE_DATALOGGER_INPUT_METHOD: ipv4
-              DSMRREADER_REMOTE_DATALOGGER_NETWORK_HOST: "10.1.4.45"
-              DSMRREADER_REMOTE_DATALOGGER_NETWORK_PORT: "8088"
+              DSMRREADER_REMOTE_DATALOGGER_INPUT_METHOD: api_server
             envFrom:
               - secretRef:
                   name: dsmr-reader-secret
@@ -57,6 +55,9 @@ spec:
     service:
       app:
         controller: dsmr-reader
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 10.1.1.137
         ports:
           http:
             port: 80
