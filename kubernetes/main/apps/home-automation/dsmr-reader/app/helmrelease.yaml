@@ -29,7 +29,9 @@ spec:
               tag: 5.11.0-2024.04.03
             env:
               DJANGO_TIME_ZONE: "Europe/Amsterdam"
-              DSMRREADER_OPERATION_MODE: api_server
+              DSMRREADER_REMOTE_DATALOGGER_INPUT_METHOD: ipv4
+              DSMRREADER_REMOTE_DATALOGGER_NETWORK_HOST: "10.1.4.45"
+              DSMRREADER_REMOTE_DATALOGGER_NETWORK_PORT: "8088"
             envFrom:
               - secretRef:
                   name: dsmr-reader-secret
