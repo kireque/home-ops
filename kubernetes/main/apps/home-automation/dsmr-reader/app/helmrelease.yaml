@@ -29,7 +29,8 @@ spec:
               tag: 5.11.0-2024.04.03
             env:
               DJANGO_TIME_ZONE: "Europe/Amsterdam"
-              DSMRREADER_REMOTE_DATALOGGER_INPUT_METHOD: api_server
+              DISABLE_NGINX_ACCESS_LOGS: true
+              DSMRREADER_OPERATION_MODE: api_server
             envFrom:
               - secretRef:
                   name: dsmr-reader-secret
