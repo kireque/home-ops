@@ -16,14 +16,14 @@ spec:
           annotations:
             summary: The zigbee2mqtt-exporter exporter job is absent
             description: The zigbee2mqtt-exporter exporter job is absent
-        # - alert: Zigbee2MqttUnavailable
-        #   expr: mqtt_zigbee_availability == 0
-        #   for: 30m
-        #   labels:
-        #     severity: critical
-        #   annotations:
-        #     summary: The zigbee device connection is lost
-        #     description: connection on topic {{$labels.topic}} is down
+        - alert: Zigbee2MqttUnavailable
+          expr: mqtt_zigbee_availability == 0
+          for: 30m
+          labels:
+            severity: critical
+          annotations:
+            summary: The zigbee device connection is lost
+            description: connection on topic {{$labels.topic}} is down
         # - alert: Zigbee2MqttLinkqualityLow
         #   expr: mqtt_linkquality < 15
         #   for: 60m
@@ -33,7 +33,7 @@ spec:
         #     summary: The zigbee device link quality is low
         #     description: link quality on topic {{$labels.topic}} is at {{$value}}
         - alert: Zigbee2MqttBatteryLow
-          expr: mqtt_battery < 20
+          expr: mqtt_battery < 15
           for: 60m
           labels:
             severity: warning
