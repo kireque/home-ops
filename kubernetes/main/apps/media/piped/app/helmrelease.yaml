@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: 1337kavin/piped
-              tag: latest@sha256:e9938cdda0745c4986d4add0f255777d3989849b851f290d94a4ab2b21c25384
+              tag: latest@sha256:18e77857414236edc7245bebb3fb8ab3ac49c44bd76701bfce24f6ba0170d4b8
             probes:
               liveness:
                 enabled: true
@@ -61,7 +61,7 @@ spec:
           app:
             image:
               repository: ghcr.io/bjw-s-labs/piped-frontend
-              tag: 2024.10.19@sha256:73dc140014c715b503b0b8b806fd2e6ed070eeef6b2556b28a4381c690ebfdc8
+              tag: 2024.10.28@sha256:32787f43c388a6d1016fa07e41d0099a9bb87bf5a43cacf1b8b65ba79d62dc03
             env:
               BACKEND_HOSTNAME: piped-api.econline.nl
             probes:
@@ -89,7 +89,7 @@ spec:
           app:
             image:
               repository: 1337kavin/piped-proxy
-              tag: latest@sha256:af0870695b99ad751edcdc143d8c95f23b3ed15743e50db27ee94ae4bfd7307d
+              tag: latest@sha256:ee18e54bb18aa7f4da0c13d43119fa66e011dbe3d8fa9b43418c0baaf9299108
             command:
               - /app/piped-proxy
             probes:
