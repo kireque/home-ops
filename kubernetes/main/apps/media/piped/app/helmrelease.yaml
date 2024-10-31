@@ -61,7 +61,7 @@ spec:
           app:
             image:
               repository: ghcr.io/bjw-s-labs/piped-frontend
-              tag: 2024.10.28@sha256:32787f43c388a6d1016fa07e41d0099a9bb87bf5a43cacf1b8b65ba79d62dc03
+              tag: 2024.10.31@sha256:70cc08faeeabd6f2fa202a89994eed2fdb8ac2eb74033c0266faffc88fcdb5bf
             env:
               BACKEND_HOSTNAME: piped-api.econline.nl
             probes:
@@ -124,7 +124,7 @@ spec:
           app:
             image:
               repository: ghcr.io/bjw-s-labs/piped-scripts
-              tag: 0.0.1@sha256:55dcbc2d65eb47d7a7f2c49c4fba1bc05ab3a715ae5b3f63a9653d804c704e69
+              tag: 0.0.2@sha256:aa05e68e1b6734b3b60040b2e8f73f1f37330f129af2bbd55f5490b85f308b96
             env:
               SCRIPT_NAME: update_subscriptions.sh
               PIPED_BACKEND: http://piped-backend.media.svc.cluster.local:8080
