@@ -15,6 +15,7 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+
   values:
     controllers:
       home-assistant:
@@ -30,32 +31,56 @@ spec:
                 "ips": ["10.1.4.151/24"]
               }]
           securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-            fsGroup: 0
+            runAsUser: 2000
+            runAsGroup: 2000
+            fsGroup: 2000
             fsGroupChangePolicy: OnRootMismatch
 
         containers:
           app:
             image:
-              repository: ghcr.io/home-assistant/home-assistant
-              tag: 2024.10.4
+              repository: ghcr.io/onedr0p/home-assistant
+              tag: 2024.10.4@sha256:d788b59a4ee584f7cbeee7cff896e922faa8f0673c83187045e77e0fc77c8457
             envFrom:
               - secretRef:
                   name: home-assistant-secret
-            probes:
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
-              startup:
-                enabled: false
             resources:
               requests:
                 cpu: 47m
                 memory: 2Gi
               limits:
                 memory: 2Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+          code-server:
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.93.1@sha256:c69e398d1b64589b3b77a7becfd03f4ec524982def20e6bffbb51b1b839e72ba
+            args: [
+              "--auth", "none",
+              "--disable-telemetry", "--disable-update-check",
+              "--user-data-dir", "/config/.code-server",
+              "--extensions-dir", "/config/.code-server",
+              "--port", "12321",
+              "/config"
+            ]
+            env:
+              HASS_SERVER: http://localhost:8123
+              HASS_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: home-assistant-secret
+                    key: VSCODE_TOKEN
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
 
     service:
       app:
@@ -63,44 +88,45 @@ spec:
         ports:
           http:
             port: 8123
+          code-server:
+            port: 12321
 
     ingress:
       app:
         enabled: true
-        className: "external-nginx"
+        className: "internal-nginx"
         annotations:
           external-dns.alpha.kubernetes.io/target: ingress-ext.econline.nl
+          nginx.ingress.kubernetes.io/rewrite-target: /$1
         hosts:
           - host: hass.econline.nl
             paths:
-              - path: /
+              - path: /(.*)
                 service:
                   identifier: app
                   port: http
+              - path: /code/(.*)
+                service:
+                  identifier: app
+                  port: code-server
 
     persistence:
       config:
         existingClaim: home-assistant-config
-        globalMounts:
-          - path: /config
-
+        advancedMounts:
+          home-assistant:
+            app:
+              - path: /config
+            code-server:
+              - path: /config
+      tmp:
+        type: emptyDir
       deploy-key:
         type: secret
         name: home-assistant-secret
         defaultMode: 256
-        globalMounts:
-          - path: /root/.ssh/id_rsa
-            subPath: GH_DEPLOY_KEY
-
-    affinity:
-      podAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-                - key: app.kubernetes.io/name
-                  operator: In
-                  values: ["home-assistant-code"]
-                - key: app.kubernetes.io/instance
-                  operator: In
-                  values: ["home-assistant-code"]
-            topologyKey: kubernetes.io/hostname
+        advancedMounts:
+          home-assistant:
+            code-server:
+              - path: /home/coder/.ssh/id_rsa
+                subPath: GH_DEPLOY_KEY
