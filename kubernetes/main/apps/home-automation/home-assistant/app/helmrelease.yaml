@@ -94,7 +94,7 @@ spec:
     ingress:
       app:
         enabled: true
-        className: "internal-nginx"
+        className: "external-nginx"
         annotations:
           external-dns.alpha.kubernetes.io/target: ingress-ext.econline.nl
           nginx.ingress.kubernetes.io/rewrite-target: /$1
