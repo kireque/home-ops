@@ -9,5 +9,4 @@ resources:
   - ./esphome/ks.yaml
   - ./dsmr-reader/ks.yaml
   - ./home-assistant/ks.yaml
-  - ./mosquitto/ks.yaml
   - ./zigbee2mqtt/ks.yaml
