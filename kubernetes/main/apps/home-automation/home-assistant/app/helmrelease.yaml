@@ -94,9 +94,9 @@ spec:
     ingress:
       app:
         enabled: true
-        className: "external-nginx"
+        className: "internal-nginx"
         annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-ext.econline.nl
+          external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
           nginx.ingress.kubernetes.io/rewrite-target: /$1
         hosts:
           - host: hass.econline.nl
