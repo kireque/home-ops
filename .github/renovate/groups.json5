@@ -25,7 +25,7 @@
     {
       description: "Cilium image and chart",
       groupName: "cilium",
-      matchDepNames: [
+      matchPackageNames: [
         "quay.io/cilium/cilium",
         "quay.io/cilium/operator-generic",
         "cilium",
@@ -39,7 +39,7 @@
     {
       description: "Actions Runner Controller charts",
       groupName: "ARC",
-      matchDepNames: [
+      matchPackageNames: [
         "actions-runner-controller-charts/gha-runner-scale-set-controller",
         "actions-runner-controller-charts/gha-runner-scale-set",
       ],
@@ -52,7 +52,7 @@
     {
       description: "Talos",
       groupName: "Talos",
-      matchDepNames: [
+      matchPackageNames: [
         "ghcr.io/siderolabs/installer",
         "ghcr.io/siderolabs/talosctl",
       ],
@@ -63,39 +63,14 @@
       separateMinorPatch: true,
     },
     {
-      description: "Vector image and chart - versions do not match",
-      groupName: "Vector",
-      matchPackagePatterns: ["vector"],
-      matchDatasources: ["docker", "github-releases", "helm"],
-      matchUpdateTypes: ["minor", "patch"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-      separateMinorPatch: false,
-    },
-    {
-      description: "Maker Management Platform",
-      groupName: "maker-management-platform",
-      matchDepNames: [
-        "ghcr.io/maker-management-platform/mmp-ui",
-        "ghcr.io/maker-management-platform/agent",
-      ],
-      matchDatasources: ["docker"],
-      versioning: "semver",
+      description: "silence-operator image and CRD",
+      groupName: "silence-operator",
+      matchPackagePatterns: ["silence-operator"],
+      matchDatasources: ["docker", "github-releases"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
       separateMinorPatch: true,
-    },
-    {
-      "description": "Dragonfly operator",
-      "groupName": "Dragonfly Operator",
-      "matchPackagePatterns": ["dragonfly(?:db)?.operator"],
-      "matchDatasources": ["docker", "github-releases"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
-      },
-      "separateMinorPatch": true
     },
   ],
 }
