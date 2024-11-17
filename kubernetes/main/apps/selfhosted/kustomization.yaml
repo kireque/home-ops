@@ -9,3 +9,4 @@ resources:
   - ./actual/ks.yaml
   - ./atuin/ks.yaml
   - ./it-tools/ks.yaml
+  - ./searxng/ks.yaml
