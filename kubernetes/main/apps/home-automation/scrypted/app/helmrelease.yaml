@@ -32,7 +32,7 @@ spec:
                 "mac": "76:fa:11:c0:c9:84"
               }]
           nodeSelector:
-            google.feature.node.kubernetes.io/coral: "true"
+            # google.feature.node.kubernetes.io/coral: "true"
             intel.feature.node.kubernetes.io/gpu: "true"
           securityContext:
             supplementalGroups:
