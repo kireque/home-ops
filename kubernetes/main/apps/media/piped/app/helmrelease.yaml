@@ -61,7 +61,7 @@ spec:
           app:
             image:
               repository: ghcr.io/bjw-s-labs/piped-frontend
-              tag: 2024.11.11@sha256:5a15a1e81a5458a38d9324fb1852c1383631f6c6e30584602814c25eb6ef5a1d
+              tag: 2024.11.21@sha256:9aa98ec1f837e35fc05d750bf10f7e9836f9be9204e6101811fcd72d4cd05931
             env:
               BACKEND_HOSTNAME: piped-api.econline.nl
             probes:
@@ -89,7 +89,7 @@ spec:
           app:
             image:
               repository: 1337kavin/piped-proxy
-              tag: latest@sha256:b4ec591ec585b5eef818e3f737a1c8cfca24fb568525161b3f5fdec5a561e76e
+              tag: latest@sha256:0e1b202e52649199f486ab99d5a52ac2353aab0d35cad4164c0d71b1db0c4e6a
             command:
               - /app/piped-proxy
             probes:
