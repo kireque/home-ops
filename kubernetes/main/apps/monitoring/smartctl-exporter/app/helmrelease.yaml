@@ -1,10 +1,11 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app smartctl-exporter
+  name: smartctl-exporter
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: prometheus-smartctl-exporter
@@ -13,27 +14,30 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: flux-system
-  maxHistory: 2
-  install:
-    createNamespace: true
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
+      interval: 30m
   values:
-    fullnameOverride: *app
+    fullnameOverride: smartctl-exporter
+
+    image:
+      registry: quay.io
+
     config:
       devices:
-        - /dev/nvme0n1
         - /dev/sda
+        - /dev/sdb
+        - /dev/nvme0n1
+
     serviceMonitor:
       enabled: true
+      relabelings:
+        - action: labeldrop
+          regex: (pod)
+        - action: replace
+          regex: (.*)
+          replacement: $1.home.econline.nl
+          sourceLabels:
+            - __meta_kubernetes_endpoint_node_name
+          targetLabel: instance
+
     prometheusRules:
-      enabled: true
-    tolerations: {}
-    nodeSelector:
-      kubernetes.io/arch: amd64
+      enabled: false
