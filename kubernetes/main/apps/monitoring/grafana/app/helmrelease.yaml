@@ -116,17 +116,12 @@ spec:
           revision: 37
           datasource: Prometheus
 
-        smartctl-exporter:
-          url: https://raw.githubusercontent.com/blesswinsamuel/grafana-dashboards/refs/heads/main/dashboards/dist/smartctl.json
-          datasource: Prometheus
-
-        speedtest-exporter-hub:
-          # renovate: dashboardName="Speedtest-Exporter Dashboard"
-          gnetId: 13665
-          revision: 4
+        smart:
+          # renovate: depName="Dashboard for smartctl_exporter"
+          gnetId: 20204
+          revision: 1
           datasource:
-            - name: "DS_PROMETHEUS"
-              value: Prometheus
+            - { name: DS_PROMETHEUS, value: Prometheus }
 
         spegel:
           # renovate: dashboardName="Spegel"
@@ -144,7 +139,13 @@ spec:
             - name: DS_PROMETHEUS
               value: Prometheus
             - name: VAR_REPLICATIONDESTNAME
-              value: '.*-bootstrap'
+              value: ".*-bootstrap"
+
+        zfs:
+          # renovate: dashboardName="ZFS"
+          gnetId: 7845
+          revision: 4
+          datasource: Prometheus
 
       ceph:
         ceph-cluster:
@@ -162,6 +163,7 @@ spec:
           gnetId: 5342
           revision: 9
           datasource: Prometheus
+
 
       flux:
         flux-cluster:
