@@ -3,4 +3,4 @@ log:
   output: "stdout"
 
 streams:
-  doorbell: rtsp://scrypted.home-automation.svc.cluster.local:34301/1c46015720d938bb
+  doorbell: rtsp://scrypted.home-automation.svc.cluster.local:34301/e1438dd8dffa7b16
