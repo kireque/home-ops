@@ -119,14 +119,15 @@ spec:
               - path: /config
             code-server:
               - path: /config
-      tmp:
+      tmpfs:
         type: emptyDir
-      deploy-key:
-        type: secret
-        name: home-assistant-secret
-        defaultMode: 256
         advancedMounts:
           home-assistant:
+            app:
+              - path: /tmp
+                subPath: hass-tmp
             code-server:
-              - path: /home/coder/.ssh/id_rsa
-                subPath: GH_DEPLOY_KEY
+              - path: /tmp
+                subPath: code-server-tmp
+              - path: /nonexistent
+                subPath: nonexistent
