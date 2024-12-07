@@ -61,14 +61,20 @@ spec:
             image:
               repository: ghcr.io/coder/code-server
               tag: 4.95.3@sha256:6d74583d68179cbb6ddadc2518b450d2ac3eaec2d342474fe1941e03371cd2cf
-            args: [
-              "--auth", "none",
-              "--disable-telemetry", "--disable-update-check",
-              "--user-data-dir", "/config/.code-server",
-              "--extensions-dir", "/config/.code-server",
-              "--port", "12321",
-              "/config"
-            ]
+            args:
+              [
+                "--auth",
+                "none",
+                "--disable-telemetry",
+                "--disable-update-check",
+                "--user-data-dir",
+                "/config/.code-server",
+                "--extensions-dir",
+                "/config/.code-server",
+                "--port",
+                "12321",
+                "/config",
+              ]
             env:
               HASS_SERVER: http://localhost:8123
               HASS_TOKEN:
