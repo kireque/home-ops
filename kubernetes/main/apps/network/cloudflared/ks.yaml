@@ -19,5 +19,4 @@ spec:
   wait: false
   dependsOn:
     - name: external-secrets-stores
-    - name: externaldns-shared
     - name: nginx-external
