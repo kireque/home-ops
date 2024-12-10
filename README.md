@@ -1,20 +1,23 @@
 <div align="center">
+
 ## My Home Operations repository
 
 _... managed by Flux, Renovate and GitHub Actions_ :robot:
 
 [![Discord](https://img.shields.io/discord/673534664354430999?style=for-the-badge&label&logo=discord&logoColor=white&color=blue)](https://discord.gg/home-operations)&nbsp;
-[![Renovate](https://img.shields.io/github/actions/workflow/status/kireque/home-ops/schedule-renovate.yaml?branch=main&label=&logo=renovatebot&style=for-the-badge&color=blue)](https://github.com/kireque/home-ops/actions/workflows/schedule-renovate.yaml)
+[![Renovate](https://img.shields.io/badge/powered_by-Renovate-blue?style=for-the-badge&logo=renovate)](https://www.mend.io/renovate/)
 
 Main k8s cluster stats:
 
-[![Kubernetes](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fkireque%2Fhome-ops%2Fmain%2Fkubernetes%2Fmain%2Fbootstrap%2Ftalos%2Ftalconfig.yaml&query=%24.kubernetesVersion&flat-square&logo=kubernetes&logoColor=white&label=k8s)](https://www.talos.dev/)&nbsp;
-[![Talos](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fkireque%2Fhome-ops%2Fmain%2Fkubernetes%2Fmain%2Fbootstrap%2Ftalos%2Ftalconfig.yaml&query=%24.talosVersion&flat-square&logo=kubernetes&logoColor=white&color=orange&label=talos)](https://www.talos.dev/)&nbsp;
-[![Age-Days](https://kromgo.econline.nl/cluster_age_days?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
-[![Node-Count](https://kromgo.econline.nl/cluster_node_count?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
-[![Pod-Count](https://kromgo.econline.nl/cluster_pod_count?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
-[![CPU-Usage](https://kromgo.econline.nl/cluster_cpu_usage?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
-[![Memory-Usage](https://kromgo.econline.nl/cluster_memory_usage?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Kubernetes](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fkireque%2Fhome-ops%2Fmain%2Fkubernetes%2Fmain%2Ftalos%2Ftalconfig.yaml&query=%24.kubernetesVersion&flat-square&logo=kubernetes&logoColor=white&label=k8s)
+](https://www.talos.dev/)&nbsp;
+[![Talos](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fkireque%2Fhome-ops%2Fmain%2Fkubernetes%2Fmain%2Ftalos%2Ftalconfig.yaml&query=%24.talosVersion&flat-square&logo=kubernetes&logoColor=white&color=orange&label=talos)
+](https://www.talos.dev/)&nbsp;
+[![Age-Days](https://kromgo.kireque.dev/cluster_age_days?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Node-Count](https://kromgo.kireque.dev/cluster_node_count?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Pod-Count](https://kromgo.kireque.dev/cluster_pod_count?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
+[![CPU-Usage](https://kromgo.kireque.dev/cluster_cpu_usage?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Memory-Usage](https://kromgo.kireque.dev/cluster_memory_usage?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
 
 </div>
 <br><br>
@@ -25,7 +28,7 @@ Main k8s cluster stats:
 
 ### 📖 Docs
 
-The documentation that goes along with this repo can be found [over here](https://econline.github.io/home-ops/).
+The documentation that goes along with this repo can be found [over here](https://kireque.github.io/home-ops/).
 
 ---
 
