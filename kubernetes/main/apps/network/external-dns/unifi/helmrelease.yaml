@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: external-dns-internal
+  name: external-dns-unifi
 spec:
   interval: 30m
   chart:
@@ -17,13 +17,14 @@ spec:
       interval: 30m
 
   values:
-    fullnameOverride: &name external-dns-internal
+    fullnameOverride: &name external-dns-unifi
     domainFilters:
       - econline.nl
     extraArgs:
+      - --events
       - --ignore-ingress-tls-spec
     podAnnotations:
-      secret.reloader.stakater.com/reload: external-dns-internal-secrets
+      secret.reloader.stakater.com/reload: external-dns-unifi-secret
     policy: sync
     provider:
       name: webhook
@@ -39,7 +40,7 @@ spec:
           - name: UNIFI_PASS
             valueFrom:
               secretKeyRef:
-                name: external-dns-internal-secrets
+                name: external-dns-unifi-secret
                 key: external_dns_password
         livenessProbe:
           httpGet:
