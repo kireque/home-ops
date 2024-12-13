@@ -70,8 +70,6 @@ spec:
     ingress:
       app:
         className: "internal-nginx"
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
         hosts:
           - host: music-assistant.econline.nl
             paths:

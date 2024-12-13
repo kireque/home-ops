@@ -87,7 +87,6 @@ spec:
     ingress:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-ext.econline.nl
           nginx.ingress.kubernetes.io/backend-protocol: HTTPS
         className: "external-nginx"
         hosts:

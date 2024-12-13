@@ -43,8 +43,6 @@ spec:
       ingress:
         enabled: true
         ingressClassName: internal-nginx
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
         hosts:
           - victoria-metrics.econline.nl
 
@@ -74,8 +72,6 @@ spec:
       ingress:
         enabled: true
         ingressClassName: internal-nginx
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
         hosts:
           - vmalert.econline.nl
 
@@ -105,8 +101,6 @@ spec:
       ingress:
         enabled: true
         ingressClassName: internal-nginx
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
         hosts:
           - vmagent.econline.nl
 

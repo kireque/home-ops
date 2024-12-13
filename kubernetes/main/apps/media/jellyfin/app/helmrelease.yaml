@@ -76,8 +76,6 @@ spec:
 
     ingress:
       app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-ext.econline.nl
         className: "external-nginx"
         hosts:
           - host: jellyfin.econline.nl

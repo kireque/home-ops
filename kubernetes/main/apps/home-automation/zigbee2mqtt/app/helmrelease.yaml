@@ -136,7 +136,6 @@ spec:
       app:
         className: internal-nginx
         annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
           nginx.ingress.kubernetes.io/rewrite-target: /$1
         hosts:
           - host: zigbee2mqtt.econline.nl

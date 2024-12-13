@@ -168,7 +168,6 @@ spec:
     ingress:
       backend:
         annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-ext.econline.nl
           nginx.ingress.kubernetes.io/enable-cors: "true"
           nginx.ingress.kubernetes.io/cors-allow-origin: "https://piped.econline.nl, https://piped-api.econline.nl, https://piped-proxy.econline.nl"
         className: "external-nginx"
@@ -181,7 +180,6 @@ spec:
                   port: http
       frontend:
         annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
           nginx.ingress.kubernetes.io/enable-cors: "true"
           nginx.ingress.kubernetes.io/cors-allow-origin: "https://piped.econline.nl, https://piped-api.econline.nl, https://piped-proxy.econline.nl"
         className: "internal-nginx"
@@ -194,7 +192,6 @@ spec:
                   port: http
       ytproxy:
         annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
           nginx.ingress.kubernetes.io/enable-cors: "true"
           nginx.ingress.kubernetes.io/cors-allow-origin: "https://piped.econline.nl, https://piped-api.econline.nl, https://piped-proxy.econline.nl"
         className: "internal-nginx"

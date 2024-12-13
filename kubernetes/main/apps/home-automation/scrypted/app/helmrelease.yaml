@@ -74,8 +74,6 @@ spec:
     ingress:
       app:
         className: "internal-nginx"
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-int.econline.nl
         hosts:
           - host: scrypted.econline.nl
             paths:

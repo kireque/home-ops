@@ -102,7 +102,6 @@ spec:
       app:
         className: "external-nginx"
         annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-ext.econline.nl
           nginx.ingress.kubernetes.io/configuration-snippet: |
             add_header Cache-Control "no-store";
             add_header Pragma "no-cache";

@@ -120,7 +120,6 @@ spec:
       sabnzbd:
         className: "external-nginx"
         annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-ext.econline.nl
           nginx.ingress.kubernetes.io/auth-method: GET
           nginx.ingress.kubernetes.io/auth-url: https://auth.econline.nl/api/verify
           nginx.ingress.kubernetes.io/auth-signin: https://auth.econline.nl/?rm=$request_method
@@ -140,7 +139,6 @@ spec:
       filebrowser:
         className: "external-nginx"
         annotations:
-          external-dns.alpha.kubernetes.io/target: ingress-ext.econline.nl
           nginx.ingress.kubernetes.io/auth-method: GET
           nginx.ingress.kubernetes.io/auth-url: https://auth.econline.nl/api/verify
           nginx.ingress.kubernetes.io/auth-signin: https://auth.econline.nl/?rm=$request_method
