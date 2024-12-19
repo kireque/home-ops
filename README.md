@@ -13,11 +13,11 @@ Main k8s cluster stats:
 ](https://www.talos.dev/)&nbsp;
 [![Talos](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fkireque%2Fhome-ops%2Fmain%2Fkubernetes%2Fmain%2Ftalos%2Ftalconfig.yaml&query=%24.talosVersion&flat-square&logo=kubernetes&logoColor=white&color=orange&label=talos)
 ](https://www.talos.dev/)&nbsp;
-[![Age-Days](https://kromgo.kireque.dev/cluster_age_days?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
-[![Node-Count](https://kromgo.kireque.dev/cluster_node_count?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
-[![Pod-Count](https://kromgo.kireque.dev/cluster_pod_count?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
-[![CPU-Usage](https://kromgo.kireque.dev/cluster_cpu_usage?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
-[![Memory-Usage](https://kromgo.kireque.dev/cluster_memory_usage?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Age-Days](https://kromgo.econline.nl/cluster_age_days?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Node-Count](https://kromgo.econline.nl/cluster_node_count?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Pod-Count](https://kromgo.econline.nl/cluster_pod_count?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
+[![CPU-Usage](https://kromgo.econline.nl/cluster_cpu_usage?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Memory-Usage](https://kromgo.econline.nl/cluster_memory_usage?format=badge)](https://github.com/kashalls/kromgo/)&nbsp;
 
 </div>
 <br><br>
