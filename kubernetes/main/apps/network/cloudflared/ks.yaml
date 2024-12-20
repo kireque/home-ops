@@ -19,4 +19,5 @@ spec:
   wait: false
   dependsOn:
     - name: external-secrets-stores
+    - name: externaldns-cloudflare
     - name: nginx-external
