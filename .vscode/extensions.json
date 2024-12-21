@@ -5,6 +5,7 @@
         "ms-vscode-remote.remote-containers",
         "redhat.ansible",
         "tamasfe.even-better-toml",
-        "redhat.vscode-yaml"
+        "redhat.vscode-yaml",
+        "samuelcolvin.jinjahtml",
     ]
 }
