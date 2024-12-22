@@ -10,7 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
+  interval: 30m
+  timeout: 5m
   path: "./kubernetes/main/apps/network/multus/app"
   prune: true
   sourceRef:
@@ -22,15 +23,16 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname multus-config
+  name: &appname multus-networks
   namespace: flux-system
 spec:
   targetNamespace: network
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
-  path: "./kubernetes/main/apps/network/multus/config"
+  interval: 30m
+  timeout: 5m
+  path: "./kubernetes/main/apps/network/multus/networks"
   prune: true
   sourceRef:
     kind: GitRepository
