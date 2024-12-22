@@ -45,7 +45,7 @@ spec:
           app:
             image:
               repository: ghcr.io/bjw-s-labs/scrypted
-              tag: 0.122.0@sha256:b95998de7ff0bdb43bfc04fd98b95f5b191d8729f71852c245611c48a530fa44
+              tag: 0.122.0@sha256:e4d128473174505f05765ffb0ef461a4f21f5d47bb320f87415d328267e132f3
             probes:
               liveness:
                 enabled: true
