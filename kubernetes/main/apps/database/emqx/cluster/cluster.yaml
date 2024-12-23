@@ -31,6 +31,9 @@ spec:
         ]
         no_match: "deny"
       }
+      mqtt {
+        max_packet_size = 5MB
+      }
   coreTemplate:
     metadata:
       annotations:
