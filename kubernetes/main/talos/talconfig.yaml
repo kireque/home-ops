@@ -25,10 +25,6 @@ nodes:
     installDiskSelector:
       size: "<= 512GB"
       model: "CT500MX500SSD1"
-    machineDisks:
-      - device: /dev/disk/by-id/ata-CT500MX500SSD1_2402E88C6FB4
-        partitions:
-          - mountpoint: /var/mnt/extra
     networkInterfaces:
       - interface: bond0
         bond:
@@ -53,10 +49,6 @@ nodes:
     installDiskSelector:
       size: "<= 512GB"
       model: "CT500MX500SSD1"
-    machineDisks:
-      - device: /dev/disk/by-id/ata-CT500MX500SSD1_2235E6604278
-        partitions:
-          - mountpoint: /var/mnt/extra
     networkInterfaces:
       - interface: bond0
         bond:
@@ -76,10 +68,6 @@ nodes:
     installDiskSelector:
       size: "<= 5125GB"
       model: "VK0480GDJXV"
-    machineDisks:
-      - device: /dev/disk/by-id/ata-VK0480GDJXV_BTWL5131051T480QGN
-        partitions:
-          - mountpoint: /var/mnt/extra
     networkInterfaces:
       - interface: bond0
         bond:
@@ -163,9 +151,9 @@ controlPlane:
           extraConfig:
             maxPods: 150
           extraMounts:
-            - destination: /var/mnt/extra
+            - destination: /var/openebs/local
               type: bind
-              source: /var/mnt/extra
+              source: /var/openebs/local
               options:
                 - rbind
                 - rshared
