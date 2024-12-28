@@ -89,9 +89,14 @@ controlPlane:
   schematic:
     customization:
       extraKernelArgs:
-        - intel_iommu=on
-        - iommu=pt
-        - net.ifnames=1
+        - apparmor=0           # Less security, more speed
+        - init_on_alloc=0      # Less security, more speed
+        - init_on_free=0       # Less security, more speed
+        - intel_iommu=on       # PCI Passthrough
+        - iommu=pt             # PCI Passthrough
+        - mitigations=off      # Less security, more speed
+        - security=none        # Less security, more speed
+        - net.ifnames=1        # Enable predictable NIC naming
       systemExtensions:
         officialExtensions:
           - siderolabs/gasket-driver
@@ -127,12 +132,11 @@ controlPlane:
     - |-
       cluster:
         discovery:
-          enabled: true
           registries:
             kubernetes:
-              disabled: false
-            service:
               disabled: true
+            service:
+              disabled: false
 
     # Disable Host DNS
     - |-
@@ -148,7 +152,6 @@ controlPlane:
       machine:
         kubelet:
           extraArgs:
-            feature-gates: AuthorizeWithSelectors=false,AuthorizeNodeWithSelectors=false
             rotate-server-certificates: "true"
           extraConfig:
             maxPods: 150
