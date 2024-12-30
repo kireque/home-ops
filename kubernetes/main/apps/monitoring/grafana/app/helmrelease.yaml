@@ -86,6 +86,12 @@ spec:
 
     dashboards:
       default:
+        blackbox-exporter:
+          # renovate: dashboardName="Blackbox exporter - ICMP"
+          gnetId: 20338
+          revision: 3
+          datasource: Prometheus
+
         cert-manager:
           # renovate: depName="Cert-manager-Kubernetes"
           gnetId: 20842
