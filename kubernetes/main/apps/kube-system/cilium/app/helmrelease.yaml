@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -22,46 +22,32 @@ spec:
 
   values:
     hubble:
-      serviceMonitor:
-        enabled: true
-
-      dashboards:
-        enabled: true
-        annotations:
-          grafana_folder: Cilium
-
+      enabled: true
+      metrics:
+        enabled:
+          - dns:query
+          - drop
+          - tcp
+          - flow
+          - port-distribution
+          - icmp
+          - http
+        dashboards:
+          enabled: true
+          annotations:
+            grafana_folder: Cilium
+        serviceMonitor:
+          enabled: true
       relay:
+        enabled: true
+        rollOutPods: true
         prometheus:
           serviceMonitor:
             enabled: true
-
       ui:
         ingress:
           enabled: true
+          rollOutPods: true
           className: "internal-nginx"
           hosts:
-            - &host hubble-main.econline.nl
-          tls:
-            - hosts:
-                - *host
-
-    operator:
-      prometheus:
-        enabled: true
-        serviceMonitor:
-          enabled: true
-      dashboards:
-        enabled: true
-        annotations:
-          grafana_folder: Cilium
-
-    prometheus:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-        trustCRDsExist: true
-
-    dashboards:
-      enabled: true
-      annotations:
-        grafana_folder: Cilium
+            - hubble-main.econline.nl
