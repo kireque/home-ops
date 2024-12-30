@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/upgrade.cattle.io/plan_v1.json
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
 metadata:
@@ -8,7 +7,7 @@ spec:
   version: ${KUBERNETES_VERSION}
   serviceAccountName: system-upgrade
   secrets:
-    - name: talos
+    - name: system-upgrade
       path: /var/run/secrets/talos.dev
       ignoreUpdates: true
   concurrency: 1
