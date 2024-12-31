@@ -45,9 +45,13 @@ spec:
           serviceMonitor:
             enabled: true
       ui:
+        enabled: true
+        rollOutPods: true
         ingress:
           enabled: true
-          rollOutPods: true
           className: "internal-nginx"
           hosts:
-            - hubble-main.econline.nl
+            - &host "hubble-main.econline.nl"
+          tls:
+            - hosts:
+                - *host
