@@ -6,12 +6,13 @@ metadata:
   name: &appname actions-runner-controller
   namespace: flux-system
 spec:
-  targetNamespace: dev
+  targetNamespace: actions-runner-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
-  path: "./kubernetes/main/apps/dev/actions-runner-controller/operator"
+  interval: 30m
+  timeout: 5m
+  path: "./kubernetes/main/apps/actions-runner-system/actions-runner-controller/operator"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -28,12 +29,13 @@ metadata:
   name: &appname actions-runner-controller-runners
   namespace: flux-system
 spec:
-  targetNamespace: dev
+  targetNamespace: actions-runner-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
-  path: "./kubernetes/main/apps/dev/actions-runner-controller/runners"
+  interval: 30m
+  timeout: 5m
+  path: "./kubernetes/main/apps/actions-runner-system/actions-runner-controller/runners"
   prune: true
   sourceRef:
     kind: GitRepository

@@ -3,8 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: arc-assets
-  namespace: dev
+  name: arc-home-ops
 spec:
   interval: 30m
   chart:
@@ -16,38 +15,64 @@ spec:
         name: actions-runner-controller
         namespace: flux-system
       interval: 30m
-
+  driftDetection:
+    mode: enabled
   values:
-    runnerScaleSetName: arc-runner-set-assets
+    runnerScaleSetName: arc-runner-set-home-ops
 
-    githubConfigUrl: https://github.com/kireque/assets
+    githubConfigUrl: https://github.com/kireque/home-ops
 
     minRunners: 0
     maxRunners: 2
 
     containerMode:
-      type: "dind"
+      type: kubernetes
+      kubernetesModeWorkVolumeClaim:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: ceph-block
+        resources:
+          requests:
+            storage: 2Gi
 
     controllerServiceAccount:
       name: actions-runner-controller-gha-rs-controller
-      namespace: dev
+      namespace: actions-runner-system
 
     listenerTemplate:
       metadata:
         labels:
-          app.kubernetes.io/name: arc-assets-listener
+          app.kubernetes.io/name: arc-runner-set-home-ops-listener
       spec:
         containers: []
 
     template:
       metadata:
         labels:
-          app.kubernetes.io/name: arc-assets-runner
+          app.kubernetes.io/name: arc-runner-set-home-ops-runner
       spec:
+        automountServiceAccountToken: true
         containers:
           - name: runner
             image: ghcr.io/onedr0p/actions-runner:2.321.0
             command: ["/home/runner/run.sh"]
+            env:
+              - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
+                value: "false"
+              - name: NODE_IP
+                valueFrom:
+                  fieldRef:
+                    fieldPath: status.hostIP
+            volumeMounts:
+              - mountPath: /var/run/secrets/talos.dev
+                name: talos
+                readOnly: true
+        securityContext:
+          fsGroup: 123
+        serviceAccountName: actions-runner
+        volumes:
+          - name: talos
+            secret:
+              secretName: actions-runner
 
   valuesFrom:
     - kind: Secret
