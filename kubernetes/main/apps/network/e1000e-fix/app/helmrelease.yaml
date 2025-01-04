@@ -4,7 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: &app e1000e-fix
-  namespace: network
 spec:
   interval: 5m
   chart:
@@ -82,7 +81,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: &app e1000e-fix
-  namespace: network
 spec:
   interval: 5m
   chart:
