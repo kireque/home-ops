@@ -80,7 +80,7 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: &app e1000e-fix
+  name: &app e1000e-fix2
 spec:
   interval: 5m
   chart:
