@@ -109,9 +109,9 @@ spec:
           url: living-vacuum.home.econline.nl
 
         # Other devices
-        - module: icmp
-          name: zigbee-controller-icmp
-          url: office-zigbee-adapter.home.econline.nl
+        # - module: icmp
+        #   name: zigbee-controller-icmp
+        #   url: office-zigbee-adapter.home.econline.nl
 
         - module: icmp
           name: velux-gateway
