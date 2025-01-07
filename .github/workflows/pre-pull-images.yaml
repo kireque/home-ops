@@ -36,8 +36,8 @@ jobs:
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
         id: app-token
         with:
-          app-id: ${{ secrets.LAB_ASSISTANT_APP_ID }}
-          private-key: ${{ secrets.LAB_ASSISTANT_APP_KEY }}
+          app-id: ${{ secrets.KIREQUE_APP_ID }}
+          private-key: ${{ secrets.KIREQUE_APP_PRIVATE_KEY }}
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -84,7 +84,7 @@ jobs:
   pre-pull-images:
     if: ${{ needs.extract-images.outputs.matrix != '[]' }}
     name: Pre-pull images
-    runs-on: arc-bjw-s-labs-home-ops
+    runs-on: arc-runner-set-home-ops
     needs:
       - compare-images
     strategy:
