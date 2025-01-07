@@ -28,7 +28,8 @@ spec:
               [{
                 "name":"multus-iot",
                 "namespace": "network",
-                "ips": ["10.1.4.151/24"]
+                "ips": ["10.1.4.151/24"],
+                "mac": "3e:59:e4:f7:43:08"
               }]
           securityContext:
             runAsUser: 65534
@@ -40,10 +41,9 @@ spec:
           app:
             image:
               repository: ghcr.io/onedr0p/home-assistant
-              tag: 2025.1.0@sha256:a3e6b1301107c5ca4dd3e1e7fa25edd0618acc9f812c75674cce7481fb05c759
-            envFrom:
-              - secretRef:
-                  name: home-assistant-secret
+              tag: 2025.1.1@sha256:927198fc12979546cb68cf10a742255b6d5cf0f462958192182df86488ab1fe9
+            env:
+              VENV_FOLDER: /venv
             resources:
               requests:
                 cpu: 47m
@@ -62,31 +62,24 @@ spec:
               repository: ghcr.io/coder/code-server
               tag: 4.96.2@sha256:6b8c0e944caec80057e71d2c2f352cee38fe00ae4b7515fc4458eb300844f699
             args:
-              [
-                "--auth",
-                "none",
-                "--disable-telemetry",
-                "--disable-update-check",
-                "--user-data-dir",
-                "/config/.code-server",
-                "--extensions-dir",
-                "/config/.code-server",
-                "--port",
-                "12321",
-                "/config",
-              ]
+              - --auth
+              - none
+              - --disable-telemetry
+              - --disable-update-check
+              - --user-data-dir
+              - /config/.code-server
+              - --extensions-dir
+              - /config/.code-server
+              - --port
+              - "12321"
+              - /config
             env:
               HASS_SERVER: http://localhost:8123
-              HASS_TOKEN:
-                valueFrom:
-                  secretKeyRef:
-                    name: home-assistant-secret
-                    key: VSCODE_TOKEN
             resources:
               requests:
                 cpu: 10m
               limits:
-                memory: 512Mi
+                memory: 1Gi
 
     service:
       app:
@@ -124,6 +117,13 @@ spec:
               - path: /config
             code-server:
               - path: /config
+      hass-cache:
+        existingClaim: hass-cache
+        advancedMounts:
+          home-assistant:
+            app:
+              - path: /venv
+                subPath: hass-venv
       tmpfs:
         type: emptyDir
         advancedMounts:
