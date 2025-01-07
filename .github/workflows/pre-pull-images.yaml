@@ -31,20 +31,13 @@ jobs:
       default: ${{ steps.extract-images.outputs.default }}
       pull: ${{ steps.extract-images.outputs.pull }}
     steps:
-      - name: Decode the GitHub App Private Key
-        id: decode
-        run: |
-          private_key=$(echo "${{ secrets.KIREQUE_APP_PRIVATE_KEY }}" | base64 -d | awk 'BEGIN {ORS="\\n"} {print}' | head -c -2) &> /dev/null
-          echo "::add-mask::$private_key"
-          echo "private-key=$private_key" >> "$GITHUB_OUTPUT"
-
       - name: Generate Token
         uses: actions/create-github-app-token@v1
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
         id: app-token
         with:
           app-id: ${{ secrets.KIREQUE_APP_ID }}
-          private-key: ${{ steps.decode.outputs.private-key }}
+          private-key: ${{ secrets.KIREQUE_APP_KEY }}
 
       - name: Checkout
         uses: actions/checkout@v4
