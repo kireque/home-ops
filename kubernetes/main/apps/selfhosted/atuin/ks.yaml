@@ -10,7 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
+  interval: 30m
+  timeout: 5m
   path: "./kubernetes/main/apps/selfhosted/atuin/app"
   prune: true
   sourceRef:
@@ -18,5 +19,11 @@ spec:
     name: flux-system
   wait: false
   dependsOn:
-    - name: crunchy-postgres-operator-cluster
-    - name: crunchy-postgres-operator-secretstore
+    - name: rook-ceph-cluster
+    - name: volsync
+    - name: external-secrets-stores
+  postBuild:
+    substitute:
+      APP: *appname
+      VOLSYNC_CLAIM: atuin
+      VOLSYNC_CAPACITY: 5Gi
