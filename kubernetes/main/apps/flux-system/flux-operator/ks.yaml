@@ -76,12 +76,12 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: ./kubernetes/main/apps/flux-system/flux/weave-gitops
+  path: ./kubernetes/main/apps/flux-system/flux-operator/weave-gitops
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
   wait: false
   dependsOn:
-    - name: flux
+    - name: flux-operator
     - name: external-secrets-stores
