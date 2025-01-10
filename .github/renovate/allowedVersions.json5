@@ -6,15 +6,5 @@
       matchDepNames: ["ghcr.io/linuxserver/calibre-web"],
       allowedVersions: "<1",
     },
-    {
-      matchDatasources: ["docker"],
-      matchDepNames: ["tomsquest/docker-radicale"],
-      allowedVersions: "/^[0-9]+\\.[0-9]+\\.[0-9]+(\\.[0-9]+)?$/",
-    },
-    {
-      matchDatasources: ["docker"],
-      matchDepNames: ["docker.io/kopia/kopia"],
-      allowedVersions: "<999",
-    },
   ],
 }
