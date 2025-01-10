@@ -83,5 +83,5 @@ spec:
     name: flux-system
   wait: false
   dependsOn:
-    - name: flux
+    - name: flux-operator
     - name: external-secrets-stores
