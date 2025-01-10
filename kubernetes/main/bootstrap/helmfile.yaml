@@ -70,6 +70,10 @@ releases:
     version: 0.12.0
     values:
       - ../apps/flux-system/flux-operator/app/values.yaml
+    needs:
+      - kube-system/cilium
+      - kube-system/coredns
+      - monitoring/prometheus-operator-crds
 
   - name: flux-instance
     namespace: flux-system
