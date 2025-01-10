@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: external-nginx
   rules:
-    - host: flux-webhook.bjw-s.dev
+    - host: flux-webhook.econline.nl
       http:
         paths:
           - path: /hook/
