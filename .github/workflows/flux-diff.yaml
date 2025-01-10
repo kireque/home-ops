@@ -33,8 +33,8 @@ jobs:
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
         id: app-token
         with:
-          app-id: ${{ secrets.LAB_ASSISTANT_APP_ID }}
-          private-key: ${{ secrets.LAB_ASSISTANT_APP_KEY }}
+          app-id: ${{ secrets.KIREQUE_APP_ID }}
+          private-key: ${{ secrets.KIREQUE_APP_KEY }}
 
       - name: Checkout Pull Request Branch
         uses: actions/checkout@v4

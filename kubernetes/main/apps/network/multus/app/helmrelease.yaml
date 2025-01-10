@@ -44,8 +44,8 @@ spec:
             args:
               - |
                 set -x
-                rm -rf /host/etc/cni/net.d/*multus*
-                rm -rf /host/opt/cni/bin/*multus*
+                rm -rf /etc/cni/net.d/*multus*
+                rm -rf /opt/cni/bin/*multus*
 
       multus:
         type: daemonset
