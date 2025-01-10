@@ -19,7 +19,9 @@ spec:
   values:
     controllers:
       uninstall:
-        type: daemonset
+        type: job
+
+        replicas: 3
 
         annotations:
           # This is what defines this resource as a hook. Without this line, the
