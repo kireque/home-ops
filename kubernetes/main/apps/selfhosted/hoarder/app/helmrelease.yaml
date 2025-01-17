@@ -15,7 +15,9 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     defaultPodOptions:
       securityContext:
@@ -96,11 +98,22 @@ spec:
       meilisearch:
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - hoarder
+                  topologyKey: kubernetes.io/hostname
         containers:
           app:
             image:
               repository: docker.io/getmeili/meilisearch
-              tag: v1.12.3
+              tag: v1.12.4
             env:
               MEILI_NO_ANALYTICS: true
               MEILI_MASTER_KEY:
