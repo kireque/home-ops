@@ -20,4 +20,12 @@ spec:
             - snapshots
           envFrom:
             - secretRef:
-                name: {{ ENV.APP }}-volsync-minio
+                name: {{ ENV.APP }}-volsync-nfs
+          volumeMounts:
+            - mountPath: /repository
+              name: repository
+      volumes:
+        - name: repository
+          nfs:
+            server: "nas.home.econline.nl"
+            path: "/volume3/Backup/Volsync"

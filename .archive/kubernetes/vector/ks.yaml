@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./kubernetes/main/apps/monitoring/vector/aggregator"
+  path: "./kubernetes/apps/monitoring/vector/aggregator"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -33,7 +33,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./kubernetes/main/apps/monitoring/vector/agent"
+  path: "./kubernetes/apps/monitoring/vector/agent"
   prune: true
   sourceRef:
     kind: GitRepository
