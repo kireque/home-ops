@@ -38,6 +38,11 @@ spec:
     kind: GitRepository
     name: flux-system
   wait: true
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: crunchy-postgres-r2
+        optional: false
   dependsOn:
     - name: crunchy-postgres-operator
 ---
