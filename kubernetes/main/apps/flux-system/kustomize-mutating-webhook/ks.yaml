@@ -21,4 +21,3 @@ spec:
   wait: false
   dependsOn:
     - name: cert-manager
-      namespace: cert-manager
