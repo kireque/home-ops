@@ -12,7 +12,7 @@
     },
     {
       description: "Auto merge KPS minors and patches",
-      matchDatasources: ["helm"],
+      matchDatasources: ["helm", "docker"],
       automerge: true,
       matchUpdateTypes: ["minor", "patch"],
       matchDepNames: ["kube-prometheus-stack"],
