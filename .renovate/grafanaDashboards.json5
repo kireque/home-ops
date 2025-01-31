@@ -30,7 +30,7 @@
       semanticCommitScope: "grafana-dashboards",
       semanticCommitType: "chore",
       commitMessageTopic: "dashboard {{depName}}",
-      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+      commitMessageExtra: "( {{currentVersion}} �' {{newVersion}} )",
     },
   ],
 }
