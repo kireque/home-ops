@@ -56,6 +56,7 @@ spec:
                     key: encryption_key
               NEXTAUTH_URL: https://hoarder.econline.nl
               DISABLE_NEW_RELEASE_CHECK: true
+              COREPACK_INTEGRITY_KEYS: 0
             probes:
               liveness:
                 enabled: true
@@ -65,7 +66,7 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 512Mi
+                memory: 1Gi
 
       chrome:
         annotations:
@@ -93,7 +94,7 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 512Mi
+                memory: 1Gi
 
       meilisearch:
         annotations:
@@ -108,12 +109,19 @@ spec:
                         operator: In
                         values:
                           - hoarder
+                      - key: app.kubernetes.io/component
+                        operator: In
+                        values:
+                          - hoarder
                   topologyKey: kubernetes.io/hostname
         containers:
           app:
             image:
               repository: docker.io/getmeili/meilisearch
               tag: v1.13.3
+            args:
+              - /bin/meilisearch
+              - --experimental-dumpless-upgrade
             env:
               MEILI_NO_ANALYTICS: true
               MEILI_MASTER_KEY:
@@ -125,10 +133,11 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 512Mi
+                memory: 4Gi
 
     service:
       app:
+        primary: true
         controller: hoarder
         ports:
           http:
