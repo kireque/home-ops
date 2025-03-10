@@ -41,7 +41,7 @@ spec:
           app:
             image:
               repository: ghcr.io/onedr0p/home-assistant
-              tag: 2025.3.0@sha256:5b2d594d5d7fdf961b1245b8cfc6185690a4538ad961747dca808e2191176c9c
+              tag: 2025.3.1@sha256:a5377eae2e414adb58413dbcf29cf9b08350ad33d123dfdbc3eaa94b44f7443c
             env:
               VENV_FOLDER: /venv
             envFrom:
@@ -63,7 +63,7 @@ spec:
           code-server:
             image:
               repository: ghcr.io/coder/code-server
-              tag: 4.97.2@sha256:6ff0e9cf5a553b3961ece200be75e21e8c887ed0ae28a7c28213722dccf74b0c
+              tag: 4.98.0@sha256:49190032f1ab73cdcd0c930b1e961c20110aa1b6004d296c14681eb11c9f49d8
             args:
               - --auth
               - none
