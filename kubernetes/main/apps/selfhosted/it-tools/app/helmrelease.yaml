@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/bjw-s-labs/it-tools
-              tag: 2024.10.22@sha256:117d7a26ef1946833aa75123dd080e51a3d50a039210e45a1034a8d8a38da180
+              tag: 2024.10.22@sha256:fabb2e7f62d494be4325bf7144cdf5f7c7f60deab3a0c84d9d2de4ff498bdd24
             resources:
               requests:
                 cpu: 5m
