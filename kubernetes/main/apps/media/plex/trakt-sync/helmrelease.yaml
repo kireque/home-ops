@@ -41,7 +41,7 @@ spec:
               PLEX_TOKEN:
                 valueFrom:
                   secretKeyRef:
-                    name: plex-secret
+                    name: plex-trakt-sync-secret
                     key: PLEX_TOKEN
               PLEX_USERNAME: kireque
               TRAKT_USERNAME: kireque
