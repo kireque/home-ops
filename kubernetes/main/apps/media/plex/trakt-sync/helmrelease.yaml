@@ -64,7 +64,7 @@ spec:
               - path: /app/config
       config-yaml:
         type: configMap
-        name: plex-tract-sync-configmap
+        name: plex-tract-sync
         globalMounts:
           - path: /app/config/config.yml
             subPath: config.yml
