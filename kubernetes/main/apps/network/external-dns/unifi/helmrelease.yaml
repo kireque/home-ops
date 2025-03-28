@@ -17,7 +17,6 @@ spec:
       interval: 30m
 
   values:
-    fullnameOverride: &name external-dns-unifi
     domainFilters:
       - econline.nl
     extraArgs:
@@ -74,7 +73,7 @@ spec:
           - target:
               version: v1
               kind: Deployment
-              name: *name
+              name: external-dns-unifi
             patch: |
               - op: add
                 path: /spec/template/spec/enableServiceLinks
