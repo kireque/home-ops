@@ -33,9 +33,10 @@ spec:
             image:
               repository: ghcr.io/taxel/plextraktsync
               tag: 0.34.5
-            args:
+            command:
               - "sleep"
               - "infinity"
+            # args
               # - watch
             env:
               PLEX_BASEURL: http://plex.media.svc.cluster.local:32400
