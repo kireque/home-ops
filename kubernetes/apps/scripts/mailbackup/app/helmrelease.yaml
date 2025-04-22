@@ -1,0 +1,65 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mailbackup
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 30m
+  values:
+    controllers:
+      mailbackup:
+        type: cronjob
+
+        cronjob:
+          schedule: "0 2 * * *"
+          backoffLimit: 0
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 1
+          successfulJobsHistory: 0
+
+        pod:
+          restartPolicy: OnFailure
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            runAsNonRoot: true
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/bjw-s-labs/getmail
+              tag: 6.19.7@sha256:ae35622d8900dadfacc3b6df1edfc23472d974a4715ddd6ae01f543d9e27203d
+            command:
+              - "/scripts/mailbackup.sh"
+
+    persistence:
+      config:
+        type: secret
+        name: mailbackup-secrets
+        advancedMounts:
+          mailbackup:
+            app:
+              - path: /config
+      scripts:
+        type: configMap
+        name: mailbackup-scripts
+        defaultMode: 0775
+        advancedMounts:
+          mailbackup:
+            app:
+              - path: /scripts/mailbackup.sh
+                subPath: mailbackup.sh
+      backup:
+        type: nfs
+        server: gladius.bjw-s.internal
+        path: /mnt/tank/Backup/Bernd
+        advancedMounts:
+          mailbackup:
+            app:
+              - path: /data/nas-backup/Bernd/Email
+                subPath: Email
