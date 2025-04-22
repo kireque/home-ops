@@ -4,6 +4,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
   name: gateway-api-crd
+  namespace: flux-system
 spec:
   interval: 30m
   url: https://github.com/kubernetes-sigs/gateway-api
