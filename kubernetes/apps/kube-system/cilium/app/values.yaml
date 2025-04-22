@@ -31,7 +31,7 @@ envoy:
   enabled: true
   rollOutPods: true
 gatewayAPI:
-  enabled: true
+  enabled: false
   enableAlpn: true
   xffNumTrustedHops: 1
 hubble:
