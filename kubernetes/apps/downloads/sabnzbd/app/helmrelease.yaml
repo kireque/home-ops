@@ -100,8 +100,8 @@ spec:
         server: nas.home.econline.nl
         path: /volume3/Download
         globalMounts:
-          - path: /data/nas-media/Downloads/sabnzbd
-            subPath: Downloads/sabnzbd
+          - path: /data/nas-media/
+
       temp:
         type: emptyDir
         advancedMounts:
