@@ -3,9 +3,7 @@ cache:
   path: $PTS_CACHE_DIR/trakt_cache
 
 excluded-libraries:
-  - Other Videos
-  - Series
-  - Films
+  - Job
 
 config:
   dotenv_override: true
