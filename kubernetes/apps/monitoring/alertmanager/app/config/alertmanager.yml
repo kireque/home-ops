@@ -4,6 +4,7 @@ receivers:
   - name: "pushover"
     pushover_configs:
       - html: true
+        sound: gamelan
         token_file: /etc/secrets/pushover_api_token
         user_key_file: /etc/secrets/pushover_api_userkey
         send_resolved: true
