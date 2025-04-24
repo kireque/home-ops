@@ -87,7 +87,7 @@ spec:
       recs:
         type: nfs
         server: nas.home.econline.nl
-        path: /volume3/Apps/scrypted
+        path: /volume1/Apps/scrypted
         globalMounts:
           - path: /recs
 
