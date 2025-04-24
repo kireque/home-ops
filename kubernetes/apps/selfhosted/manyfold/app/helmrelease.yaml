@@ -159,4 +159,4 @@ spec:
         rules:
           - backendRefs:
               - name: manyfold
-                port: *port
+                port: *httpPort
