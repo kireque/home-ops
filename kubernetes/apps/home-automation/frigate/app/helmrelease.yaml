@@ -61,16 +61,7 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
-      app:
-        className: internal
-        hosts:
-          - host: frigate.econline.nl
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+
     persistence:
       data:
         existingClaim: frigate
@@ -93,3 +84,16 @@ spec:
         path: /volume1/Apps/frigate
         globalMounts:
           - path: /media
+
+    route:
+      app:
+        hostnames:
+          - frigate.econline.nl
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: frigate
+                port: *port
