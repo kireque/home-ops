@@ -1,8 +1,8 @@
 ---
 mqtt:
   host: emqx-listeners.database.svc.cluster.local
-  user: "{FRIGATE_MQTT_USERNAME}"
-  password: "{FRIGATE_MQTT_PASSWORD}"
+  user: !env_var mqtt_user
+  password: !env_var mqtt_password
 database:
   path: /data/frigate.db
 # detectors:
