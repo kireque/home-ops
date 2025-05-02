@@ -87,10 +87,6 @@ spec:
         sizeLimit: 2Gi
         globalMounts:
           - path: /dev/shm
-      pci:
-        type: hostPath
-        hostPath: /dev/apex_0
-        hostPathType: CharDevice
       media:
         type: nfs
         server: nas.home.econline.nl
