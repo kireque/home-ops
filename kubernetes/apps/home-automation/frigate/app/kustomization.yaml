@@ -8,7 +8,7 @@ resources:
 configMapGenerator:
   - name: frigate-config
     files:
-      - config/frigate.yaml
+      - config/config.yml
 generatorOptions:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
