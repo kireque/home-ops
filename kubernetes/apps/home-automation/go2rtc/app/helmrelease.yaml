@@ -16,6 +16,9 @@ spec:
   values:
     controllers:
       go2rtc:
+        annotations:
+          secret.reloader.stakater.com/reload: go2rtc-secret
+          configmap.reloader.stakater.com/reload: go2rtc-configmap
         pod:
           affinity:
             podAffinity:
@@ -38,6 +41,9 @@ spec:
             image:
               repository: ghcr.io/alexxit/go2rtc
               tag: 1.9.9
+            envFrom:
+              - secretRef:
+                  name: go2rtc-secret
             resources:
               requests:
                 cpu: 10m
@@ -56,10 +62,10 @@ spec:
         controller: go2rtc
         ports:
           api:
-            port: &port 1984
+            port: &port 80
             primary: true
           rtsp:
-            port: 8554
+            port: 554
           webrtc:
             port: 8555
 

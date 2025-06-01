@@ -1,7 +1,21 @@
 ---
-log:
-  output: "stdout"
+api:
+  listen: :80
+
+rtsp:
+  listen: :554
+
+webrtc:
+  listen: :8555
+  candidates:
+    - stun:8555
+  ice_servers:
+    - urls:
+       - stun:stun.cloudflare.com:3478
 
 streams:
-  attic_3d_printer: rtsp://scrypted.home-automation.svc.cluster.local:34136/ffcde3df7d5eb662
-  doorbell: rtsp://scrypted.home-automation.svc.cluster.local:34135/8472285c9f0c0dd8
+  entrance_detect:
+    - rtsp://${go2rtc_username}:${go2rtc_password}@doorbell.home.econline.nl:554/h264Preview_01_sub
+  entrance_record:
+    - rtsp://${go2rtc_username}:${go2rtc_password}@doorbell.home.econline.nl:554/h264Preview_01_main
+    - "ffmpeg:entrance_record#audio=aac"

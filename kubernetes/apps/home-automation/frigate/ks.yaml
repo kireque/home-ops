@@ -20,8 +20,12 @@ spec:
     namespace: flux-system
   wait: false
   dependsOn:
-    - name: emqx-cluster
-      namespace: database
+    - name: multus-networks
+      namespace: network
+    - name: onepassword-store
+      namespace: external-secrets
+    - name: volsync
+      namespace: system
   components:
     - ../../../../components/volsync
   retryInterval: 1m
