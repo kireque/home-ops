@@ -3,7 +3,7 @@
 apiVersion: monitoring.giantswarm.io/v1alpha1
 kind: Silence
 metadata:
-  name: keda-hpa-maxed_out
+  name: keda-hpa-maxed-out
 spec:
   matchers:
     - name: alertname
