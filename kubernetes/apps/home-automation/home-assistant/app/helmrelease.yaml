@@ -125,23 +125,19 @@ spec:
         hostnames:
           - hass.econline.nl
         parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs: [{}]
+      code: # split so it's not external, and we can ext-auth it as well
+        hostnames:
+          - hass-code.econline.nl
+        parentRefs:
           - name: internal
             namespace: kube-system
             sectionName: https
         rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /code/
-            filters:
-              - type: URLRewrite
-                urlRewrite:
-                  path:
-                    type: ReplacePrefixMatch
-                    replacePrefixMatch: /
-            backendRefs:
-              - identifier: app
-                port: 12321
           - backendRefs:
-              - identifier: app
-                port: 8123
+              - name: home-assistant
+                port: 12321
