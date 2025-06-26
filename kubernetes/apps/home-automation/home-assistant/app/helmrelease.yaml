@@ -131,7 +131,9 @@ spec:
             namespace: kube-system
             sectionName: https
         rules:
-          - backendRefs: [{}]
+          - backendRefs:
+              - identifier: app
+                port: 8123
       code: # split so it's not external, and we can ext-auth it as well
         hostnames:
           - hass-code.econline.nl
@@ -141,5 +143,5 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: home-assistant
+              - identifier: code-server
                 port: 12321
