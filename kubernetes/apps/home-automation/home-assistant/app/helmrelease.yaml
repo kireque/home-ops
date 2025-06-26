@@ -6,14 +6,10 @@ metadata:
   name: home-assistant
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: app-template
-      version: 4.1.1
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s-labs
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -61,7 +57,7 @@ spec:
           code-server:
             image:
               repository: ghcr.io/coder/code-server
-              tag: 4.101.2@sha256:5f654c1137f8d87c8cf44253318bf94b85f6f9129e426a9956da46eb602dcc5a
+              tag: 4.101.1@sha256:d53815bc6b7590a62f20a373bec4a527481b2a3439ae3635d1619d5567abb71c
             args:
               - --auth
               - none
@@ -84,10 +80,16 @@ spec:
 
     service:
       app:
+        primary: true
+        type: LoadBalancer
+        sessionAffinity: ClientIP
+        annotations:
+          lbipam.cilium.io/ips: 10.1.1.134
         ports:
           http:
             port: 8123
-            primary: true
+      code-server:
+        ports:
           code-server:
             port: 12321
 
