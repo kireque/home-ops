@@ -1,28 +1,29 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/volsync.backube/replicationdestination_v1alpha1.json
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/volsync.backube/replicationsource_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
-kind: ReplicationDestination
+kind: ReplicationSource
 metadata:
-  name: "${APP}-bootstrap"
+  name: ${APP}
 spec:
+  sourcePVC: "${VOLSYNC_CLAIM:-${APP}}"
   trigger:
-    manual: restore-once
+    schedule: "0 * * * *"
   restic:
     accessModes:
-      - "${VOLSYNC_ACCESSMODES:-ReadWriteOnce}"
+      - "${VOLSYNC_SNAP_ACCESSMODES:-ReadWriteOnce}"
     cacheAccessModes:
       - "${VOLSYNC_CACHE_ACCESSMODES:-ReadWriteOnce}"
-    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
+    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-5Gi}"
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-openebs-hostpath}"
-    capacity: "${VOLSYNC_CAPACITY:-1Gi}"
-    cleanupCachePVC: true
-    cleanupTempPVC: true
-    enableFileDeletion: true
     copyMethod: "${VOLSYNC_COPYMETHOD:-Snapshot}"
     moverSecurityContext:
       runAsUser: ${APP_UID:-2000}
       runAsGroup: ${APP_GID:-2000}
       fsGroup: ${APP_GID:-2000}
-    repository: "${APP}-volsync-nfs"
+    pruneIntervalDays: 7
+    repository: ${APP}-volsync
+    retain:
+      hourly: 24
+      daily: 7
     storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-csi-ceph-blockpool}"

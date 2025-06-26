@@ -7,12 +7,18 @@ mqtt:
 database:
   path: /data/frigate.db
 
-detectors:
-#   coral:
-#     type: edgetpu
-#     device: pci
-  cpu1:
-    type: cpu
+# detectors:
+#   openvino:
+#     type: openvino
+#     device: GPU
+
+# model:
+#   width: 300
+#   height: 300
+#   input_tensor: nhwc
+#   input_pixel_format: bgr
+#   labelmap_path: /openvino-model/coco_91cl_bkgr.txt
+#   path: /openvino-model/ssdlite_mobilenet_v2.xml
 
 ffmpeg:
   global_args: ["-hide_banner", "-loglevel", "info"]
