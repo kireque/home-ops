@@ -45,7 +45,7 @@ spec:
           main:
             image:
               repository: ghcr.io/bjw-s-labs/manyfold
-              tag: 0.115.1@sha256:d6b9a5ec86954ab37c28c6d93caa62489a71faac37491d8f77c34ed909c06727
+              tag: 0.116.0@sha256:dc81a32c6764ee9dda5942c0c174b785476f9bc406e19dfed005095a71bf98f8
             env:
               DATABASE_URL: sqlite3:/data/database/manyfold.sqlite3
               MULTIUSER: false
