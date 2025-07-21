@@ -45,16 +45,9 @@ spec:
                 sabnzbd.downloads.svc.cluster,
                 sabnzbd.downloads.svc.cluster.local,
                 sabnzbd.econline.nl
-              SABNZBD__API_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: sabnzbd-secret
-                    key: api_key
-              SABNZBD__NZB_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: sabnzbd-secret
-                    key: nzb_key
+            envFrom:
+              - secretRef:
+                  name: sabnzbd-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -103,6 +96,8 @@ spec:
       tmpfs:
         type: emptyDir
         globalMounts:
+          - path: /config/logs
+            subPath: logs
           - path: /tmp
             subPath: tmp
       ephemeral:
