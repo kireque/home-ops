@@ -21,7 +21,10 @@ database:
 #   path: /openvino-model/ssdlite_mobilenet_v2.xml
 
 ffmpeg:
-  global_args: ["-hide_banner", "-loglevel", "info"]
+  global_args:
+    - "-hide_banner"
+    - "-loglevel"
+    - "info"
   hwaccel_args: preset-intel-qsv-h264
   output_args:
     record: preset-record-generic-audio-aac

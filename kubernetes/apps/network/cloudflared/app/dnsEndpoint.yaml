@@ -8,4 +8,5 @@ spec:
   endpoints:
     - dnsName: ingress-ext.econline.nl
       recordType: CNAME
-      targets: ["c2a25fcb-ec1c-43e3-8a2c-88abaad39c3d.cfargotunnel.com"]
+      targets:
+        - "c2a25fcb-ec1c-43e3-8a2c-88abaad39c3d.cfargotunnel.com"
