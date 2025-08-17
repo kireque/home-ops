@@ -1,6 +1,7 @@
+# yaml-language-server: $schema=http://frigate.econline.nl/api/config/schema.json
 ---
 mqtt:
-  host: vernemq.database.svc.cluster.local
+  host: mosquitto.database.svc.cluster.local
   user: "{FRIGATE_MQTT_USER}"
   password: "{FRIGATE_MQTT_PASSWORD}"
 
@@ -29,8 +30,9 @@ ffmpeg:
   output_args:
     record: preset-record-generic-audio-aac
 
-# birdseye:
-#   mode: motion
+birdseye:
+  # Optional: Enable birdseye view (default: shown below)
+  enabled: False
 
 record:
   enabled: true
@@ -48,25 +50,23 @@ snapshots:
 objects:
   track:
     - person
-    # - dog
-    # - cat
+    - dog
+    - cat
 
 cameras:
   entrance:
     ffmpeg:
       inputs:
-        - path: rtsp://go2rtc.home-automation.svc.cluster.local:554/entrance_detect
-          input_args: preset-rtsp-restream
-          roles:
-            - detect
         - path: rtsp://go2rtc.home-automation.svc.cluster.local:554/entrance_record
           input_args: preset-rtsp-restream
           roles:
             - record
             - audio
+        - path: rtsp://go2rtc.home-automation.svc.cluster.local:554/entrance_detect
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
     detect:
       width: 640
       height: 480
       fps: 10
-    live:
-      stream_name: entrance_record
