@@ -8,18 +8,18 @@ mqtt:
 database:
   path: /data/frigate.db
 
-# detectors:
-#   openvino:
-#     type: openvino
-#     device: GPU
+detectors:
+  ov:
+    type: openvino
+    device: AUTO
 
-# model:
-#   width: 300
-#   height: 300
-#   input_tensor: nhwc
-#   input_pixel_format: bgr
-#   labelmap_path: /openvino-model/coco_91cl_bkgr.txt
-#   path: /openvino-model/ssdlite_mobilenet_v2.xml
+model:
+  width: 300
+  height: 300
+  input_tensor: nhwc
+  input_pixel_format: bgr
+  path: /openvino-model/ssdlite_mobilenet_v2.xml
+  labelmap_path: /openvino-model/coco_91cl_bkgr.txt
 
 ffmpeg:
   global_args:
@@ -37,21 +37,42 @@ birdseye:
 record:
   enabled: true
   retain:
-    days: 5
-    mode: motion
+    days: 1
+    mode: all
+  alerts:
+    retain:
+      days: 1
+  detections:
+    retain:
+      days: 1
+timestamp_style:
+  format: '%d/%m/%Y %H:%M:%S'
+  effect: solid
 
 snapshots:
   enabled: true
+  timestamp: false
+  bounding_box: true
   retain:
-    default: 5
-    objects:
-      person: 30
+    default: 1
 
 objects:
   track:
     - person
     - dog
     - cat
+
+review:
+  alerts:
+    labels:
+      - person
+      - dog
+      - car
+  detections:
+    labels:
+      - person
+      - dog
+      - cat
 
 cameras:
   entrance:
@@ -67,6 +88,7 @@ cameras:
           roles:
             - detect
     detect:
+      enabled: true
       width: 640
       height: 480
       fps: 10
