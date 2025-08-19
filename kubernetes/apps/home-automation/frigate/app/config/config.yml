@@ -54,18 +54,33 @@ snapshots:
   retain:
     default: 1
 
+lpr:
+  enabled: true
+  device: GPU
+  enhancement: 2
+
+semantic_search:
+  enabled: true
+  reindex: false
+
 objects:
   track:
     - person
     - dog
     - cat
+    - bicycle
+    - car
+    - license_plate
+    - pizza
+    - knife
 
 review:
   alerts:
     labels:
-      - person
-      - dog
+      - bicycle
       - car
+      - pizza
+      - knife
   detections:
     labels:
       - person
@@ -92,6 +107,11 @@ cameras:
           input_args: preset-rtsp-restream
           roles:
             - detect
+    zones:
+      front_door:
+        coordinates: 0,0,0.621,0,0.654,0.501,0.761,0.509,0.759,0.567,1,0.655,1,1,0,1
+        objects:
+          - person
   # entrance:
   #   ffmpeg:
   #     inputs:
