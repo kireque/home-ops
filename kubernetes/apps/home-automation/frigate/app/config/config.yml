@@ -66,26 +66,17 @@ semantic_search:
 objects:
   track:
     - person
-    - dog
-    - cat
-    - bicycle
-    - car
-    - license_plate
     - pizza
     - knife
 
 review:
   alerts:
     labels:
-      - bicycle
-      - car
       - pizza
       - knife
   detections:
     labels:
       - person
-      - dog
-      - cat
 
 go2rtc:
   streams:
