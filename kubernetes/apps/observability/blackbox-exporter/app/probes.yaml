@@ -11,12 +11,10 @@ spec:
   targets:
     staticConfig:
       static:
-        - downstairs-hallway-slzb06.bjw-s.internal
-        - garage-tablet.bjw-s.internal
-        - gladius.bjw-s.internal
-        - hallway-tablet.bjw-s.internal
-        - livingroom-vacuum.bjw-s.internal
-        - pikvm.bjw-s.internal
+        - office-jetkvm.home.econline.nl
+        - living-vacuum.home.econline.nl
+        - office-zigbee-adapter.home.econline.nl
+        - hallway-velux-gateway.home.econline.nl
 ---
 # yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/monitoring.coreos.com/probe_v1.json
 apiVersion: monitoring.coreos.com/v1
