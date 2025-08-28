@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/monitoring.coreos.com/prometheusrule_v1.json
-apiVersion: observability.coreos.com/v1
+apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: oom-alert
