@@ -8,4 +8,4 @@ resources:
   - ./alertmanagerconfig.yaml
   - ./externalsecret.yaml
   - ./prometheusrules
-  - ./scrapeconfigs
+  # - ./scrapeconfigs
