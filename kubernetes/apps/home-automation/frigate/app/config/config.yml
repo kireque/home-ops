@@ -68,6 +68,7 @@ objects:
     - person
     - pizza
     - knife
+  mask: 0,0,0.621,0,0.654,0.501,0.761,0.509,0.759,0.567,1,0.655,1,1,0,1
 
 review:
   alerts:
