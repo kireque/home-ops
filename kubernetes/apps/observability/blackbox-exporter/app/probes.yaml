@@ -28,4 +28,4 @@ spec:
   targets:
     staticConfig:
       static:
-        - gladius.bjw-s.internal:2049
+        - nas.home.econline.nl:2049
