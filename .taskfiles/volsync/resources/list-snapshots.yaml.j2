@@ -20,12 +20,12 @@ spec:
             - snapshots
           envFrom:
             - secretRef:
-                name: {{ ENV.APP }}-volsync
+                name: {{ ENV.APP }}-volsync-secret
           volumeMounts:
             - mountPath: /repository
               name: repository
       volumes:
         - name: repository
           nfs:
-            server: "gladius.bjw-s.internal"
-            path: "/mnt/tank/Backup/Volsync"
+            server: "nas.home.econline.nl"
+            path: "/volume3/Backup/Volsync"
