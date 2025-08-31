@@ -54,10 +54,10 @@ snapshots:
   retain:
     default: 1
 
-lpr:
+face_recognition:
   enabled: true
-  device: GPU
-  enhancement: 2
+  model_size: large
+  
 
 semantic_search:
   enabled: true
