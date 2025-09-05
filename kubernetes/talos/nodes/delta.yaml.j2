@@ -1,0 +1,40 @@
+---
+machine:
+  install:
+    diskSelector:
+      model: CT500MX500SSD1
+  network:
+    hostname: delta.home.econline.nl
+    interfaces:
+      - interface: bond0
+        bond:
+          deviceSelectors:
+            - hardwareAddr: 1c:69:7a:a4:0a:0b
+              driver: e1000e
+          mode: active-backup
+        dhcp: true
+        vip:
+          ip: 10.1.1.30
+        vlans:
+          - vlanId: 40
+            dhcp: false
+            mtu: 1500
+  nodeLabels:
+    intel.feature.node.kubernetes.io/gpu: "true"
+  type: controlplane
+{# ---
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+provisioning:
+  diskSelector:
+    match: system_disk
+  maxSize: 512GiB #}
+{# ---
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: local-hostpath
+provisioning:
+  diskSelector:
+    match: system_disk
+  maxSize: 512GiB #}

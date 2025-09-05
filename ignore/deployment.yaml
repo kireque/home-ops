@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: talos-api-access
+spec:
+  selector:
+    matchLabels:
+      app: talos-api-access
+  template:
+    metadata:
+      labels:
+        app: talos-api-access
+    spec:
+      containers:
+        - name: talos-api-access
+          image: alpine:3
+          command:
+            - sh
+            - -c
+            - |
+              wget -O /usr/local/bin/talosctl https://github.com/siderolabs/talos/releases/download/v1.10.1/talosctl-linux-amd64
+              chmod +x /usr/local/bin/talosctl
+              while true; talosctl -n delta.home.econline.nl version; do sleep 1; done
+      serviceAccountName: system-upgrade-controller

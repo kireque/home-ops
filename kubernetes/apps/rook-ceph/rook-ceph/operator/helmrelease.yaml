@@ -22,7 +22,7 @@ spec:
         enabled: true
     image:
       repository: ghcr.io/rook/ceph
-    observability:
+    monitoring:
       enabled: true
     resources:
       requests:

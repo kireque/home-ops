@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvc-inspector
+  namespace: home-automation
+spec:
+  containers:
+  - image: busybox
+    name: pvc-inspector
+    command: ["tail"]
+    args: ["-f", "/dev/null"]
+    volumeMounts:
+    - mountPath: /pvc
+      name: pvc-mount
+  volumes:
+  - name: pvc-mount
+    persistentVolumeClaim:
+      claimName: frigate

@@ -12,3 +12,5 @@ TALOSCONFIG = '{{config_root}}/kubernetes/talos/talosconfig'
 "talosctl" = ["1.11.0"]
 "aqua:budimanjojo/talhelper" = ["latest"]
 "aqua:google/yamlfmt" = ["latest"]
+"aqua:casey/just" = ["latest"]
+"aqua:charmbracelet/gum" = ["latest"]

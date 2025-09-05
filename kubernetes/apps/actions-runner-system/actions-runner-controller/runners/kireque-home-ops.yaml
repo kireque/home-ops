@@ -20,7 +20,7 @@ spec:
     githubConfigUrl: https://github.com/kireque/home-ops
 
     minRunners: 0
-    maxRunners: 2
+    maxRunners: 6
 
     containerMode:
       type: kubernetes
@@ -37,6 +37,9 @@ spec:
       namespace: actions-runner-system
 
     template:
+      metadata:
+        labels:
+          app.kubernetes.io/name: arc-kireque-home-ops-runner
       spec:
         containers:
           - name: runner
@@ -46,19 +49,6 @@ spec:
             env:
               - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
                 value: "false"
-              - name: NODE_IP
-                valueFrom:
-                  fieldRef:
-                    fieldPath: status.hostIP
-            volumeMounts:
-              - mountPath: /var/run/secrets/talos.dev
-                name: talos
-                readOnly: true
-        serviceAccountName: actions-runner
-        volumes:
-          - name: talos
-            secret:
-              secretName: actions-runner
 
   valuesFrom:
     - kind: Secret

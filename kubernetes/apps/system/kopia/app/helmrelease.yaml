@@ -76,8 +76,8 @@ spec:
             readOnly: true
       repository:
         type: nfs
-        server: nas.home.econline.nl
-        path: /volume3/Backup/Volsync
+        server: gladius.bjw-s.internal
+        path: /mnt/tank/Backup/Volsync
         globalMounts:
           - path: /repository
       tmpfs:
@@ -92,7 +92,7 @@ spec:
     route:
       app:
         hostnames:
-          - kopia.econline.nl
+          - kopia.bjw-s.dev
         parentRefs:
           - name: internal
             namespace: kube-system
