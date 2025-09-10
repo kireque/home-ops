@@ -85,7 +85,7 @@ cluster:
     key: op://automation/talos/CLUSTER_AGGREGATORCA_KEY
   allowSchedulingOnControlPlanes: true
   apiServer:
-    image: registry.k8s.io/kube-apiserver:v1.34.0
+    image: registry.k8s.io/kube-apiserver:v1.34.1
     extraArgs:
       enable-aggregator-routing: "true"
       feature-gates: MutatingAdmissionPolicy=true
