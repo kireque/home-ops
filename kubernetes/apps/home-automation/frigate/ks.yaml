@@ -1,24 +1,16 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app frigate
+  name: &appname frigate
   namespace: &namespace home-automation
 spec:
-  targetNamespace: *namespace
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
-  interval: 30m
-  timeout: 5m
-  path: ./kubernetes/apps/home-automation/frigate/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: false
+      app.kubernetes.io/name: *appname
+  components:
+    - ../../../../components/volsync
   dependsOn:
     - name: multus-networks
       namespace: network
@@ -26,13 +18,18 @@ spec:
       namespace: external-secrets
     - name: volsync
       namespace: system
-    - name: keda
-      namespace: system
-  components:
-    - ../../../../components/volsync
-    - ../../../../components/keda/nas-nfs-scaler
-  retryInterval: 1m
+  interval: 30m
+  timeout: 5m
+  path: "./kubernetes/apps/home-automation/frigate/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  wait: false
   postBuild:
     substitute:
-      APP: *app
-      CAPACITY: 2Gi
+      APP: *appname
+      VOLSYNC_CLAIM: frigate-config
+      VOLSYNC_CAPACITY: 5Gi
