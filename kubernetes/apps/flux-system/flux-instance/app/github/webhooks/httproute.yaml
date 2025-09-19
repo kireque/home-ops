@@ -6,7 +6,7 @@ metadata:
   name: github-webhook
 spec:
   hostnames:
-    - flux-webhook.bjw-s.dev
+    - flux-webhook.econline.nl
   parentRefs:
     - name: envoy-external
       namespace: network

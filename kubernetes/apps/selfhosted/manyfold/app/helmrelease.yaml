@@ -151,7 +151,7 @@ spec:
     route:
       app:
         hostnames:
-          - manyfold.bjw-s.dev
+          - manyfold.econline.nl
         parentRefs:
           - name: envoy-internal
             namespace: network
