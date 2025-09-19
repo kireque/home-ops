@@ -91,7 +91,7 @@ spec:
         server: nas.home.econline.nl
         path: /volume3/Download
         globalMounts:
-          - readOnly: true
+          - path: /data/nas-media/
       tmpfs:
         type: emptyDir
         globalMounts:
@@ -115,7 +115,6 @@ spec:
           sabnzbd:
             app:
               - path: /incomplete
-                subPath: incomplete
 
     route:
       app:
