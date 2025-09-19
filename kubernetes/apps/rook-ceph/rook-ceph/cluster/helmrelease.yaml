@@ -53,9 +53,13 @@ spec:
         count: 3
         allowMultiplePerNode: true
       network:
-        provider: host
         connections:
+          # encryption:
+          #   enabled: true
+          # compression:
+          #   enabled: true
           requireMsgr2: true
+        ipFamily: IPv4
       storage:
         useAllNodes: true
         useAllDevices: false
