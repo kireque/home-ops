@@ -79,18 +79,17 @@ spec:
                 subPath: tmp
       nfs-nas-media:
         type: nfs
-        server: gladius.bjw-s.internal
-        path: /mnt/tank/Media
+        server: nas.home.econline.nl
+        path: /volume3/Download
         advancedMounts:
           emby:
             app:
-              - path: /data/nas-media/Library
-                subPath: Library
+              - path: /data/nas-media
 
     route:
       app:
         hostnames:
-          - emby.bjw-s.dev
+          - emby.econline.nl
         parentRefs:
           - name: envoy-internal
             namespace: network
