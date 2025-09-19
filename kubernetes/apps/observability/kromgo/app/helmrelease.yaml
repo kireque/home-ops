@@ -8,8 +8,7 @@ spec:
   interval: 30m
   chartRef:
     kind: OCIRepository
-    name: app-template
-    namespace: flux-system
+    name: kromgo
   values:
     controllers:
       kromgo:
@@ -92,6 +91,6 @@ spec:
         hostnames:
           - kromgo.econline.nl
         parentRefs:
-          - name: external
-            namespace: kube-system
+          - name: envoy-external
+            namespace: network
             sectionName: https

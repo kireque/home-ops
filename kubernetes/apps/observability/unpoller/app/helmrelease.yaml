@@ -8,8 +8,7 @@ spec:
   interval: 30m
   chartRef:
     kind: OCIRepository
-    name: app-template
-    namespace: flux-system
+    name: unpoller
 
   values:
     controllers:
@@ -31,7 +30,7 @@ spec:
               tag: v2.15.4
             env:
               UP_UNIFI_DEFAULT_ROLE: home-ops
-              UP_UNIFI_DEFAULT_URL: https://10.1.1.1
+              UP_UNIFI_DEFAULT_URL: https://10.1.3.1
               UP_UNIFI_DEFAULT_VERIFY_SSL: false
               UP_UNIFI_DEFAULT_API_KEY:
                 valueFrom:

@@ -8,8 +8,7 @@ spec:
   interval: 30m
   chartRef:
     kind: OCIRepository
-    name: app-template
-    namespace: flux-system
+    name: sabnzbd
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -92,7 +91,7 @@ spec:
         server: nas.home.econline.nl
         path: /volume3/Download
         globalMounts:
-          - path: /data/nas-media/
+          - readOnly: true
       tmpfs:
         type: emptyDir
         globalMounts:
@@ -123,6 +122,6 @@ spec:
         hostnames:
           - sabnzbd.econline.nl
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: envoy-internal
+            namespace: network
             sectionName: https

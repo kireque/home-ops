@@ -8,6 +8,7 @@ resources:
   - ./atuin/ks.yaml
   - ./it-tools/ks.yaml
   - ./manyfold/ks.yaml
+  - ./n8n/ks.yaml
 components:
   - ../../components/namespace
   - ../../components/flux/alerts

@@ -8,8 +8,7 @@ spec:
   interval: 30m
   chartRef:
     kind: OCIRepository
-    name: app-template
-    namespace: flux-system
+    name: n8n
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -40,7 +39,7 @@ spec:
               N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: false
               N8N_PROTOCOL: "https"
               N8N_PORT: &port 8080
-              N8N_HOST: &hostName n8n.econline.nl
+              N8N_HOST: &hostName n8n.bjw-s.dev
               N8N_LOG_LEVEL: info
               N8N_LOG_OUTPUT: console
               N8N_ENCRYPTION_KEY:
@@ -74,19 +73,20 @@ spec:
         hostnames:
           - *hostName
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: envoy-internal
+            namespace: network
             sectionName: https
 
       webhooks:
         hostnames:
-          - n8n-webhook.econline.nl
+          - n8n-webhook.bjw-s.dev
         parentRefs:
-          - name: external
-            namespace: kube-system
+          - name: envoy-external
+            namespace: network
             sectionName: https
         rules:
           - matches:
               - path:
                   value: /webhook
-            backendRefs: [{}]
+            backendRefs:
+              - {}

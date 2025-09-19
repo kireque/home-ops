@@ -2,13 +2,15 @@
 pipx_uvx = true
 
 [env]
-# Kubernetes
+JUST_UNSTABLE = "1"
 KUBECONFIG = '{{config_root}}/kubernetes/kubeconfig'
+MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
 TALOSCONFIG = '{{config_root}}/kubernetes/talos/talosconfig'
 
 [tools]
 "aqua:astral-sh/uv" = ["latest"]
 "pipx:flux-local" = ["latest"]
-"talosctl" = ["1.11.0"]
+"talosctl" = ["latest"]
 "aqua:budimanjojo/talhelper" = ["latest"]
 "aqua:google/yamlfmt" = ["latest"]
+"pipx:rust-just" = ["latest"]

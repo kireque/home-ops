@@ -8,8 +8,7 @@ spec:
   interval: 30m
   chartRef:
     kind: OCIRepository
-    name: app-template
-    namespace: flux-system
+    name: it-tools
 
   values:
     controllers:
@@ -49,7 +48,7 @@ spec:
       app:
         ports:
           http:
-            port: &port 8080
+            port: 8080
 
     persistence:
       tmpfs:
@@ -63,6 +62,6 @@ spec:
         hostnames:
           - it-tools.econline.nl
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: envoy-internal
+            namespace: network
             sectionName: https
