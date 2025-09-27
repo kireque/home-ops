@@ -22,7 +22,7 @@ spec:
           regex: (pod)
         - action: replace
           regex: (.*)
-          replacement: $1.bjw-s.internal
+          replacement: $1.home.econline.nl
           sourceLabels:
             - __meta_kubernetes_endpoint_node_name
           targetLabel: instance
