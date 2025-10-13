@@ -11,7 +11,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - office-jetkvm.home.econline.nl
+        # - office-jetkvm.home.econline.nl
         - living-vacuum.home.econline.nl
         - office-zigbee-adapter.home.econline.nl
         - hallway-velux-gateway.home.econline.nl
