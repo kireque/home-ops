@@ -44,7 +44,7 @@ spec:
           main:
             image:
               repository: ghcr.io/bjw-s-labs/manyfold
-              tag: 0.124.0@sha256:a9b9daccab2868f6d1de4b4e43384d0c26f3be361fb61854223326b2be6b620d
+              tag: 0.126.0@sha256:07d5bee1df36344df36eb9f859d1311bf490b92d08d8d438a37b3af1b9259766
             env:
               DATABASE_URL: sqlite3:/data/database/manyfold.sqlite3
               MULTIUSER: false
@@ -92,7 +92,7 @@ spec:
           redis:
             image:
               repository: ghcr.io/valkey-io/valkey
-              tag: 8.1.3
+              tag: 9.0.0
             args:
               - --save
               - ""
