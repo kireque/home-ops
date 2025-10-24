@@ -7,7 +7,7 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - gladius.bjw-s.internal:9633
+        - gladius.home.econline.nl:9633
   metricsPath: /metrics
   relabelings:
     - action: replace
