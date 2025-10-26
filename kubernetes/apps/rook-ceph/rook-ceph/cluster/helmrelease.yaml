@@ -5,15 +5,10 @@ kind: HelmRelease
 metadata:
   name: rook-ceph-cluster
 spec:
-  interval: 30m
   chartRef:
     kind: OCIRepository
     name: rook-ceph-cluster
-  dependsOn:
-    - name: rook-ceph
-      namespace: rook-ceph
-    - name: snapshot-controller
-      namespace: system-controllers
+  interval: 30m
   values:
     monitoring:
       enabled: true
