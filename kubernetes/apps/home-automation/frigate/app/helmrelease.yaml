@@ -22,6 +22,12 @@ spec:
           nodeSelector:
             # feature.node.kubernetes.io/custom-google-coral: "true"
             intel.feature.node.kubernetes.io/gpu: "true"
+          securityContext:
+            fsGroup: 2000
+            fsGroupChangePolicy: OnRootMismatch
+            runAsGroup: 2000
+            runAsNonRoot: true
+            runAsUser: 2000
 
         containers:
           app:
