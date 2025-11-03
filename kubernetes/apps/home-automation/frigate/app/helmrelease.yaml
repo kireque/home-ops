@@ -85,10 +85,10 @@ spec:
           - path: /dev/shm
       media:
         type: nfs
-        server: nas.home.econline.nl
-        path: /volume1/Apps/frigate
+        path: /mnt/tank/apps/frigate
+        server: gladius.home.econline.nl
         globalMounts:
-          - path: /media
+          - path: /media/frigate
 
     route:
       app:
