@@ -19,7 +19,7 @@ cniConfig:
 
 nodes:
   - hostname: "delta"
-    ipAddress: "10.1.1.11"
+    ipAddress: "10.1.1.32"
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
@@ -30,7 +30,7 @@ nodes:
           hardwareAddr: "1c:69:7a:67:aa:34"
         dhcp: false
         addresses:
-          - "10.1.1.11/24"
+          - "10.1.1.32/24"
         routes:
           - network: "0.0.0.0/0"
             gateway: "10.1.1.1"
