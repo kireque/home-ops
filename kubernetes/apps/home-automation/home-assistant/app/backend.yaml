@@ -13,5 +13,5 @@ spec:
     - gateway.envoyproxy.io/wss
   endpoints:
     - fqdn:
-        hostname: gladius.home.econline.nl
+        hostname: 10.1.1.65
         port: 8123
