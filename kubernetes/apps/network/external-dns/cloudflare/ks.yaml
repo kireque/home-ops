@@ -5,7 +5,7 @@ metadata:
   name: cloudflare-dns
 spec:
   interval: 1h
-  path: ./kubernetes/apps/network/cloudflare-dns/app
+  path: ./kubernetes/apps/network/external-dns/cloudflare/app
   postBuild:
     substituteFrom:
       - name: cluster-secrets
