@@ -12,6 +12,6 @@ spec:
     - gateway.envoyproxy.io/ws
     - gateway.envoyproxy.io/wss
   endpoints:
-    - fqdn:
-        hostname: 10.1.1.65
+    - ip:
+        address: 10.1.1.65
         port: 8123
