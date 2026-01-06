@@ -18,7 +18,7 @@ cniConfig:
   name: none
 
 nodes:
-  - hostname: "delta"
+  - hostname: "enigma"
     ipAddress: "10.1.1.32"
     installDisk: "/dev/sda"
     machineSpec:
