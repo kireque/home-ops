@@ -5,4 +5,4 @@ kind: Provider
 metadata:
   name: provider-family-azure
 spec:
-  package: upbound/provider-family-azure:v2.3.0
+  package: xpkg.upbound.io/provider-family-azure:v2.3.0
