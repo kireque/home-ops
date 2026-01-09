@@ -6,7 +6,7 @@ metadata:
   name: crossplane
 spec:
   interval: 1h
-  path: "./apps/base/crossplane-system/crossplane/app"
+  path: "./apps/crossplane-system/crossplane/app"
   postBuild:
     substituteFrom:
       - name: cluster-secrets
