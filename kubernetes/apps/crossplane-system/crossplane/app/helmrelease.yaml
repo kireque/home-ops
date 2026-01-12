@@ -5,25 +5,25 @@ kind: HelmRelease
 metadata:
   name: crossplane
 spec:
-  interval: 30m
-  maxHistory: 3
   chartRef:
     kind: OCIRepository
     name: crossplane
+  driftDetection:
+    mode: warn
   install:
     crds: CreateReplace
     remediation:
       retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: -1
-    crds: CreateReplace
+  interval: 30m
+  maxHistory: 3
   uninstall:
     keepHistory: false
-  driftDetection:
-    mode: warn
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: -1
+      strategy: rollback
   values:
     metrics:
       enabled: true
