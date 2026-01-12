@@ -6,4 +6,5 @@ namespace: observability
 components:
   - ../../components/sops
 resources:
+  - ./namespace.yaml
   - ./headlamp/ks.yaml
