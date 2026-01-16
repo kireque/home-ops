@@ -14,4 +14,3 @@ spec:
   providerConfigRef:
     name: default
     kind: ProviderConfig
-  deletionPolicy: Delete
