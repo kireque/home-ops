@@ -17,3 +17,22 @@ spec:
     namespace: flux-system
   targetNamespace: default
   wait: false
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: crossplane-workload
+spec:
+  interval: 1h
+  path: ./kubernetes/apps/default/crossplane-workload/resources
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: default
+  wait: false
