@@ -1,0 +1,12 @@
+---
+apiVersion: azure.m.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: default
+spec:
+  credentials:
+    secretRef:
+      key: azure-credentials.json
+      name: crossplane-azure-credentials
+      namespace: crossplane-system
+    source: Secret

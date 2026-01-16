@@ -7,3 +7,4 @@ components:
 resources:
   - ./namespace.yaml
   - ./crossplane/ks.yaml
+  - ./crossplane/environments/azure/kustomization.yaml
