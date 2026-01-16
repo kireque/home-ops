@@ -1,0 +1,17 @@
+apiVersion: azure.m.upbound.io/v1beta1
+kind: ResourceGroup
+metadata:
+  name: rg-homeops
+  namespace: default
+spec:
+  forProvider:
+    location: westeurope
+    tags:
+      Environment: production
+      ManagedBy: crossplane
+      Owner: kireque
+      Project: homeops
+  providerConfigRef:
+    name: default
+    kind: ProviderConfig
+  deletionPolicy: Delete
