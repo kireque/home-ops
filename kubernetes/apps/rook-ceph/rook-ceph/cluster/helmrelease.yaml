@@ -16,6 +16,8 @@ spec:
     toolbox:
       enabled: false
     cephClusterSpec:
+      mon:
+        count: 1
       cephConfig:
         global:
           bdev_enable_discard: "true" # quote
