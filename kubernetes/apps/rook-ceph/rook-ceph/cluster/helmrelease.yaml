@@ -18,6 +18,7 @@ spec:
     cephClusterSpec:
       mon:
         count: 1
+        allowMultiplePerNode: true
       cephConfig:
         global:
           bdev_enable_discard: "true" # quote
@@ -39,6 +40,7 @@ spec:
         ssl: false
         prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
       mgr:
+        count: 1
         allowMultiplePerNode: true
         modules:
           - name: diskprediction_local
