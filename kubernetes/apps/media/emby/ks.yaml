@@ -10,6 +10,7 @@ spec:
       app.kubernetes.io/name: emby
   components:
     - ../../../../components/gpu
+    - ../../../../components/volsync
   dependsOn:
     - name: intel-gpu-resource-driver
       namespace: kube-system
