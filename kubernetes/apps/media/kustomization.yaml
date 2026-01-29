@@ -5,4 +5,4 @@ kind: Kustomization
 namespace: media
 resources:
   - ./namespace.yaml
-  - ./emby/ks.yaml
+  # - ./emby/ks.yaml

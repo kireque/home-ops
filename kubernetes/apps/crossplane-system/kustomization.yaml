@@ -6,4 +6,4 @@ components:
   - ../../components/sops
 resources:
   - ./namespace.yaml
-  - ./crossplane/ks.yaml
+  # - ./crossplane/ks.yaml
