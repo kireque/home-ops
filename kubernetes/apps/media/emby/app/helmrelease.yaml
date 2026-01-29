@@ -77,7 +77,7 @@ spec:
       nfs-nas-media:
         type: nfs
         server: gladius.home.econline.nl
-        path: /mnt/tank/media
+        path: /mnt/tank/mediaTest
         advancedMounts:
           emby:
             app:
