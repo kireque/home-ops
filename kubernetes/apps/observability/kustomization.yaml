@@ -16,5 +16,5 @@ resources:
   - ./kube-state-metrics/ks.yaml
   - ./node-exporter/ks.yaml
   - ./silence-operator/ks.yaml
-  - ./smartctl/ks.yaml
+  - ./smartctl-exporter/ks.yaml
   - ./victoria-logs/ks.yaml
