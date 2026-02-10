@@ -19,5 +19,3 @@ spec:
       appendMirrors: true
       containerdRegistryConfigPath: /etc/cri/conf.d/hosts
       containerdSock: /run/containerd/containerd.sock
-      p2p:
-        enabled: false
