@@ -84,3 +84,16 @@ spec:
         name: kubeconfig
         readOnly: true
         subPath: config
+    pluginsManager:
+      enabled: true
+      configContent: |
+        plugins:
+          - name: cert-manager
+            source: https://artifacthub.io/packages/headlamp/headlamp-plugins/headlamp_cert-manager
+            version: 0.1.0
+          - name: kompose
+            source: https://artifacthub.io/packages/headlamp/headlamp-plugins/headlamp_kompose
+            version: 0.1.0-beta-1
+          - name: ai-assistant
+            source: https://artifacthub.io/packages/headlamp/headlamp-plugins/headlamp_ai_assistant
+            version: 0.1.0-alpha
