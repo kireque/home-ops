@@ -37,6 +37,13 @@ nodes:
         mtu: 1500
         vip:
           ip: "10.1.1.10"
+        vlans:
+          - vlanId: 40
+            addresses:
+              - "10.1.4.32/24"
+            routes:
+              - network: "10.1.4.0/24"
+                gateway: "10.1.4.1"
 
 # Global patches
 patches:
