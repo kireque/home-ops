@@ -1,0 +1,8 @@
+---
+apiVersion: v1alpha1
+kind: StaticIPConfig
+name: bond0.40
+cidr: 10.1.4.32/24
+gateway:
+  addresses:
+    - 10.1.4.1
