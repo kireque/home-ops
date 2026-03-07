@@ -9,7 +9,7 @@ mod talos "kubernetes/talos"
 
 [private]
 default:
-    just -l
+  just -l
 
 [private]
 log lvl msg *args:
