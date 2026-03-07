@@ -1,14 +1,22 @@
+[settings]
+pipx_uvx = true
+
 [env]
 _.python.venv = { path = "{{config_root}}/.venv", create = true }
 KUBECONFIG = "{{config_root}}/kubeconfig"
 SOPS_AGE_KEY_FILE = "{{config_root}}/age.key"
 TALOSCONFIG = "{{config_root}}/talos/clusterconfig/talosconfig"
+JUST_UNSTABLE = "1"
+MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
 
 [tools]
 "python" = "3.14.3"
+"pipx:flux-local" = "8.1.0"
 "pipx:makejinja" = "2.8.2"
 "aqua:budimanjojo/talhelper" = "3.1.5"
+"aqua:casey/just" = "1.46.0"
 "aqua:cilium/cilium-cli" = "0.19.2"
+"aqua:charmbracelet/gum" = "0.17.0"
 "aqua:cli/cli" = "2.87.3"
 "aqua:cloudflare/cloudflared" = "2026.2.0"
 "aqua:cue-lang/cue" = "0.16.0"
@@ -22,6 +30,7 @@ TALOSCONFIG = "{{config_root}}/talos/clusterconfig/talosconfig"
 "aqua:kubernetes-sigs/kustomize" = "5.7.1"
 "aqua:kubernetes/kubernetes/kubectl" = "1.35.2"
 "aqua:mikefarah/yq" = "4.52.4"
+"aqua:mitsuhiko/minijinja" = "2.17.1"
 "aqua:siderolabs/talos" = "1.12.4"
 "aqua:yannh/kubeconform" = "0.7.0"
 "aqua:derailed/k9s" = "0.50.18"
