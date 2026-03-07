@@ -9,7 +9,7 @@ spec:
     rebootMode: default
   talos:
     # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-    version: v1.12.2
+    version: v1.12.4
   # healthChecks:
   #   - apiVersion: volsync.backube/v1alpha1
   #     kind: ReplicationSource
