@@ -1,13 +1,13 @@
-[settings]
-pipx_uvx = true
-
 [env]
-_.python.venv = { path = "{{config_root}}/.venv", create = true }
 KUBECONFIG = "{{config_root}}/kubeconfig"
-SOPS_AGE_KEY_FILE = "{{config_root}}/age.key"
-TALOSCONFIG = "{{config_root}}/talos/clusterconfig/talosconfig"
-JUST_UNSTABLE = "1"
 MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
+TALOSCONFIG = "{{config_root}}/talosconfig"
+JUST_UNSTABLE = "1"
+LEFTHOOK_OUTPUT = "false"
+
+_.file = [
+  "{{config_root}}/.secrets.env",
+]
 
 [tools]
 "python" = "3.14.3"

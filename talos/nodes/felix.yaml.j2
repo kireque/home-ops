@@ -1,0 +1,12 @@
+---
+machine:
+  install:
+    diskSelector:
+      model: VK0480GDJXV
+  type: controlplane
+  nodeLabels:
+    topology.kubernetes.io/zone: m
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: felix
