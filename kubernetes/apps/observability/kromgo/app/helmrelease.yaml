@@ -8,37 +8,22 @@ spec:
   chartRef:
     kind: OCIRepository
     name: kromgo
-  interval: 30m
+  interval: 1h
   values:
     controllers:
       kromgo:
-        replicas: 1
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
-        pod:
-          securityContext:
-            runAsGroup: 2000
-            runAsNonRoot: true
-            runAsUser: 2000
-          topologySpreadConstraints:
-            - maxSkew: 1
-              topologyKey: kubernetes.io/hostname
-              whenUnsatisfiable: DoNotSchedule
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: kromgo
         containers:
-          kromgo:
+          app:
             image:
               repository: ghcr.io/kashalls/kromgo
-              tag: v0.8.2
+              tag: v0.8.2@sha256:bd2213c7e471ada38bfec5600f17ede76177815d560d2d6b9a0f433054c93080
             env:
               PROMETHEUS_URL: http://prometheus-operated.observability.svc.cluster.local:9090
-              SERVER_HOST: 0.0.0.0
-              SERVER_PORT: &port 8080
-              HEALTH_HOST: 0.0.0.0
-              HEALTH_PORT: &hport 8888
+              SERVER_PORT: &port 80
+              HEALTH_PORT: &healthPort 8080
             probes:
               liveness: &probes
                 enabled: true
@@ -46,7 +31,7 @@ spec:
                 spec:
                   httpGet:
                     path: /readyz
-                    port: *hport
+                    port: *healthPort
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -55,23 +40,38 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - "ALL"
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
-                cpu: 5m
-                memory: 10M
+                cpu: 10m
               limits:
-                memory: 64M
+                memory: 64Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
     service:
       app:
         ports:
           http:
-            primary: true
             port: *port
           health:
-            port: *hport
+            port: *healthPort
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
+        hostnames:
+          - "{{ .Release.Name }}.turbo.ac"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
     persistence:
       config-file:
         type: configMap
@@ -79,10 +79,3 @@ spec:
         globalMounts:
           - path: /kromgo/config.yaml
             subPath: config.yaml
-    route:
-      app:
-        hostnames:
-          - kromgo.econline.nl
-        parentRefs:
-          - name: envoy-external
-            namespace: network

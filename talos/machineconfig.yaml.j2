@@ -2,9 +2,9 @@
 version: v1alpha1
 machine:
   ca:
-    crt: op://Automation/talos/MACHINE_CA_CRT
+    crt: op://kubernetes/talos/MACHINE_CA_CRT
     {% if ENV.IS_CONTROLLER %}
-    key: op://Automation/talos/MACHINE_CA_KEY
+    key: op://kubernetes/talos/MACHINE_CA_KEY
     {% endif %}
   features:
     apidCheckExtKeyUsage: true
@@ -88,16 +88,16 @@ machine:
     sunrpc.tcp_slot_table_entries: "128"
     user.max_user_namespaces: "11255"
     vm.nr_hugepages: "1024"
-  token: op://Automation/talos/MACHINE_TOKEN
+  token: op://kubernetes/talos/MACHINE_TOKEN
 cluster:
   ca:
-    crt: op://Automation/talos/CLUSTER_CA_CRT
+    crt: op://kubernetes/talos/CLUSTER_CA_CRT
     {% if ENV.IS_CONTROLLER %}
-    key: op://Automation/talos/CLUSTER_CA_KEY
+    key: op://kubernetes/talos/CLUSTER_CA_KEY
     {% endif %}
   clusterName: main
   controlPlane:
-    endpoint: https://k8s.home.econline.nl:6443
+    endpoint: https://10.1.1.130:6443
   discovery:
     enabled: true
     registries:
@@ -105,7 +105,7 @@ cluster:
         disabled: true
       service:
         disabled: false
-  id: op://Automation/talos/CLUSTER_ID
+  id: op://kubernetes/talos/CLUSTER_ID
   network:
     cni:
       name: none
@@ -114,12 +114,12 @@ cluster:
       - 10.244.0.0/16
     serviceSubnets:
       - 10.96.0.0/12
-  secret: op://Automation/talos/CLUSTER_SECRET
-  token: op://Automation/talos/CLUSTER_TOKEN
+  secret: op://kubernetes/talos/CLUSTER_SECRET
+  token: op://kubernetes/talos/CLUSTER_TOKEN
   {% if ENV.IS_CONTROLLER %}
   aggregatorCA:
-    crt: op://Automation/talos/CLUSTER_AGGREGATORCA_CRT
-    key: op://Automation/talos/CLUSTER_AGGREGATORCA_KEY
+    crt: op://kubernetes/talos/CLUSTER_AGGREGATORCA_CRT
+    key: op://kubernetes/talos/CLUSTER_AGGREGATORCA_KEY
   allowSchedulingOnControlPlanes: true
   apiServer:
     auditPolicy:
@@ -128,7 +128,8 @@ cluster:
       rules:
         - level: Metadata
     certSANs:
-      - k8s.internal
+      - 10.1.1.130
+      - k8s.home.econline.nl
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"
@@ -143,10 +144,10 @@ cluster:
     disabled: true
   etcd:
     advertisedSubnets:
-      - 192.168.42.0/24
+      - 10.1.1.0/24
     ca:
-      crt: op://Automation/talos/CLUSTER_ETCD_CA_CRT
-      key: op://Automation/talos/CLUSTER_ETCD_CA_KEY
+      crt: op://kubernetes/talos/CLUSTER_ETCD_CA_CRT
+      key: op://kubernetes/talos/CLUSTER_ETCD_CA_KEY
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
   proxy:
@@ -173,16 +174,16 @@ cluster:
     extraArgs:
       bind-address: 0.0.0.0
     image: registry.k8s.io/kube-scheduler:v1.35.2
-  secretboxEncryptionSecret: op://Automation/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
+  secretboxEncryptionSecret: op://kubernetes/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
   serviceAccount:
-    key: op://Automation/talos/CLUSTER_SERVICEACCOUNT_KEY
+    key: op://kubernetes/talos/CLUSTER_SERVICEACCOUNT_KEY
   {% endif %}
 ---
 apiVersion: v1alpha1
 kind: LinkAliasConfig
 name: net0
 selector:
-  match: link.driver == "igc" && mac(link.permanent_addr).startsWith("1c:69:7a:")
+  match: link.driver == "e1000e" && mac(link.permanent_addr).startsWith("1c:69:7a:")
 ---
 apiVersion: v1alpha1
 kind: BondConfig
@@ -190,7 +191,7 @@ name: bond0
 links:
   - net0
 bondMode: active-backup
-mtu: 9000
+{# mtu: 9000 #}
 ---
 apiVersion: v1alpha1
 kind: DHCPv4Config
@@ -202,7 +203,7 @@ kind: VLANConfig
 name: bond0.40
 vlanID: 40
 parent: bond0
-mtu: 9000
+{# mtu: 9000 #}
 {# ---
 apiVersion: v1alpha1
 kind: UserVolumeConfig

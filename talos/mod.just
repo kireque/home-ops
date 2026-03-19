@@ -1,8 +1,8 @@
 set quiet := true
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
-scripts_dir := justfile_dir() + '/scripts'
-talos_dir := justfile_dir() + '/talos'
+scripts_dir := justfile_directory() + '/scripts'
+talos_dir := justfile_directory() + '/talos'
 controller := `talosctl config info -o yaml | yq -e '.endpoints[0]'`
 
 [private]

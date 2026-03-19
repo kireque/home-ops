@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -8,7 +8,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: fluent-bit
-  interval: 30m
+  interval: 1h
   values:
     config:
       service: |-
@@ -86,8 +86,6 @@ spec:
           log_response_payload false
     dashboards:
       enabled: true
-      annotations:
-        grafana_folder: observability
-    logLevel: warn
     serviceMonitor:
       enabled: true
+    logLevel: warn
