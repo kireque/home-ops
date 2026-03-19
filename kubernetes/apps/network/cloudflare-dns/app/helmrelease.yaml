@@ -39,7 +39,7 @@ spec:
     txtOwnerId: default
     txtPrefix: k8s.
     domainFilters:
-      - turbo.ac
+      - econline.nl
     serviceMonitor:
       enabled: true
     podAnnotations:

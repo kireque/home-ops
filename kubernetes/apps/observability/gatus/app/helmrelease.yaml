@@ -92,8 +92,8 @@ spec:
         annotations:
           gatus.home-operations.com/enabled: "false"
         hostnames:
-          - "{{ .Release.Name }}.turbo.ac"
-          - status.turbo.ac
+          - "{{ .Release.Name }}.econline.nl"
+          - status.econline.nl
         parentRefs:
           - name: envoy-external
             namespace: network
