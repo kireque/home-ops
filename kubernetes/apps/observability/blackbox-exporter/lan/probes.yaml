@@ -11,21 +11,14 @@ spec:
   targets:
     staticConfig:
       static:
-        - expanse.internal
-        - garage-door.internal
-        - hdhomerun.internal
-        - idrac.internal
-        - jetkvm-0.internal
-        - jetkvm-1.internal
-        - jetkvm-2.internal
-        - k8s-0.internal
-        - k8s-1.internal
-        - k8s-2.internal
-        - kiosk.internal
-        - receiver.internal
-        - ups.internal
-        - zigbee-controller.internal
-        - zwave-controller.internal
+        - office-jetkvm.home.econline.nl
+        - office-zigbee-adapter.home.econline.nl
+        - living-vacuum.home.econline.nl
+        - hallway-velux-gateway.home.econline.nl
+        # - delta.home.econline.nl # Enable when the device is back online
+        - enigma.home.econline.nl
+        - felix.home.econline.nl
+        - gladius.home.econline.nl
   metricRelabelings:
     - targetLabel: service
       replacement: blackbox-exporter-lan
@@ -43,7 +36,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - expanse.internal:2049
+        - gladius.home.econline.nl:2049
   metricRelabelings:
     - targetLabel: service
       replacement: blackbox-exporter-lan
