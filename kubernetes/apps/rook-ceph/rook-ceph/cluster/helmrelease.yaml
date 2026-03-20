@@ -11,6 +11,9 @@ spec:
   interval: 1h
   values:
     cephClusterSpec:
+      mon:
+        count: 2          # Temp solution until we have more nodes
+        allowMultiplePerNode: false
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
       crashCollector:
