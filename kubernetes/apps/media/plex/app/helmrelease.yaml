@@ -108,7 +108,7 @@ spec:
       media:
         type: nfs
         server: gladius.home.econline.nl
-        path: /mnt/tank/media
+        path: /mnt/tank/mediaTest
         globalMounts:
           - path: /media
             readOnly: true
