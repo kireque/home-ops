@@ -11,7 +11,7 @@ _.file = [
 
 [tools]
 "python" = "3.14.3"
-"pipx:flux-local" = "8.1.0"
+"pipx:flux-local" = "8.2.0"
 "pipx:makejinja" = "2.8.2"
 "aqua:budimanjojo/talhelper" = "3.1.7"
 "aqua:casey/just" = "1.49.0"
