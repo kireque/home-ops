@@ -191,7 +191,7 @@ name: bond0
 links:
   - net0
 bondMode: active-backup
-{# mtu: 9000 #}
+mtu: 9000
 ---
 apiVersion: v1alpha1
 kind: DHCPv4Config
@@ -203,7 +203,7 @@ kind: VLANConfig
 name: bond0.40
 vlanID: 40
 parent: bond0
-{# mtu: 9000 #}
+mtu: 9000
 {# ---
 apiVersion: v1alpha1
 kind: UserVolumeConfig
@@ -217,3 +217,13 @@ apiVersion: v1alpha1
 kind: WatchdogTimerConfig
 device: /dev/watchdog0
 timeout: 10m
+---
+apiVersion: v1alpha1
+kind: EthernetConfig
+name: eno1
+rings:
+  rx: 4096
+  tx: 4096
+features:
+  tx-tcp-segmentation: false
+  tx-generic-segmentation: false
