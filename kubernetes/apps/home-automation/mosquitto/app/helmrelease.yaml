@@ -17,8 +17,25 @@ spec:
         runAsGroup: 1000
         runAsNonRoot: true
         runAsUser: 1000
+    configMaps:
+      config:
+        data:
+          mosquitto.conf: |-
+            allow_anonymous true
+            autosave_interval 60
+            connection_messages false
+            listener 1883
+            per_listener_settings false
+            persistence true
+            persistence_location /config
     controllers:
       mosquitto:
+        statefulset:
+          volumeClaimTemplates:
+            - accessMode: ReadWriteOnce
+              name: config
+              size: 5Gi
+              storageClass: ceph-block
         type: statefulset
         containers:
           app:
@@ -36,45 +53,16 @@ spec:
                   failureThreshold: 30
                   periodSeconds: 10
             resources:
-              limits:
-                memory: 100Mi
               requests:
                 cpu: 10m
+              limits:
+                memory: 100Mi
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
                 drop:
                   - "ALL"
               readOnlyRootFilesystem: true
-        statefulset:
-          volumeClaimTemplates:
-            - accessMode: ReadWriteOnce
-              name: config
-              size: 5Gi
-              storageClass: ceph-block
-    service:
-      app:
-        type: LoadBalancer
-        annotations:
-          external-dns.alpha.kubernetes.io/hostname: "{{ .Release.Name }}.econline.nl"
-          gatus.home-operations.com/endpoint: |-
-            group: services
-          lbipam.cilium.io/ips: 192.168.69.129
-        externalTrafficPolicy: Local
-        ports:
-          mqtt:
-            port: 1883
-    configMaps:
-      config:
-        data:
-          mosquitto.conf: |-
-            allow_anonymous true
-            autosave_interval 60
-            connection_messages false
-            listener 1883
-            per_listener_settings false
-            persistence true
-            persistence_location /config
     persistence:
       config-file:
         type: configMap
@@ -82,3 +70,15 @@ spec:
         globalMounts:
           - path: /mosquitto/config/mosquitto.conf
             subPath: mosquitto.conf
+    service:
+      app:
+        type: LoadBalancer
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: "{{ .Release.Name }}.econline.nl"
+          gatus.home-operations.com/endpoint: |-
+            group: services
+          lbipam.cilium.io/ips: 10.1.1.135
+        externalTrafficPolicy: Local
+        ports:
+          mqtt:
+            port: 1883
