@@ -61,8 +61,9 @@ spec:
           # gatus.home-operations.com/endpoint: |-
             # conditions: ["[STATUS] == 200"]
         hostnames:
-          - "{{ .Release.Name }}.econline.nl"
-          - hass.econline.nl
+          # - "{{ .Release.Name }}.econline.nl"
+          # - hass.econline.nl
+          - hass-new.econline.nl
         parentRefs:
           - name: envoy-internal
             namespace: network
