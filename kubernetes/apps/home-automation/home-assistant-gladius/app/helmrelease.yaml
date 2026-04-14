@@ -1,0 +1,82 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: home-assistant-gladius
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: home-assistant-gladius
+  interval: 1h
+  values:
+    defaultPodOptions:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |-
+          [{
+            "name": "iot",
+            "namespace": "kube-system",
+            "ips": ["10.1.4.153/24"],
+            "mac": "3e:59:e4:f7:43:09"
+          }]
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+    controllers:
+      home-assistant-gladius:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          fix-venv:
+            image:
+              repository: busybox
+              tag: latest
+            command: ["sh", "-c", "rm -rf /config/.venv && chown 1000:1000 /config"]
+            securityContext:
+              runAsNonRoot: false
+              runAsUser: 0
+        containers:
+          app:
+            image:
+              repository: ghcr.io/home-operations/home-assistant
+              tag: 2026.4.2@sha256:924ebacc26fee0fc2f85183014939f01c1a3115a512d93e4158a64c5dd5d6f48
+            env:
+              HASS_HTTP_TRUSTED_PROXY_1: 10.1.1.0/24
+              HASS_HTTP_TRUSTED_PROXY_2: 10.244.0.0/16
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 2Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: {drop: ["ALL"]}
+              readOnlyRootFilesystem: true
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /config
+      tmp:
+        type: emptyDir
+
+    route:
+      app:
+        hostnames:
+          # - "{{ .Release.Name }}.econline.nl"
+          - hass.econline.nl
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    service:
+      app:
+        ports:
+          http:
+            appProtocol: kubernetes.io/ws
+            port: 8123
