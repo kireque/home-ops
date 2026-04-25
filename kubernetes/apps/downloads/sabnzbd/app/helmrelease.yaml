@@ -64,6 +64,8 @@ spec:
               limits:
                 memory: 12Gi
     defaultPodOptions:
+      annotations:
+        kubernetes.io/egress-bandwidth: "800M"
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
