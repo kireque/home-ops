@@ -1,0 +1,89 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ha-mcp
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: ha-mcp
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      app:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/homeassistant-ai/ha-mcp
+              tag: 7.3.0
+            command: ["ha-mcp-web"]
+            args: []
+            env:
+              HOMEASSISTANT_URL: http://home-assistant.home-automation.svc.cluster.local:8123
+              HOMEASSISTANT_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: ha-mcp-secret
+                    key: HOMEASSISTANT_TOKEN
+              MCP_PORT: "8086"
+              MCP_SECRET_PATH:
+                valueFrom:
+                  secretKeyRef:
+                    name: ha-mcp-secret
+                    key: MCP_SECRET_PATH
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: &port 8086
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        # The upstream image sets USER to a string ("mcpuser"), not a numeric UID.
+        # With runAsNonRoot=true kubelet cannot verify the user is non-root and fails
+        # CreateContainerConfigError. Rely on the image's non-root USER instead.
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        ports:
+          http:
+            appProtocol: kubernetes.io/ws
+            port: *port
+    route:
+      app:
+        hostnames:
+          - ha-mcp.econline.nl
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
