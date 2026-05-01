@@ -27,6 +27,11 @@ spec:
             image:
               repository: intelanalytics/ipex-llm-inference-cpp-xpu
               tag: 2.2.0b20250101
+            command: ["/bin/bash", "-c"]
+            args:
+              - |
+                cd /llm/scripts/ && source ipex-llm-init --gpu --device Arc 2>/dev/null || true
+                ollama serve
             env:
               OLLAMA_HOST: 0.0.0.0:11434
               SYCL_CACHE_PERSISTENT: "1"
