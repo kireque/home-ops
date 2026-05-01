@@ -11,4 +11,5 @@ resources:
   - ./namespace.yaml
   - ./ha-mcp/ks.yaml
   - ./kubectl-mcp/ks.yaml
+  - ./flux-mcp/ks.yaml
   - ./mcp-proxy/ks.yaml

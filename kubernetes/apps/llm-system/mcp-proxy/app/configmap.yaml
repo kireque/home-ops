@@ -23,6 +23,10 @@ data:
         "kubectl-mcp": {
           "url": "http://kubectl-mcp:8000/mcp",
           "transportType": "streamable-http"
+        },
+        "flux-mcp": {
+          "url": "http://flux-mcp:9090/mcp",
+          "transportType": "streamable-http"
         }
       }
     }
