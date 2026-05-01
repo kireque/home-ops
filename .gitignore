@@ -13,6 +13,8 @@
 # Kubernetes
 kubeconfig
 talosconfig
+# MCP
+.mcp.json
 # Misc.
 .private/
 .task/

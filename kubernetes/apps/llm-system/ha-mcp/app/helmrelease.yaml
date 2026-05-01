@@ -76,14 +76,3 @@ spec:
           http:
             appProtocol: kubernetes.io/ws
             port: *port
-    route:
-      app:
-        hostnames:
-          - ha-mcp.econline.nl
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: http

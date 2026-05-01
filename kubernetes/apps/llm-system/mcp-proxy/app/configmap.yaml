@@ -1,0 +1,25 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mcp-proxy-config-template
+data:
+  config.json.tmpl: |
+    {
+      "mcpProxy": {
+        "baseURL": "https://mcp.econline.nl",
+        "addr": ":9090",
+        "name": "home-ops-mcp",
+        "type": "streamable-http"
+      },
+      "mcpServers": {
+        "ha-mcp": {
+          "url": "http://ha-mcp:8086HA_MCP_SECRET_PATH",
+          "transportType": "streamable-http"
+        },
+        "kubectl-mcp": {
+          "url": "http://kubectl-mcp:8000/mcp",
+          "transportType": "streamable-http"
+        }
+      }
+    }
