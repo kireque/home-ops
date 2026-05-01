@@ -31,7 +31,7 @@ spec:
             args:
               - |
                 cd /llm/scripts/ && source ipex-llm-init --gpu --device Arc 2>/dev/null || true
-                ollama serve
+                /llm/ollama/ollama serve
             env:
               OLLAMA_HOST: 0.0.0.0:11434
               SYCL_CACHE_PERSISTENT: "1"
