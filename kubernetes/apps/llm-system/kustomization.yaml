@@ -9,7 +9,8 @@ components:
 
 resources:
   - ./namespace.yaml
+  - ./flux-mcp/ks.yaml
   - ./ha-mcp/ks.yaml
   - ./kubectl-mcp/ks.yaml
-  - ./flux-mcp/ks.yaml
   - ./mcp-proxy/ks.yaml
+  - ./ollama/ks.yaml

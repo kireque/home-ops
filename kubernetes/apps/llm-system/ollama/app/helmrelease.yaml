@@ -1,0 +1,84 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ollama
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: ollama
+  interval: 1h
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+      strategy: rollback
+  values:
+    controllers:
+      ollama:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: intelanalytics/ipex-llm-inference-cpp-xpu
+              tag: 2.2.0b20250101
+            env:
+              OLLAMA_HOST: 0.0.0.0:11434
+              SYCL_CACHE_PERSISTENT: "1"
+              ZES_ENABLE_SYSMAN: "1"
+              no_proxy: localhost,127.0.0.1
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 11434
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 5
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+                  failureThreshold: 60
+                  periodSeconds: 10
+            resources:
+              claims:
+                - name: gpu
+              requests:
+                cpu: 200m
+                memory: 2Gi
+              limits:
+                memory: 16Gi
+    defaultPodOptions:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: plex
+              topologyKey: kubernetes.io/hostname
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: ollama
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    persistence:
+      models:
+        existingClaim: ollama
+        globalMounts:
+          - path: /root/.ollama
