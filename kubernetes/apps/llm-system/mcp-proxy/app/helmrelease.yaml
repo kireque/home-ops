@@ -28,7 +28,7 @@ spec:
             command:
               - /bin/sh
               - -c
-              - URL=$(cat /secrets/MCP_SECRET_PATH) && sed "s|HA_MCP_SECRET_PATH|$URL|g" /template/config.json.tmpl > /config/config.json
+              - URL=$(cat /secrets/MCP_SECRET_PATH) && TOKEN=$(cat /secrets/AUTH_TOKEN) && sed "s|HA_MCP_SECRET_PATH|$URL|g" /template/config.json.tmpl | sed "s|MCP_AUTH_TOKEN|$TOKEN|g" > /config/config.json
         containers:
           app:
             image:

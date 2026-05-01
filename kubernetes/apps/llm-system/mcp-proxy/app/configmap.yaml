@@ -10,7 +10,10 @@ data:
         "baseURL": "https://mcp.econline.nl",
         "addr": ":9090",
         "name": "home-ops-mcp",
-        "type": "streamable-http"
+        "type": "streamable-http",
+        "options": {
+          "authTokens": ["MCP_AUTH_TOKEN"]
+        }
       },
       "mcpServers": {
         "ha-mcp": {
