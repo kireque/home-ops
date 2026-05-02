@@ -25,18 +25,10 @@ spec:
         containers:
           app:
             image:
-              repository: intelanalytics/ipex-llm-inference-cpp-xpu
-              tag: 2.2.0b20250101
-            command: ["/bin/bash", "-c"]
-            args:
-              - |
-                cd /llm/scripts/ && source ipex-llm-init --gpu --device Arc 2>/dev/null || true
-                mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && ./ollama serve
+              repository: ollama/ollama
+              tag: 0.22.1
             env:
               OLLAMA_HOST: 0.0.0.0:11434
-              SYCL_CACHE_PERSISTENT: "1"
-              ZES_ENABLE_SYSMAN: "1"
-              no_proxy: localhost,127.0.0.1
             probes:
               liveness: &probes
                 enabled: true
@@ -59,27 +51,11 @@ spec:
                   failureThreshold: 60
                   periodSeconds: 10
             resources:
-              claims:
-                - name: gpu
               requests:
                 cpu: 200m
                 memory: 2Gi
               limits:
                 memory: 16Gi
-
-    defaultPodOptions:
-      affinity:
-        podAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: plex
-              namespaces:
-                - media
-              topologyKey: kubernetes.io/hostname
-      resourceClaims:
-        - name: gpu
-          resourceClaimTemplateName: ollama
 
     service:
       app:
@@ -91,4 +67,3 @@ spec:
         existingClaim: ollama
         globalMounts:
           - path: /root/.ollama
-

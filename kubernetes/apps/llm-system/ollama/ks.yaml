@@ -20,8 +20,6 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
-    - name: intel-gpu-resource-driver
-      namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
   postBuild:
