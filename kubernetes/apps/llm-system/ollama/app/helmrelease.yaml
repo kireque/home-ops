@@ -30,8 +30,8 @@ spec:
             command: ["/bin/bash", "-c"]
             args:
               - |
-                find / -maxdepth 6 -name "ollama" -type f 2>/dev/null
-                sleep 3600
+                cd /llm/scripts/ && source ipex-llm-init --gpu --device Arc 2>/dev/null || true
+                mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && ./ollama serve
             env:
               OLLAMA_HOST: 0.0.0.0:11434
               SYCL_CACHE_PERSISTENT: "1"
