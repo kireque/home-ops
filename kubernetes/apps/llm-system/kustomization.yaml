@@ -14,3 +14,4 @@ resources:
   - ./kubectl-mcp/ks.yaml
   - ./mcp-proxy/ks.yaml
   - ./ollama/ks.yaml
+  - ./open-webui/ks.yaml
