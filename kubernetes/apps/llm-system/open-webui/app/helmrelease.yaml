@@ -29,11 +29,17 @@ spec:
               tag: v0.9.2
             env:
               OLLAMA_BASE_URL: http://ollama.llm-system.svc.cluster.local:11434
+              OPENAI_API_BASE_URL: https://econline-foundry.services.ai.azure.com/openai/
               WEBUI_SECRET_KEY:
                 valueFrom:
                   secretKeyRef:
                     name: open-webui-secret
                     key: WEBUI_SECRET_KEY
+              OPENAI_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: open-webui-secret
+                    key: AZURE_OPENAI_API_KEY
             probes:
               liveness: &probes
                 enabled: true
