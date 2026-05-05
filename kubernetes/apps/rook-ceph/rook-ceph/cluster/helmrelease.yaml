@@ -12,7 +12,7 @@ spec:
   values:
     cephClusterSpec:
       mon:
-        count: 2          # Temp solution until we have more nodes
+        count: 3
         allowMultiplePerNode: false
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
