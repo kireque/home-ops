@@ -15,6 +15,86 @@ spec:
       enableLiveness: true
       serviceMonitor:
         enabled: true
+      csiRBDPluginResource: |
+        - name: driver-registrar
+          resource:
+            requests: { cpu: 5m, memory: 32Mi }
+            limits: { memory: 256Mi }
+        - name: csi-rbdplugin
+          resource:
+            requests: { cpu: 25m, memory: 64Mi }
+            limits: { memory: 1Gi }
+        - name: liveness-prometheus
+          resource:
+            requests: { cpu: 5m, memory: 32Mi }
+            limits: { memory: 256Mi }
+      csiRBDProvisionerResource: |
+        - name: csi-provisioner
+          resource:
+            requests: { cpu: 10m, memory: 64Mi }
+            limits: { memory: 256Mi }
+        - name: csi-resizer
+          resource:
+            requests: { cpu: 10m, memory: 64Mi }
+            limits: { memory: 256Mi }
+        - name: csi-attacher
+          resource:
+            requests: { cpu: 10m, memory: 64Mi }
+            limits: { memory: 256Mi }
+        - name: csi-snapshotter
+          resource:
+            requests: { cpu: 10m, memory: 64Mi }
+            limits: { memory: 256Mi }
+        - name: csi-rbdplugin
+          resource:
+            requests: { cpu: 25m, memory: 64Mi }
+            limits: { memory: 1Gi }
+        - name: csi-omap-generator
+          resource:
+            requests: { cpu: 10m, memory: 64Mi }
+            limits: { memory: 256Mi }
+        - name: liveness-prometheus
+          resource:
+            requests: { cpu: 5m, memory: 32Mi }
+            limits: { memory: 256Mi }
+      csiCephFSPluginResource: |
+        - name: driver-registrar
+          resource:
+            requests: { cpu: 5m, memory: 32Mi }
+            limits: { memory: 256Mi }
+        - name: csi-cephfsplugin
+          resource:
+            requests: { cpu: 25m, memory: 64Mi }
+            limits: { memory: 1Gi }
+        - name: liveness-prometheus
+          resource:
+            requests: { cpu: 5m, memory: 32Mi }
+            limits: { memory: 256Mi }
+      csiCephFSProvisionerResource: |
+        - name: csi-provisioner
+          resource:
+            requests: { cpu: 10m, memory: 64Mi }
+            limits: { memory: 256Mi }
+        - name: csi-resizer
+          resource:
+            requests: { cpu: 10m, memory: 64Mi }
+            limits: { memory: 256Mi }
+        - name: csi-attacher
+          resource:
+            requests: { cpu: 10m, memory: 64Mi }
+            limits: { memory: 256Mi }
+        - name: csi-snapshotter
+          resource:
+            requests: { cpu: 10m, memory: 64Mi }
+            limits: { memory: 256Mi }
+        - name: csi-cephfsplugin
+          resource:
+            requests: { cpu: 25m, memory: 64Mi }
+            limits: { memory: 1Gi }
+        - name: liveness-prometheus
+          resource:
+            requests: { cpu: 5m, memory: 32Mi }
+            limits: { memory: 256Mi }
     image:
       repository: ghcr.io/rook/ceph
     monitoring:
