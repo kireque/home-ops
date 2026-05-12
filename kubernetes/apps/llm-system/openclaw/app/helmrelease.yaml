@@ -47,7 +47,7 @@ spec:
               TZ: Europe/Amsterdam
             image:
               repository: ghcr.io/openclaw/openclaw
-              tag: 2026.4.22@sha256:639fc648f1e2cb9137cd2d4513038e3b5efdebc94a6bd7fbef42c908005945f4
+              tag: 2026.5.7@sha256:1af3f457a2d5a1d210f4d95634fa5da6e23f9c0ac7b52ef4bc38e2ecf09704fd
             probes:
               liveness:
                 enabled: false
