@@ -13,6 +13,7 @@ spec:
   dependsOn:
     - name: home-assistant
       namespace: home-automation
+    - name: toolhive-operator-crds
   path: ./kubernetes/apps/llm-system/ha-mcp/app
   prune: true
   sourceRef:

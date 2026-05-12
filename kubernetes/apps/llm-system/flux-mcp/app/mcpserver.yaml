@@ -1,0 +1,36 @@
+---
+# TODO: add schema
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPServer
+metadata:
+  name: flux-mcp
+spec:
+  args:
+    - serve
+    - --transport=http
+    - --port=9090
+  groupRef:
+    name: mcp-tools
+  image: ghcr.io/controlplaneio-fluxcd/flux-operator-mcp:v0.48.0
+  mcpPort: 9090
+  podTemplateSpec:
+    spec:
+      containers:
+        - name: mcp
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+          volumeMounts:
+            - name: temp
+              mountPath: /tmp
+      serviceAccountName: flux-mcp
+      volumes:
+        - name: temp
+          emptyDir: {}
+  transport: streamable-http

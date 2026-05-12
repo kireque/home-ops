@@ -1,0 +1,26 @@
+---
+# TODO: add schema
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPServer
+metadata:
+  name: kubectl-mcp
+spec:
+  args:
+    - --transport=streamable-http
+  env:
+    - name: MCP_DEBUG
+      value: "true"
+  groupRef:
+    name: mcp-tools
+  image: ghcr.io/rohitg00/kubectl-mcp-server:1.24.0@sha256:17134e36a3e1d3a5e457c12d61e8c7f7c52a7927c6ae4250131dfd95a74a2331
+  mcpPort: 8000
+  podTemplateSpec:
+    spec:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      serviceAccountName: kubectl-mcp
+  transport: streamable-http
