@@ -1,0 +1,8 @@
+---
+# TODO: add schema
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPGroup
+metadata:
+  name: mcp-tools
+spec:
+  description: MCP tools aggregated by VirtualMCPServer
