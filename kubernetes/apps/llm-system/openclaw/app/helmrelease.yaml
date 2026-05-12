@@ -1,0 +1,103 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: openclaw
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: openclaw
+  install:
+    remediation:
+      retries: 3
+  interval: 1h
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+      strategy: rollback
+  values:
+    controllers:
+      openclaw:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            command:
+              - /bin/sh
+              - -c
+              - exec node dist/index.js gateway --bind lan --allow-unconfigured
+            env:
+              HOME: /home/node
+              OPENCLAW_CONFIG_DIR: /home/node/.openclaw
+              OPENCLAW_DISABLE_BONJOUR: "1"
+              OPENCLAW_GATEWAY_PORT: "18789"
+              OPENCLAW_WORKSPACE_DIR: /home/node/.openclaw/workspace
+              OPENAI_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: openclaw-secret
+                    key: OPENAI_API_KEY
+              OPENAI_BASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: openclaw-secret
+                    key: OPENAI_BASE_URL
+              TZ: Europe/Amsterdam
+            image:
+              repository: ghcr.io/openclaw/openclaw
+              tag: 2026.4.22@sha256:639fc648f1e2cb9137cd2d4513038e3b5efdebc94a6bd7fbef42c908005945f4
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            resources:
+              limits:
+                memory: 2Gi
+              requests:
+                cpu: 100m
+                memory: 512Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+    persistence:
+      config:
+        existingClaim: openclaw
+        globalMounts:
+          - path: /home/node/.openclaw
+      openclaw-json:
+        type: secret
+        name: openclaw-config
+        defaultMode: 0o400
+        globalMounts:
+          - path: /home/node/.openclaw/openclaw.json
+            subPath: openclaw.json
+    service:
+      app:
+        ports:
+          http:
+            port: 18789
+    route:
+      app:
+        hostnames:
+          - openclaw.econline.nl
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
