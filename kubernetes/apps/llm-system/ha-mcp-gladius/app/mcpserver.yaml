@@ -17,6 +17,12 @@ spec:
         - name: mcp
           command:
             - ha-mcp-web
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
   secrets:
     - name: ha-mcp-gladius-secret
       key: HOMEASSISTANT_TOKEN
