@@ -50,7 +50,7 @@ roleRef:
   name: kubectl-mcp-read-all
 subjects:
   - kind: ServiceAccount
-    name: kubectl-mcp
+    name: kubectl-mcp-sa
     namespace: llm-system
 ---
 # TODO: add schema
@@ -83,5 +83,5 @@ roleRef:
   name: kubectl-mcp-write-restricted
 subjects:
   - kind: ServiceAccount
-    name: kubectl-mcp
+    name: kubectl-mcp-sa
     namespace: llm-system
