@@ -17,6 +17,12 @@ spec:
         - name: mcp
           command:
             - ha-mcp-web
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
           volumeMounts:
             - name: tmp
               mountPath: /tmp

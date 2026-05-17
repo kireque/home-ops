@@ -17,6 +17,12 @@ spec:
     spec:
       containers:
         - name: mcp
+          readinessProbe:
+            tcpSocket:
+              port: 9090
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
