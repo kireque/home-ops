@@ -5,4 +5,3 @@ kind: Kustomization
 resources:
   - ./mcpserver.yaml
   - ./rbac.yaml
-  - ./serviceaccount.yaml
