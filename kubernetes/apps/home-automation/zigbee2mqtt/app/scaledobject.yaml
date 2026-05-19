@@ -7,6 +7,9 @@ metadata:
 spec:
   advanced:
     restoreToOriginalReplicaCount: true
+    fallback:
+      failureThreshold: 3
+      replicas: 1
   cooldownPeriod: 0
   minReplicaCount: 0
   maxReplicaCount: 1
