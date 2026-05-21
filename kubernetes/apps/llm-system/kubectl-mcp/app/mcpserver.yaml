@@ -17,13 +17,6 @@ spec:
   podTemplateSpec:
     spec:
       containers:
-        - name: toolhive
-          readinessProbe:
-            tcpSocket:
-              port: 8080
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            failureThreshold: 3
         - name: mcp
           readinessProbe:
             tcpSocket:
