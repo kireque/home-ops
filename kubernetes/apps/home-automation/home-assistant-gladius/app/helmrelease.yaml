@@ -34,7 +34,10 @@ spec:
             image:
               repository: busybox
               tag: latest
-            command: ["sh", "-c", "rm -rf /config/.venv && chown 1000:1000 /config"]
+            command:
+              - "sh"
+              - "-c"
+              - "rm -rf /config/.venv && chown 1000:1000 /config"
             securityContext:
               runAsNonRoot: false
               runAsUser: 0
@@ -70,7 +73,7 @@ spec:
       app:
         hostnames:
           # - "{{ .Release.Name }}.econline.nl"
-          - hass.econline.nl
+          - hass-old.econline.nl
         parentRefs:
           - name: envoy-internal
             namespace: network
