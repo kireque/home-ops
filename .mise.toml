@@ -35,7 +35,7 @@ _.file = [
 "aqua:yannh/kubeconform" = "0.7.0"
 "aqua:derailed/k9s" = "0.50.18"
 "aqua:google/yamlfmt" = "0.21.0"
-"aqua:evilmartians/lefthook" = "2.1.8"
+"aqua:evilmartians/lefthook" = "2.1.9"
 
 [hooks]
 postinstall = "lefthook install"
