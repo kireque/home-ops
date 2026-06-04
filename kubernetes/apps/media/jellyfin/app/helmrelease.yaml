@@ -34,7 +34,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /health
+                    path: /System/Info/Public
                     port: &port 8096
                   failureThreshold: 5
                   periodSeconds: 10
