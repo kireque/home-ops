@@ -43,6 +43,10 @@ spec:
             parameters: IN AAAA quay.io
             configBlock: |-
               rcode NXDOMAIN
+          - name: template
+            parameters: IN AAAA mirror.gcr.io
+            configBlock: |-
+              rcode NXDOMAIN
           - name: forward
             parameters: . /etc/resolv.conf
           - name: cache
