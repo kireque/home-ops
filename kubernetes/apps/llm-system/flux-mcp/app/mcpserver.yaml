@@ -11,7 +11,7 @@ spec:
     - --port=9090
   groupRef:
     name: mcp-tools
-  image: ghcr.io/controlplaneio-fluxcd/flux-operator-mcp:v0.50.0@sha256:a6c0fc7a1520aae347911a22aa621b084f9fa9f43668b427521eb8d3fb3d4e75
+  image: ghcr.io/controlplaneio-fluxcd/flux-operator-mcp:v0.52.0@sha256:50b6b5f346642591e63e7a70a38e60ed5336163d34966bb63e6fbd709ad8a0dd
   mcpPort: 9090
   podTemplateSpec:
     spec:
