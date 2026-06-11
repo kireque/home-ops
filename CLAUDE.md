@@ -23,13 +23,13 @@ Environment variables (`KUBECONFIG`, `TALOSCONFIG`, `MINIJINJA_CONFIG_FILE`) are
 
 ```bash
 just -l                         # List all available tasks
-just kube:sync-ks <ns> <name>   # Force Flux to reconcile a Kustomization
-just kube:sync-hr <ns> <name>   # Force Flux to reconcile a HelmRelease
-just kube:apply-ks <ns> <ks>    # Apply a Flux Kustomization locally
-just kube:view-secret <ns> <name> # Decrypt and view a secret
-just kube:browse-pvc            # Interactive PVC browser
-just talos:apply-node <node>    # Apply Talos config to a node (enigma/delta/felix)
-just talos:render-config <node> # Render Talos config from Jinja2 templates
+just kube::sync-ks <ns> <name>   # Force Flux to reconcile a Kustomization
+just kube::sync-hr <ns> <name>   # Force Flux to reconcile a HelmRelease
+just kube::apply-ks <ns> <ks>    # Apply a Flux Kustomization locally
+just kube::view-secret <ns> <name> # Decrypt and view a secret
+just kube::browse-pvc            # Interactive PVC browser
+just talos::apply-node <node>    # Apply Talos config to a node (enigma/delta/felix)
+just talos::render-config <node> # Render Talos config from Jinja2 templates
 ```
 
 ### Local manifest validation (mirrors CI)
