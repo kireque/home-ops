@@ -26,7 +26,11 @@ spec:
             probes:
               liveness:
                 enabled: true
+                custom: true
                 spec:
+                  httpGet:
+                    path: /System/Info/Public
+                    port: &port 8096
                   failureThreshold: 5
                   periodSeconds: 30
                   timeoutSeconds: 5
@@ -36,13 +40,17 @@ spec:
                 spec:
                   httpGet:
                     path: /System/Info/Public
-                    port: &port 8096
+                    port: *port
                   failureThreshold: 5
                   periodSeconds: 10
                   timeoutSeconds: 5
               startup:
                 enabled: true
+                custom: true
                 spec:
+                  httpGet:
+                    path: /System/Info/Public
+                    port: *port
                   failureThreshold: 30
                   periodSeconds: 10
             securityContext:
