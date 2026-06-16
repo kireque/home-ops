@@ -10,7 +10,7 @@ spec:
       value: http://home-assistant.home-automation.svc.cluster.local:8123
   groupRef:
     name: mcp-tools
-  image: ghcr.io/homeassistant-ai/ha-mcp:7.8.0@sha256:ddee4288ea49a6c3ea9f821703f2d6b7acd736b390f25ffbcd9042e29294e9a9
+  image: ghcr.io/homeassistant-ai/ha-mcp:7.8.1@sha256:6a61538449d425e690dd23f00fb418b8575931426449a162fcf9f260e7014b00
   podTemplateSpec:
     spec:
       containers:
