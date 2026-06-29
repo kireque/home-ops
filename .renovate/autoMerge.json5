@@ -39,5 +39,13 @@
       minimumReleaseAge: "1 minute",
       ignoreTests: true,
     },
+    {
+      description: "Auto-merge mise tool updates",
+      matchManagers: ["mise"],
+      automerge: true,
+      automergeType: "branch",
+      matchUpdateTypes: ["major", "minor", "patch", "digest"],
+      ignoreTests: true,
+    },
   ],
 }
