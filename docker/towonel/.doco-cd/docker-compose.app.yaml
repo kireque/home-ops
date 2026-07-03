@@ -47,4 +47,3 @@ volumes:
 networks:
   default:
     name: edge
-    external: true
