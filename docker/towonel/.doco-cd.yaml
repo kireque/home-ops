@@ -12,7 +12,7 @@ external_secrets:
   GATUS_PUSHOVER_KEY: op://vps/pushover/user_key
   CADDY_ACME_EMAIL: op://vps/towonel-tunnel/acme_email
   TOWONEL_INVITE_HASH_KEY: op://vps/towonel-tunnel/invite_hash_key
-force_recreate: false
+force_recreate: true
 reconciliation:
   enabled: true
   interval: 3600
