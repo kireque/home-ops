@@ -13,3 +13,10 @@ spec:
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"
+    - dnsName: external.econline.nl
+      recordType: CNAME
+      targets:
+        - edge-eu.towonel.dev
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
