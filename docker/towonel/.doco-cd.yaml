@@ -1,0 +1,18 @@
+---
+working_dir: ./docker/towonel
+auto_discovery:
+  enabled: true
+  depth: 1
+  delete: true
+external_secrets:
+  # Adjust these op:// paths to match your own 1Password vault/item layout —
+  # these are placeholders, not real items. Pushover lines are only needed
+  # if you keep the alerting block in 04-gatus/config/config.yaml.
+  GATUS_PUSHOVER_TOKEN: op://vps/pushover/gatus_token
+  GATUS_PUSHOVER_KEY: op://vps/pushover/user_key
+  CADDY_ACME_EMAIL: op://vps/towonel-tunnel/acme_email
+  TOWONEL_INVITE_HASH_KEY: op://vps/towonel-tunnel/invite_hash_key
+force_recreate: false
+reconciliation:
+  enabled: true
+  interval: 3600

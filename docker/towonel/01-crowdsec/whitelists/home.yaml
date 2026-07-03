@@ -1,0 +1,7 @@
+---
+name: custom/home-allowlist
+description: "Allow home ISP (KPN - AS1136)"
+whitelist:
+  reason: "home ISP (KPN)"
+  expression:
+    - evt.Meta.ASNumber == "1136"

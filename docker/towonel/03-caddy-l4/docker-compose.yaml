@@ -1,0 +1,33 @@
+---
+name: caddy-l4
+
+services:
+  caddy:
+    image: ghcr.io/bjw-s-labs/caddy-l4:2.11.4
+    container_name: caddy-l4
+    restart: unless-stopped
+    environment:
+      CADDY_ACME_EMAIL: ${CADDY_ACME_EMAIL}
+      VPS_LOCAL_HOSTS: hub.econline.nl
+    ports:
+      - "80:80"
+      - "443:443"
+    configs:
+      - source: caddyfile
+        target: /etc/caddy/Caddyfile
+    volumes:
+      - caddy-data:/data
+      - caddy-config:/config
+
+configs:
+  caddyfile:
+    file: ./config/Caddyfile
+
+volumes:
+  caddy-data:
+  caddy-config:
+
+networks:
+  default:
+    name: edge
+    external: true
