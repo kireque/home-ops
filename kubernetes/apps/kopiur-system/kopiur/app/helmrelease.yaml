@@ -18,6 +18,9 @@ spec:
         nfs:
           server: gladius.home.econline.nl
           path: /mnt/tank/backup/kopiur
+    features:
+      credentialProjection:
+        enabled: true
     monitoring:
       dashboards:
         enabled: true
