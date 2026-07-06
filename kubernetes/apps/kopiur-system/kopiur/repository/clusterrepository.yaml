@@ -14,6 +14,8 @@ spec:
         nfs:
           server: gladius.home.econline.nl
           path: /mnt/tank/backup/kopiur
+  credentialProjection:
+    allowed: true
   encryption:
     passwordSecretRef:
       name: kopiur-nas-secret
