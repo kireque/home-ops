@@ -13,3 +13,4 @@ resources:
   - ./jellyfin/ks.yaml
   - ./plex/ks.yaml
   - ./seerr/ks.yaml
+  - ./tautulli/ks.yaml
