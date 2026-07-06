@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ${APP}
+  annotations:
+    # Statically bound (spec.volumeName) directly to a specific pre-existing
+    # PV after a manual recovery, not dynamically provisioned - no
+    # dataSourceRef. volumeName is deliberately not declared here even
+    # though the live object has it set: Flux/kustomize-controller never
+    # owned that field (it was set via a one-off manual kubectl apply), so
+    # omitting it here is safe and leaves the existing binding untouched.
+    # prune is disabled as a defense-in-depth safety net, same reasoning as
+    # kopiur/adopt.
+    kustomize.toolkit.fluxcd.io/prune: disabled
+spec:
+  accessModes:
+    - ${KOPIUR_ACCESSMODES:=ReadWriteOnce}
+  resources:
+    requests:
+      storage: ${KOPIUR_CAPACITY:=5Gi}
+  storageClassName: ${KOPIUR_STORAGECLASS:=ceph-block}

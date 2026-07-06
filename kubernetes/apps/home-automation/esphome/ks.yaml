@@ -6,7 +6,7 @@ metadata:
   name: esphome
 spec:
   components:
-    - ../../../../components/kopiur/adopt
+    - ../../../../components/kopiur/adopt-static
     - ../../../../components/kopiur/backup
   dependsOn:
     - name: multus-networks
