@@ -6,6 +6,7 @@ metadata:
   name: zigbee2mqtt
 spec:
   components:
+    - ../../../../components/kopiur/adopt
     - ../../../../components/kopiur/backup
   dependsOn:
     - name: mosquitto

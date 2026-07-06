@@ -6,6 +6,7 @@ metadata:
   name: tautulli
 spec:
   components:
+    - ../../../../components/kopiur/adopt
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
   dependsOn:

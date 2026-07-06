@@ -6,6 +6,7 @@ metadata:
   name: home-assistant
 spec:
   components:
+    - ../../../../components/kopiur/adopt
     - ../../../../components/kopiur/backup
   dependsOn:
     - name: multus-networks
