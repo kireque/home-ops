@@ -6,8 +6,8 @@ metadata:
   name: tautulli
 spec:
   components:
+    - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
-    - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph

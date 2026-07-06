@@ -6,7 +6,7 @@ metadata:
   name: frigate
 spec:
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
   dependsOn:
     - name: intel-gpu-resource-driver
@@ -20,8 +20,7 @@ spec:
   postBuild:
     substitute:
       APP: frigate
-      VOLSYNC_CLAIM: frigate
-      VOLSYNC_CAPACITY: 5Gi
+      KOPIUR_CAPACITY: 5Gi
   prune: true
   sourceRef:
     kind: GitRepository
