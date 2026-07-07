@@ -79,6 +79,7 @@ spec:
       app:
         annotations:
           gatus.home-operations.com/endpoint: |-
+            url: https://{{ .Release.Name }}.econline.nl
             conditions: ["[STATUS] == 401"]
         hostnames:
           - "{{ .Release.Name }}.econline.nl"
