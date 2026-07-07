@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -36,14 +36,14 @@ spec:
           requireMsgr2: true
       resources:
         mgr:
-          requests: { cpu: 100m, memory: 512Mi }
-          limits: { memory: 1Gi }
+          requests: {cpu: 100m, memory: 512Mi}
+          limits: {memory: 1Gi}
         mon:
-          requests: { cpu: 50m, memory: 256Mi }
-          limits: { memory: 1Gi }
+          requests: {cpu: 50m, memory: 256Mi}
+          limits: {memory: 1Gi}
         prepareosd:
-          requests: { cpu: 100m, memory: 50Mi }
-          limits: { memory: 200Mi }
+          requests: {cpu: 100m, memory: 50Mi}
+          limits: {memory: 200Mi}
         osd:
           requests:
             cpu: 100m
