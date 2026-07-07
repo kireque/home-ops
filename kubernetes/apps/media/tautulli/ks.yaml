@@ -17,7 +17,7 @@ spec:
   postBuild:
     substitute:
       APP: tautulli
-      KOPIUR_VOLUMENAME: pvc-20089049-f4e7-47ef-8cfa-cef89bd745f0
+      KOPIUR_VOLUMENAME: pvc-615d53b9-623f-4256-aeb0-284acf4c3572
   prune: true
   sourceRef:
     kind: GitRepository
