@@ -30,7 +30,7 @@ spec:
           title: 'Movie {{ if .payload.isUpgrade }}Upgraded{{ else }}Added{{ end }}'
           message: |-
             <b>{{ .payload.movie.title }} ({{ .payload.movie.year }})</b>
-            <small>{{ .payload.movie.overview | ellipsis 300 }}</small>
+            <small>{{ .payload.movie.overview | default "" | ellipsis 300 }}</small>
             <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
           params:
             format: html
@@ -41,6 +41,9 @@ spec:
         radarr-manual:
           target: radarr
           title: "Movie Requires Manual Interaction"
+          message: |-
+            <b>{{ .payload.movie.title | default "A movie" }}</b> needs manual interaction.
+            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
           whenExpr: payload.eventType == "ManualInteractionRequired"
           params:
             format: html
@@ -50,6 +53,10 @@ spec:
         sonarr-download:
           target: sonarr
           title: 'Episode {{ if .payload.isUpgrade }}Upgraded{{ else }}Added{{ end }}'
+          message: |-
+            <b>{{ .payload.series.title }}</b>
+            <small>{{ range .payload.episodes }}S{{ printf "%02d" (.seasonNumber | toInt) }}E{{ printf "%02d" (.episodeNumber | toInt) }} {{ end }}</small>
+            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
           whenExpr: payload.eventType == "Download"
           params:
             format: html
@@ -59,6 +66,9 @@ spec:
         sonarr-manual:
           target: sonarr
           title: "Episode Requires Manual Interaction"
+          message: |-
+            <b>{{ .payload.series.title | default "A series" }}</b> needs manual interaction.
+            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
           whenExpr: payload.eventType == "ManualInteractionRequired"
           params:
             format: html
