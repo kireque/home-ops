@@ -6,7 +6,7 @@ metadata:
   name: seerr
 spec:
   components:
-    - ../../../../components/kopiur/adopt-static
+    - ../../../../components/kopiur/restore
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
   dependsOn:
@@ -17,7 +17,6 @@ spec:
   postBuild:
     substitute:
       APP: seerr
-      KOPIUR_VOLUMENAME: pvc-611f1eab-2698-42b4-acb9-4514429f315f
   prune: true
   sourceRef:
     kind: GitRepository

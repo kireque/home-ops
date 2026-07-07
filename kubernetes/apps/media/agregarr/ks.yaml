@@ -6,7 +6,7 @@ metadata:
   name: agregarr
 spec:
   components:
-    - ../../../../components/kopiur/adopt-static
+    - ../../../../components/kopiur/restore
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
   dependsOn:
@@ -17,7 +17,6 @@ spec:
   postBuild:
     substitute:
       APP: agregarr
-      KOPIUR_VOLUMENAME: pvc-758db53b-6c78-4858-83c4-608bc7c430e3
   prune: true
   sourceRef:
     kind: GitRepository

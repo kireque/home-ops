@@ -6,7 +6,7 @@ metadata:
   name: bazarr
 spec:
   components:
-    - ../../../../components/kopiur/adopt-static
+    - ../../../../components/kopiur/restore
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
   dependsOn:
@@ -17,7 +17,6 @@ spec:
   postBuild:
     substitute:
       APP: bazarr
-      KOPIUR_VOLUMENAME: pvc-f5b5405a-5159-4735-813c-08f578391f53
   prune: true
   sourceRef:
     kind: GitRepository

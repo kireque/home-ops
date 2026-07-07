@@ -6,7 +6,7 @@ metadata:
   name: sonarr
 spec:
   components:
-    - ../../../../components/kopiur/adopt-static
+    - ../../../../components/kopiur/restore
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
   dependsOn:
@@ -17,7 +17,6 @@ spec:
   postBuild:
     substitute:
       APP: sonarr
-      KOPIUR_VOLUMENAME: pvc-825b5c33-6b11-4f37-818d-5b081e0e6460
   prune: true
   sourceRef:
     kind: GitRepository

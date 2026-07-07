@@ -6,7 +6,7 @@ metadata:
   name: tautulli
 spec:
   components:
-    - ../../../../components/kopiur/adopt-static
+    - ../../../../components/kopiur/restore
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
   dependsOn:
@@ -17,7 +17,6 @@ spec:
   postBuild:
     substitute:
       APP: tautulli
-      KOPIUR_VOLUMENAME: pvc-615d53b9-623f-4256-aeb0-284acf4c3572
   prune: true
   sourceRef:
     kind: GitRepository

@@ -6,7 +6,7 @@ metadata:
   name: esphome
 spec:
   components:
-    - ../../../../components/kopiur/adopt-static
+    - ../../../../components/kopiur/restore
     - ../../../../components/kopiur/backup
   dependsOn:
     - name: multus-networks
@@ -19,7 +19,6 @@ spec:
     substitute:
       APP: esphome
       KOPIUR_CAPACITY: 5Gi
-      KOPIUR_VOLUMENAME: pvc-42e905ec-a5bb-402b-b965-5902d0d378ad
   prune: true
   sourceRef:
     kind: GitRepository

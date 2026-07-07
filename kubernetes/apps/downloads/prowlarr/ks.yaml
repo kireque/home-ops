@@ -6,7 +6,7 @@ metadata:
   name: prowlarr
 spec:
   components:
-    - ../../../../components/kopiur/adopt-static
+    - ../../../../components/kopiur/restore
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
   dependsOn:
@@ -17,7 +17,6 @@ spec:
   postBuild:
     substitute:
       APP: prowlarr
-      KOPIUR_VOLUMENAME: pvc-fc386b5e-4b3f-4544-a15a-54c8bfa72c33
   prune: true
   sourceRef:
     kind: GitRepository

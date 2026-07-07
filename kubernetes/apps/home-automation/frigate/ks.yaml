@@ -6,7 +6,7 @@ metadata:
   name: frigate
 spec:
   components:
-    - ../../../../components/kopiur/adopt-static
+    - ../../../../components/kopiur/restore
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
   dependsOn:
@@ -23,7 +23,6 @@ spec:
       APP: frigate
       KOPIUR_CAPACITY: 5Gi
       KOPIUR_IGNORE_RULES: "[.jwt_secret]"
-      KOPIUR_VOLUMENAME: pvc-1d94fc8b-9b95-4faf-bb7c-aa27298fa85a
   prune: true
   sourceRef:
     kind: GitRepository
