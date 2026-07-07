@@ -9,6 +9,8 @@ metadata:
 spec:
   credentialProjection:
     enabled: true
+  files:
+    ignoreRules: ${KOPIUR_IGNORE_RULES:=[]}
   repository:
     kind: ClusterRepository
     name: nas
