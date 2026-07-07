@@ -38,3 +38,14 @@ spec:
     ttlSecondsAfterFinished: 300
   scheduleDefaults:
     timezone: Europe/Amsterdam
+  server:
+    auth:
+      generate: {}
+    namespace: kopiur-system
+    podSecurityContext:
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+    readOnly: true
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
