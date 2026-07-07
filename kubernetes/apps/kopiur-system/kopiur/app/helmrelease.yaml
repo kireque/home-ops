@@ -19,8 +19,6 @@ spec:
           server: gladius.home.econline.nl
           path: /mnt/tank/backup/kopiur
     features:
-      credentialProjection:
-        enabled: true
       kopiaUi:
         enabled: true
     monitoring:
