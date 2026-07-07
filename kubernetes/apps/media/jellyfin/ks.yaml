@@ -6,7 +6,7 @@ metadata:
   name: jellyfin
 spec:
   components:
-    - ../../../../components/kopiur/adopt
+    - ../../../../components/kopiur/adopt-static
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
   dependsOn:
@@ -19,6 +19,7 @@ spec:
   postBuild:
     substitute:
       APP: jellyfin
+      KOPIUR_VOLUMENAME: pvc-09576819-c28c-4224-a926-5b5133734e93
       KOPIUR_CAPACITY: 20Gi
   prune: true
   sourceRef:

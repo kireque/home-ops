@@ -6,7 +6,7 @@ metadata:
   name: radarr
 spec:
   components:
-    - ../../../../components/kopiur/adopt
+    - ../../../../components/kopiur/adopt-static
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
   dependsOn:
@@ -17,6 +17,7 @@ spec:
   postBuild:
     substitute:
       APP: radarr
+      KOPIUR_VOLUMENAME: pvc-a9fe1632-7683-4447-a0ca-e25658a9d914
       KOPIUR_CAPACITY: 10Gi
   prune: true
   sourceRef:

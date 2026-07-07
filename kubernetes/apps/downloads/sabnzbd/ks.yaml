@@ -6,7 +6,7 @@ metadata:
   name: sabnzbd
 spec:
   components:
-    - ../../../../components/kopiur/adopt
+    - ../../../../components/kopiur/adopt-static
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
   dependsOn:
@@ -17,6 +17,7 @@ spec:
   postBuild:
     substitute:
       APP: sabnzbd
+      KOPIUR_VOLUMENAME: pvc-2772b9a7-301d-4f64-a5c9-641f318ad4b0
   prune: true
   sourceRef:
     kind: GitRepository

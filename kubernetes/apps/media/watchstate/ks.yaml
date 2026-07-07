@@ -6,7 +6,7 @@ metadata:
   name: watchstate
 spec:
   components:
-    - ../../../../components/kopiur/adopt
+    - ../../../../components/kopiur/adopt-static
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
   dependsOn:
@@ -17,6 +17,7 @@ spec:
   postBuild:
     substitute:
       APP: watchstate
+      KOPIUR_VOLUMENAME: pvc-a46e4758-b735-4e4f-81da-25c6064124c6
   prune: true
   sourceRef:
     kind: GitRepository

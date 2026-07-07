@@ -6,7 +6,7 @@ metadata:
   name: plex
 spec:
   components:
-    - ../../../../components/kopiur/adopt
+    - ../../../../components/kopiur/adopt-static
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
   dependsOn:
@@ -19,6 +19,7 @@ spec:
   postBuild:
     substitute:
       APP: plex
+      KOPIUR_VOLUMENAME: pvc-a714d027-4190-49b9-b52b-4fa5fb718441
       KOPIUR_CAPACITY: 50Gi
   prune: true
   sourceRef:
