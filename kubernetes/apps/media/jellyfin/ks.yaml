@@ -6,7 +6,6 @@ metadata:
   name: jellyfin
 spec:
   components:
-    - ../../../../components/kopiur/restore
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
   dependsOn:
