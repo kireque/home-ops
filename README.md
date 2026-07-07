@@ -8,22 +8,22 @@ _... managed with Flux, Renovate, and GitHub Actions_ 🤖
 
 <div align="center">
 
-[![Talos](https://kromgo.econline.nl/badges/talos_version)](https://talos.dev)&nbsp;&nbsp;
-[![Kubernetes](https://kromgo.econline.nl/badges/kubernetes_version)](https://kubernetes.io)&nbsp;&nbsp;
-[![Flux](https://kromgo.econline.nl/badges/flux_version)](https://fluxcd.io)&nbsp;&nbsp;
+[![Talos](https://kromgo.econline.nl/talos_version)](https://talos.dev)&nbsp;&nbsp;
+[![Kubernetes](https://kromgo.econline.nl/kubernetes_version)](https://kubernetes.io)&nbsp;&nbsp;
+[![Flux](https://kromgo.econline.nl/flux_version)](https://fluxcd.io)&nbsp;&nbsp;
 [![Renovate](https://img.shields.io/github/actions/workflow/status/kireque/home-ops/renovate.yaml?branch=main&label&logo=renovate&color=blue)](https://github.com/kireque/home-ops/actions/workflows/renovate.yaml)
 
 </div>
 
 <div align="center">
 
-[![Age](https://kromgo.econline.nl/badges/cluster_age_days)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![Uptime](https://kromgo.econline.nl/badges/cluster_uptime_days)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![Nodes](https://kromgo.econline.nl/badges/cluster_node_count)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![Pods](https://kromgo.econline.nl/badges/cluster_pod_count)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![CPU](https://kromgo.econline.nl/badges/cluster_cpu_usage)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![Memory](https://kromgo.econline.nl/badges/cluster_memory_usage)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
-[![Alerts](https://kromgo.econline.nl/badges/cluster_alert_count)](https://github.com/home-operations/kromgo)
+[![Age](https://kromgo.econline.nl/cluster_age_days)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
+[![Uptime](https://kromgo.econline.nl/cluster_uptime_days)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
+[![Nodes](https://kromgo.econline.nl/cluster_node_count)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
+[![Pods](https://kromgo.econline.nl/cluster_pod_count)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
+[![CPU](https://kromgo.econline.nl/cluster_cpu_usage)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
+[![Memory](https://kromgo.econline.nl/cluster_memory_usage)](https://github.com/home-operations/kromgo)&nbsp;&nbsp;
+[![Alerts](https://kromgo.econline.nl/cluster_alert_count)](https://github.com/home-operations/kromgo)
 
 </div>
 
