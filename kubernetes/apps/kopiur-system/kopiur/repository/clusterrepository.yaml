@@ -40,7 +40,8 @@ spec:
     timezone: Europe/Amsterdam
   server:
     auth:
-      generate: {}
+      insecure:
+        acknowledgeInsecure: true
     namespace: kopiur-system
     podSecurityContext:
       fsGroup: 1000
