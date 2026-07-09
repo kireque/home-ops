@@ -6,6 +6,7 @@ metadata:
   name: plex
 spec:
   components:
+    - ../../../../components/gpu
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
   dependsOn:

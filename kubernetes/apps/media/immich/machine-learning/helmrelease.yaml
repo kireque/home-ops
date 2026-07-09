@@ -11,6 +11,18 @@ spec:
   interval: 1h
   values:
     defaultPodOptions:
+      labels:
+        gpu-consumer: "true"
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchLabels:
+                    gpu-consumer: "true"
+                namespaceSelector: {}
       resourceClaims:
         - name: gpu
           resourceClaimTemplateName: immich-machine-learning-gpu
