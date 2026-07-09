@@ -1,0 +1,70 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: immich
+spec:
+  targetNamespace: media
+  path: ./kubernetes/apps/media/immich/app
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: immich-database
+  postBuild:
+    substitute:
+      APP: immich
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: immich-database
+spec:
+  components:
+    - ../../../../components/kopiur/backup
+  targetNamespace: media
+  path: ./kubernetes/apps/media/immich/database
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  postBuild:
+    substitute:
+      APP: immich-database
+      KOPIUR_CAPACITY: 10Gi
+      KOPIUR_IGNORE_RULES: "[pgdata,lost+found]"
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: immich-machine-learning
+spec:
+  targetNamespace: media
+  path: ./kubernetes/apps/media/immich/machine-learning
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: immich-database
+    - name: intel-gpu-resource-driver
+      namespace: kube-system
+  postBuild:
+    substitute:
+      APP: immich-machine-learning

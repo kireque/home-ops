@@ -11,6 +11,7 @@ components:
 resources:
   - ./namespace.yaml
   - ./agregarr/ks.yaml
+  - ./immich/ks.yaml
   - ./jellyfin/ks.yaml
   - ./plex/ks.yaml
   - ./seerr/ks.yaml
