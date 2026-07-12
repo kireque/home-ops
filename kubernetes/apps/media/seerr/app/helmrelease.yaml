@@ -71,10 +71,6 @@ spec:
             port: *port
     route:
       app:
-        annotations:
-          gatus.home-operations.com/endpoint: |-
-            url: https://{{ .Release.Name }}.econline.nl
-            conditions: ["[STATUS] == 307"]
         hostnames:
           - "{{ .Release.Name }}.econline.nl"
         parentRefs:
