@@ -68,7 +68,7 @@ Every application under `kubernetes/apps/{namespace}/{app}/` follows this patter
     └── externalsecret.yaml # Optional: secret references from 1Password
 ```
 
-The `ks.yaml` at the app level uses `postBuild.substitute` with `APP: {appname}` so that shared components (like `volsync`) can use `${APP}` as a variable.
+The `ks.yaml` at the app level uses `postBuild.substitute` with `APP: {appname}` so that shared components (like `kopiur`) can use `${APP}` as a variable.
 
 ### Secret Management
 
@@ -82,7 +82,7 @@ All secrets come from **1Password** via External Secrets Operator:
 
 - **Rook-Ceph**: Distributed block/object storage for stateful apps
 - **OpenEBS**: Hostpath volumes for single-node workloads
-- **Volsync**: PVC backup/replication — apps opt in via `components: [../../../../components/volsync]` in `ks.yaml`
+- **Kopiur**: PVC backup/replication — apps opt in via `components: [../../../../components/kopiur/backup]` in `ks.yaml` (see `.agents/skills/add-app/SKILL.md` for the full pattern)
 
 ### Networking
 
@@ -91,9 +91,13 @@ All secrets come from **1Password** via External Secrets Operator:
 - **Cloudflared**: Tunnel for exposing services externally without open ports
 - **External-DNS**: Automatically creates Cloudflare DNS records
 
+## Agent Instructions & Skills
+
+Reusable task skills (`add-app`, ...) and instructions (sorting rules, healthcheck conventions, schema corrections, ...) live in `.agents/`; Claude Code discovers them through the `.claude/skills` and `.claude/instructions` symlinks. Subagents (e.g. `dependency-mapper`) live in `.claude/agents/`.
+
 ## YAML Conventions
 
-Sorting rules are defined in `.claude/instructions/sorting.instructions.md` and are automatically applied by Claude Code. That file is the authoritative source — consult it when in doubt.
+Sorting rules are defined in `.agents/instructions/flux.sorting.instructions.md`, `.agents/instructions/helmfile.sorting.instructions.md`, and `.agents/instructions/kustomize.config.sorting.instructions.md`, and are automatically applied by Claude Code. Those files are the authoritative source — consult them when in doubt.
 
 ### Helm chart sources
 
