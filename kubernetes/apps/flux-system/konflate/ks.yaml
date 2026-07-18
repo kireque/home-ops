@@ -5,12 +5,12 @@ kind: Kustomization
 metadata:
   name: konflate
 spec:
-  interval: 1h
+  targetNamespace: flux-system
   path: ./kubernetes/apps/flux-system/konflate/app
+  interval: 1h
   prune: true
+  wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: flux-system
-  wait: false

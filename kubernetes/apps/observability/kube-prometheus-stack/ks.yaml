@@ -5,15 +5,15 @@ kind: Kustomization
 metadata:
   name: kube-prometheus-stack
 spec:
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-  interval: 1h
+  targetNamespace: observability
   path: ./kubernetes/apps/observability/kube-prometheus-stack/app
+  interval: 1h
   prune: true
+  wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: observability
-  wait: false
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph

@@ -18,6 +18,13 @@ spec:
       retries: 3
       strategy: rollback
   values:
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
     controllers:
       openclaw:
         annotations:
@@ -66,25 +73,6 @@ spec:
               capabilities:
                 drop:
                   - ALL
-    defaultPodOptions:
-      securityContext:
-        fsGroup: 1000
-        runAsNonRoot: true
-        runAsUser: 1000
-        seccompProfile:
-          type: RuntimeDefault
-    persistence:
-      config:
-        existingClaim: openclaw
-        globalMounts:
-          - path: /home/node/.openclaw
-      openclaw-json:
-        type: secret
-        name: openclaw-config
-        defaultMode: 0o400
-        globalMounts:
-          - path: /home/node/.openclaw/openclaw.json
-            subPath: openclaw.json
     service:
       app:
         ports:
@@ -101,3 +89,15 @@ spec:
           - backendRefs:
               - identifier: app
                 port: http
+    persistence:
+      config:
+        existingClaim: openclaw
+        globalMounts:
+          - path: /home/node/.openclaw
+      openclaw-json:
+        type: secret
+        name: openclaw-config
+        defaultMode: 0o400
+        globalMounts:
+          - path: /home/node/.openclaw/openclaw.json
+            subPath: openclaw.json

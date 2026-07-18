@@ -89,6 +89,27 @@ spec:
           webrtc-udp:
             port: 8555
             protocol: UDP
+    route:
+      frigate:
+        hostnames:
+          - frigate.econline.nl
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: frigate
+                port: http
+      go2rtc:
+        hostnames:
+          - frigate-go2rtc.econline.nl
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: frigate
+                port: go2rtc
     persistence:
       config:
         existingClaim: frigate
@@ -112,24 +133,3 @@ spec:
             app:
               - path: /tmp
                 subPath: tmp
-    route:
-      frigate:
-        hostnames:
-          - frigate.econline.nl
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-        rules:
-          - backendRefs:
-              - identifier: frigate
-                port: http
-      go2rtc:
-        hostnames:
-          - frigate-go2rtc.econline.nl
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-        rules:
-          - backendRefs:
-              - identifier: frigate
-                port: go2rtc

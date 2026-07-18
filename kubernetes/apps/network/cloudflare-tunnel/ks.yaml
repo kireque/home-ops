@@ -5,16 +5,16 @@ kind: Kustomization
 metadata:
   name: cloudflare-tunnel
 spec:
-  interval: 1h
+  targetNamespace: network
   path: ./kubernetes/apps/network/cloudflare-tunnel/app
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: cloudflare-tunnel-id-secret
+  interval: 1h
   prune: true
+  wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: network
-  wait: false
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cloudflare-tunnel-id-secret

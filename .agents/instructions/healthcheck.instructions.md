@@ -168,17 +168,23 @@ kubectl get pvc --all-namespaces | grep -v Bound
 kubectl get pv | grep -v Bound
 ```
 
-### Volsync backups
+### Kopiur backups
 
 ```bash
-# Replication sources: check LAST SYNC and CONDITIONS
-kubectl get replicationsource --all-namespaces
+# Snapshot policies and their retention/verification schedules
+kubectl get snapshotpolicy --all-namespaces
 
-# Replication destinations
-kubectl get replicationdestination --all-namespaces
+# Snapshot schedules: check for errors
+kubectl get snapshotschedule --all-namespaces
+
+# Restore objects (PVC data sources) — should be Ready
+kubectl get restore --all-namespaces
+
+# kopiur controller itself
+kubectl -n kopiur-system get pods
 ```
 
-Flag any ReplicationSource that has not synced in the last 24 hours or shows an error condition.
+Flag any `Restore` that isn't `Ready`, or a `SnapshotSchedule`/`SnapshotPolicy` with an error condition or no recent successful run.
 
 ---
 
@@ -298,10 +304,10 @@ These components underpin everything else. Any issue here cascades widely.
 | `rook-ceph` | operator, mgr, 3× mon, osd pods |
 | `kube-system` | coredns (2 replicas), metrics-server, cilium-operator, descheduler |
 | `network` | envoy-gateway, cloudflare-tunnel, external-dns |
-| `volsync-system` | volsync, kopia |
+| `kopiur-system` | kopiur |
 
 ```bash
-for ns in flux-system cert-manager external-secrets rook-ceph kube-system network volsync-system; do
+for ns in flux-system cert-manager external-secrets rook-ceph kube-system network kopiur-system; do
   echo "=== $ns ==="
   kubectl get pods -n $ns --no-headers | grep -v Running
 done

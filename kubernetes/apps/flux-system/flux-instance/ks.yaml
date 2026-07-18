@@ -5,14 +5,14 @@ kind: Kustomization
 metadata:
   name: flux-instance
 spec:
-  dependsOn:
-    - name: flux-operator
-  interval: 1h
+  targetNamespace: flux-system
   path: ./kubernetes/apps/flux-system/flux-instance/app
+  interval: 1h
   prune: true
+  wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: flux-system
-  wait: false
+  dependsOn:
+    - name: flux-operator

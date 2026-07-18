@@ -7,20 +7,20 @@ metadata:
 spec:
   components:
     - ../../../../components/kopiur/backup
+  targetNamespace: home-automation
+  path: ./kubernetes/apps/home-automation/zigbee2mqtt/app
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
   dependsOn:
     - name: mosquitto
       namespace: home-automation
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  interval: 1h
-  path: ./kubernetes/apps/home-automation/zigbee2mqtt/app
   postBuild:
     substitute:
       APP: zigbee2mqtt
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: home-automation
-  wait: false

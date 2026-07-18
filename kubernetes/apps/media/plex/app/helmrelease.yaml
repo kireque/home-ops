@@ -10,6 +10,28 @@ spec:
     name: plex
   interval: 1h
   values:
+    defaultPodOptions:
+      labels:
+        gpu-consumer: "true"
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchLabels:
+                    gpu-consumer: "true"
+                namespaceSelector: {}
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: plex-gpu
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     controllers:
       plex:
         annotations:
@@ -56,28 +78,6 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 8Gi
-    defaultPodOptions:
-      labels:
-        gpu-consumer: "true"
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                topologyKey: kubernetes.io/hostname
-                labelSelector:
-                  matchLabels:
-                    gpu-consumer: "true"
-                namespaceSelector: {}
-      resourceClaims:
-        - name: gpu
-          resourceClaimTemplateName: plex-gpu
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         type: LoadBalancer
@@ -95,8 +95,8 @@ spec:
           - name: envoy-internal
             namespace: network
         rules:
-          - # Ref: https://forums.plex.tv/t/external-srt-subtitles-are-not-working-w-reverse-proxy/886540
-            backendRefs:
+          # Ref: https://forums.plex.tv/t/external-srt-subtitles-are-not-working-w-reverse-proxy/886540
+          - backendRefs:
               - identifier: app
                 port: *port
             filters:

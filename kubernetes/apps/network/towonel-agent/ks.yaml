@@ -5,14 +5,14 @@ kind: Kustomization
 metadata:
   name: towonel-agent
 spec:
-  dependsOn:
-    - name: cloudflare-dns
-  interval: 1h
+  targetNamespace: network
   path: ./kubernetes/apps/network/towonel-agent/app
+  interval: 1h
   prune: true
+  wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: network
-  wait: false
+  dependsOn:
+    - name: cloudflare-dns

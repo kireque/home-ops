@@ -10,6 +10,21 @@ spec:
     name: home-assistant
   interval: 1h
   values:
+    defaultPodOptions:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |-
+          [{
+            "name": "iot",
+            "namespace": "kube-system",
+            "ips": ["10.1.4.151/24"],
+            "mac": "3e:59:e4:f7:43:08"
+          }]
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     controllers:
       home-assistant:
         annotations:
@@ -65,21 +80,6 @@ spec:
                 cpu: 10m
               limits:
                 memory: 2Gi
-    defaultPodOptions:
-      annotations:
-        k8s.v1.cni.cncf.io/networks: |-
-          [{
-            "name": "iot",
-            "namespace": "kube-system",
-            "ips": ["10.1.4.151/24"],
-            "mac": "3e:59:e4:f7:43:08"
-          }]
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:

@@ -5,12 +5,12 @@ kind: Kustomization
 metadata:
   name: unifi-dns
 spec:
-  interval: 1h
+  targetNamespace: network
   path: ./kubernetes/apps/network/unifi-dns/app
+  interval: 1h
   prune: true
+  wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: network
-  wait: false

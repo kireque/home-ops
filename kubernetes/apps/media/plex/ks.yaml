@@ -9,21 +9,21 @@ spec:
     - ../../../../components/gpu
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
+  targetNamespace: media
+  path: ./kubernetes/apps/media/plex/app
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
   dependsOn:
     - name: intel-gpu-resource-driver
       namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  interval: 1h
-  path: ./kubernetes/apps/media/plex/app
   postBuild:
     substitute:
       APP: plex
       KOPIUR_CAPACITY: 50Gi
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: media
-  wait: false

@@ -9,6 +9,15 @@ spec:
     - ../../../../components/gpu
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
+  targetNamespace: home-automation
+  path: ./kubernetes/apps/home-automation/frigate/app
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
   dependsOn:
     - name: intel-gpu-resource-driver
       namespace: kube-system
@@ -16,17 +25,8 @@ spec:
       namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  interval: 1h
-  path: ./kubernetes/apps/home-automation/frigate/app
   postBuild:
     substitute:
       APP: frigate
       KOPIUR_CAPACITY: 5Gi
       KOPIUR_IGNORE_RULES: "[.jwt_secret]"
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: home-automation
-  wait: false

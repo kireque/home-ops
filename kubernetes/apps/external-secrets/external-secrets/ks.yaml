@@ -5,12 +5,12 @@ kind: Kustomization
 metadata:
   name: external-secrets
 spec:
-  interval: 1h
+  targetNamespace: external-secrets
   path: ./kubernetes/apps/external-secrets/external-secrets/app
+  interval: 1h
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: external-secrets
-  wait: true

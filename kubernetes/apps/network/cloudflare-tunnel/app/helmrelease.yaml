@@ -10,6 +10,11 @@ spec:
     name: cloudflare-tunnel
   interval: 1h
   values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
     controllers:
       cloudflare-tunnel:
         replicas: 2
@@ -53,16 +58,18 @@ spec:
                 cpu: 10m
               limits:
                 memory: 256Mi
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
     service:
       app:
         ports:
           http:
             port: *port
+    persistence:
+      config-file:
+        type: configMap
+        identifier: config
+        globalMounts:
+          - path: /etc/cloudflared/config.yaml
+            subPath: config.yaml
     serviceMonitor:
       app:
         endpoints:
@@ -80,10 +87,3 @@ spec:
                   tcpKeepAlive: 7200s
                 service: https://envoy-external.{{ .Release.Namespace }}.svc.cluster.local:443
               - service: http_status:404
-    persistence:
-      config-file:
-        type: configMap
-        identifier: config
-        globalMounts:
-          - path: /etc/cloudflared/config.yaml
-            subPath: config.yaml

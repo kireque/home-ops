@@ -5,12 +5,12 @@ kind: Kustomization
 metadata:
   name: keda
 spec:
-  interval: 1h
+  targetNamespace: observability
   path: ./kubernetes/apps/observability/keda/app
+  interval: 1h
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: observability
-  wait: true

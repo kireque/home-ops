@@ -5,15 +5,15 @@ kind: Kustomization
 metadata:
   name: tuppr
 spec:
-  interval: 1h
+  targetNamespace: system-upgrade
   path: ./kubernetes/apps/system-upgrade/tuppr/app
+  interval: 1h
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: system-upgrade
-  wait: true
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -21,14 +21,14 @@ kind: Kustomization
 metadata:
   name: tuppr-upgrades
 spec:
-  dependsOn:
-    - name: tuppr
-  interval: 1h
+  targetNamespace: system-upgrade
   path: ./kubernetes/apps/system-upgrade/tuppr/upgrades
+  interval: 1h
   prune: true
+  wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: system-upgrade
-  wait: false
+  dependsOn:
+    - name: tuppr

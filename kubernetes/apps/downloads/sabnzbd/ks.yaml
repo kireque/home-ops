@@ -8,18 +8,18 @@ spec:
   components:
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-  interval: 1h
+  targetNamespace: downloads
   path: ./kubernetes/apps/downloads/sabnzbd/app
-  postBuild:
-    substitute:
-      APP: sabnzbd
+  interval: 1h
   prune: true
+  wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: downloads
-  wait: false
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  postBuild:
+    substitute:
+      APP: sabnzbd

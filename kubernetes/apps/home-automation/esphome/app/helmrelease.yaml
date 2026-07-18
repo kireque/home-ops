@@ -105,6 +105,25 @@ spec:
         ports:
           http:
             port: 12321
+    route:
+      app:
+        hostnames:
+          - esphome.econline.nl
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+      code-server:
+        hostnames:
+          - esphome-code.econline.nl
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: code-server
     persistence:
       config:
         existingClaim: esphome
@@ -155,22 +174,3 @@ spec:
             code-server:
               - path: /home/coder/.ssh/id_ed25519
                 subPath: id_ed25519
-    route:
-      app:
-        hostnames:
-          - esphome.econline.nl
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-        rules:
-          - backendRefs:
-              - identifier: app
-      code-server:
-        hostnames:
-          - esphome-code.econline.nl
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-        rules:
-          - backendRefs:
-              - identifier: code-server

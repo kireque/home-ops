@@ -17,17 +17,6 @@ spec:
         runAsGroup: 1000
         runAsNonRoot: true
         runAsUser: 1000
-    configMaps:
-      config:
-        data:
-          mosquitto.conf: |-
-            allow_anonymous true
-            autosave_interval 60
-            connection_messages false
-            listener 1883
-            per_listener_settings false
-            persistence true
-            persistence_location /config
     controllers:
       mosquitto:
         statefulset:
@@ -63,13 +52,6 @@ spec:
                 drop:
                   - "ALL"
               readOnlyRootFilesystem: true
-    persistence:
-      config-file:
-        type: configMap
-        identifier: config
-        globalMounts:
-          - path: /mosquitto/config/mosquitto.conf
-            subPath: mosquitto.conf
     service:
       app:
         type: LoadBalancer
@@ -82,3 +64,21 @@ spec:
         ports:
           mqtt:
             port: 1883
+    persistence:
+      config-file:
+        type: configMap
+        identifier: config
+        globalMounts:
+          - path: /mosquitto/config/mosquitto.conf
+            subPath: mosquitto.conf
+    configMaps:
+      config:
+        data:
+          mosquitto.conf: |-
+            allow_anonymous true
+            autosave_interval 60
+            connection_messages false
+            listener 1883
+            per_listener_settings false
+            persistence true
+            persistence_location /config

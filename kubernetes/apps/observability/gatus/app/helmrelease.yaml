@@ -10,6 +10,14 @@ spec:
     name: gatus
   interval: 1h
   values:
+    defaultPodOptions:
+      automountServiceAccountToken: true
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     controllers:
       gatus:
         type: statefulset
@@ -67,23 +75,11 @@ spec:
               storageClass: ceph-block
               accessMode: ReadWriteOnce
               size: 5Gi
-    defaultPodOptions:
-      automountServiceAccountToken: true
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
           http:
             port: *port
-    serviceMonitor:
-      app:
-        endpoints:
-          - port: http
     route:
       app:
         annotations:
@@ -94,6 +90,17 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
+    persistence:
+      config-file:
+        type: configMap
+        name: "{{ .Release.Name }}-configmap"
+        globalMounts:
+          - path: /config/config.yaml
+            subPath: config.yaml
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: http
     rbac:
       roles:
         gatus:
@@ -125,10 +132,3 @@ spec:
             - identifier: gatus
     serviceAccount:
       gatus: {}
-    persistence:
-      config-file:
-        type: configMap
-        name: "{{ .Release.Name }}-configmap"
-        globalMounts:
-          - path: /config/config.yaml
-            subPath: config.yaml

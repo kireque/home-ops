@@ -17,6 +17,7 @@ Whenever asked to sort these files, follow these instructions:
   - `spec`
 
 - The items within the `spec` section should be sorted as follows:
+  - `components`
   - `commonMetadata`
   - `targetNamespace`
   - `path`
@@ -27,6 +28,8 @@ Whenever asked to sort these files, follow these instructions:
   - `sourceRef`
   - `dependsOn`
   - `postBuild`
+  - `healthChecks`
+  - `healthCheckExprs`
 
 - The items within the `sourceRef` section should be sorted as follows:
   - `kind`

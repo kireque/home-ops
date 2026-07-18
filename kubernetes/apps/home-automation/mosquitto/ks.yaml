@@ -5,19 +5,19 @@ kind: Kustomization
 metadata:
   name: mosquitto
 spec:
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-  interval: 1h
+  targetNamespace: home-automation
   path: ./kubernetes/apps/home-automation/mosquitto/app
-  postBuild:
-    substitute:
-      APP: mosquitto
-      CONTROLLER: StatefulSet
+  interval: 1h
   prune: true
+  wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: home-automation
-  wait: false
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  postBuild:
+    substitute:
+      APP: mosquitto
+      CONTROLLER: StatefulSet

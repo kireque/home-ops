@@ -5,12 +5,12 @@ kind: Kustomization
 metadata:
   name: openebs
 spec:
-  interval: 1h
+  targetNamespace: openebs-system
   path: ./kubernetes/apps/openebs-system/openebs/app
+  interval: 1h
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: openebs-system
-  wait: true

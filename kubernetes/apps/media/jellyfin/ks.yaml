@@ -9,21 +9,21 @@ spec:
     - ../../../../components/gpu
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
+  targetNamespace: media
+  path: ./kubernetes/apps/media/jellyfin/app
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
   dependsOn:
     - name: intel-gpu-resource-driver
       namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  interval: 1h
-  path: ./kubernetes/apps/media/jellyfin/app
   postBuild:
     substitute:
       APP: jellyfin
       KOPIUR_CAPACITY: 20Gi
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: media
-  wait: false

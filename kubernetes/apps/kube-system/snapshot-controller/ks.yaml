@@ -5,12 +5,12 @@ kind: Kustomization
 metadata:
   name: snapshot-controller
 spec:
-  interval: 1h
+  targetNamespace: kube-system
   path: ./kubernetes/apps/kube-system/snapshot-controller/app
+  interval: 1h
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: kube-system
-  wait: true

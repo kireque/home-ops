@@ -5,14 +5,14 @@ kind: Kustomization
 metadata:
   name: drm-exporter
 spec:
-  dependsOn:
-    - name: intel-gpu-resource-driver
-  interval: 1h
+  targetNamespace: kube-system
   path: ./kubernetes/apps/kube-system/drm-exporter/app
+  interval: 1h
   prune: true
+  wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: kube-system
-  wait: false
+  dependsOn:
+    - name: intel-gpu-resource-driver

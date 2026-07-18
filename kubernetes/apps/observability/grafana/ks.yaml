@@ -5,15 +5,15 @@ kind: Kustomization
 metadata:
   name: grafana
 spec:
-  interval: 1h
+  targetNamespace: observability
   path: ./kubernetes/apps/observability/grafana/app
+  interval: 1h
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: observability
-  wait: true
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -21,16 +21,16 @@ kind: Kustomization
 metadata:
   name: grafana-instance
 spec:
-  dependsOn:
-    - name: grafana
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-  interval: 1h
+  targetNamespace: observability
   path: ./kubernetes/apps/observability/grafana/instance
+  interval: 1h
   prune: true
+  wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: observability
-  wait: false
+  dependsOn:
+    - name: grafana
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
