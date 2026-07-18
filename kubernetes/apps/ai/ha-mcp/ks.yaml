@@ -3,13 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app flux-mcp
+  name: &app ha-mcp
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  targetNamespace: llm-system
-  path: ./kubernetes/apps/llm-system/flux-mcp/app
+  targetNamespace: ai
+  path: ./kubernetes/apps/ai/ha-mcp/app
   interval: 30m
   timeout: 5m
   prune: true
@@ -19,6 +19,8 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
+    - name: home-assistant
+      namespace: home-automation
     - name: toolhive-operator-crds
   postBuild:
     substitute:

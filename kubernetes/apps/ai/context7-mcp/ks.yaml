@@ -8,8 +8,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  targetNamespace: llm-system
-  path: ./kubernetes/apps/llm-system/context7-mcp/app
+  targetNamespace: ai
+  path: ./kubernetes/apps/ai/context7-mcp/app
   interval: 30m
   timeout: 5m
   prune: true

@@ -8,8 +8,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: toolhive-operator-crds
-  targetNamespace: llm-system
-  path: ./kubernetes/apps/llm-system/toolhive/crds
+  targetNamespace: ai
+  path: ./kubernetes/apps/ai/toolhive/crds
   interval: 1h
   timeout: 5m
   prune: true
@@ -27,8 +27,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: toolhive-operator
-  targetNamespace: llm-system
-  path: ./kubernetes/apps/llm-system/toolhive/app
+  targetNamespace: ai
+  path: ./kubernetes/apps/ai/toolhive/app
   interval: 1h
   timeout: 5m
   prune: true
@@ -48,8 +48,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: toolhive-operator-config
-  targetNamespace: llm-system
-  path: ./kubernetes/apps/llm-system/toolhive/config
+  targetNamespace: ai
+  path: ./kubernetes/apps/ai/toolhive/config
   interval: 1h
   timeout: 5m
   prune: true

@@ -8,8 +8,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  targetNamespace: llm-system
-  path: ./kubernetes/apps/llm-system/open-webui/app
+  targetNamespace: ai
+  path: ./kubernetes/apps/ai/open-webui/app
   interval: 1h
   timeout: 5m
   prune: true
@@ -19,8 +19,6 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
-    - name: ollama
-      namespace: llm-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
   postBuild:

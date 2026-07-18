@@ -3,11 +3,11 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: ollama
+  name: open-webui
 spec:
   chartRef:
     kind: OCIRepository
-    name: ollama
+    name: open-webui
   interval: 1h
   install:
     remediation:
@@ -18,25 +18,40 @@ spec:
       retries: 3
       strategy: rollback
   values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+        fsGroup: 0
     controllers:
-      ollama:
+      open-webui:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ollama/ollama
-              tag: 0.32.1
+              repository: ghcr.io/open-webui/open-webui
+              tag: v0.10.2
             env:
-              OLLAMA_HOST: 0.0.0.0:11434
+              OPENAI_API_BASE_URL: https://econline-foundry.services.ai.azure.com/openai/v1
+              WEBUI_SECRET_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: open-webui-secret
+                    key: WEBUI_SECRET_KEY
+              OPENAI_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: open-webui-secret
+                    key: AZURE_OPENAI_API_KEY
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /
-                    port: &port 11434
+                    path: /health
+                    port: &port 8080
                   initialDelaySeconds: 30
                   periodSeconds: 30
                   timeoutSeconds: 10
@@ -46,24 +61,30 @@ spec:
                 enabled: true
                 spec:
                   httpGet:
-                    path: /
+                    path: /health
                     port: *port
-                  failureThreshold: 60
+                  failureThreshold: 30
                   periodSeconds: 10
             resources:
               requests:
-                cpu: 200m
-                memory: 2Gi
+                cpu: 100m
+                memory: 512Mi
               limits:
-                memory: 16Gi
-
+                memory: 2Gi
     service:
       app:
         ports:
           http:
             port: *port
+    route:
+      app:
+        hostnames:
+          - chat.econline.nl
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
     persistence:
-      models:
-        existingClaim: ollama
+      data:
+        existingClaim: open-webui
         globalMounts:
-          - path: /root/.ollama
+          - path: /app/backend/data
