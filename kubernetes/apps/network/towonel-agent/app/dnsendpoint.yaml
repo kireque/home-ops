@@ -9,14 +9,14 @@ spec:
     - dnsName: towonel.econline.nl
       recordType: CNAME
       targets:
-        - edge-eu.towonel.dev
+        - hub.econline.nl
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"
     - dnsName: external.econline.nl
       recordType: CNAME
       targets:
-        - edge-eu.towonel.dev
+        - hub.econline.nl
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"
