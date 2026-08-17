@@ -27,13 +27,15 @@ spec:
             use_tcp: true
         port: 53
         plugins:
+          - name: template
+            parameters: ANY AAAA
+            configBlock: |-
+              authority "{{ .Zone }} 60 IN SOA ns.dns.cluster.local. hostmaster.cluster.local. (1 60 60 60 60)"
           - name: errors
           - name: health
             configBlock: |-
               lameduck 5s
           - name: ready
-          - name: rewrite
-            parameters: type AAAA A
           - name: kubernetes
             parameters: cluster.local in-addr.arpa ip6.arpa
             configBlock: |-
