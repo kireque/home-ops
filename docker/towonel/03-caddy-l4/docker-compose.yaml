@@ -8,7 +8,10 @@ services:
     restart: unless-stopped
     environment:
       CADDY_ACME_EMAIL: ${CADDY_ACME_EMAIL}
-      VPS_LOCAL_HOSTS: hub.econline.nl
+      VPS_LOCAL_HOSTS: >-
+        hub.econline.nl
+        towonel-doco-cd.econline.nl
+        towonel-status.econline.nl
     ports:
       - "80:80"
       - "443:443"

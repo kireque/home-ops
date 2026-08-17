@@ -20,3 +20,17 @@ spec:
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"
+    - dnsName: towonel-doco-cd.econline.nl
+      recordType: CNAME
+      targets:
+        - hub.econline.nl
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
+    - dnsName: towonel-status.econline.nl
+      recordType: CNAME
+      targets:
+        - hub.econline.nl
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"

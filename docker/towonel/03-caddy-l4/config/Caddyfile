@@ -60,3 +60,13 @@ hub.econline.nl {
 	log
 	reverse_proxy towonel-hub:8443
 }
+
+towonel-doco-cd.econline.nl {
+	log
+	reverse_proxy doco-cd:8880
+}
+
+towonel-status.econline.nl {
+	log
+	reverse_proxy gatus:8080
+}

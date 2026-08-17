@@ -46,3 +46,8 @@ services:
 volumes:
   crowdsec-db:
   crowdsec-config:
+
+networks:
+  default:
+    name: edge
+    external: true
