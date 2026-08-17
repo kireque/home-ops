@@ -14,7 +14,17 @@ timeout: 10s
 format: |-
   {{- $lines := list -}}
   {{- range . -}}
-  {{- $lines = append $lines .Message -}}
+  {{- $ip := "?" -}}{{- $cn := "?" -}}{{- $as := "?" -}}
+  {{- if .Source -}}
+    {{- $ip = .Source.IP -}}
+    {{- if .Source.Cn -}}{{- $cn = .Source.Cn -}}{{- end -}}
+    {{- if .Source.AsName -}}{{- $as = .Source.AsName -}}{{- end -}}
+  {{- end -}}
+  {{- $action := "detected, no decision" -}}
+  {{- if .Decisions -}}
+    {{- with index .Decisions 0 -}}{{- $action = printf "%s (%s)" .Type .Duration -}}{{- end -}}
+  {{- end -}}
+  {{- $lines = append $lines (printf "%s from %s (%s, %s) -> %s" (trimPrefix "crowdsecurity/" .Scenario) $ip $cn $as $action) -}}
   {{- end -}}
   {{ dict "token" (env "PUSHOVER_TOKEN") "user" (env "PUSHOVER_USER_KEY") "title" "CrowdSec" "priority" 1 "message" (join "\n" $lines) | toJson }}
 
