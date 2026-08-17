@@ -10,5 +10,10 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 1.47.0
+    # Held at 1.46.2 (CoreDNS 1.13.1) — 1.47.0 (CoreDNS 1.14.6) has a confirmed
+    # regression causing intermittent empty-answer NOERROR responses for
+    # parallel A/AAAA lookups when autopath + cache(prefetch/serve_stale) are
+    # used, see https://github.com/coredns/coredns/issues/8390. Revert once
+    # upstream ships a fix. Renovate held via .renovate/overrides.json5.
+    tag: 1.46.2
   url: oci://ghcr.io/coredns/charts/coredns
