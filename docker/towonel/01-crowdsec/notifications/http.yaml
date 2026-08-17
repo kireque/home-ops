@@ -22,7 +22,11 @@ format: |-
   {{- end -}}
   {{- $action := "detected, no decision" -}}
   {{- if .Decisions -}}
-    {{- with index .Decisions 0 -}}{{- $action = printf "%s (%s)" .Type .Duration -}}{{- end -}}
+    {{- with index .Decisions 0 -}}
+      {{- $type := trimPrefix "" .Type -}}
+      {{- $duration := trimPrefix "" .Duration -}}
+      {{- $action = printf "%s (%s)" $type $duration -}}
+    {{- end -}}
   {{- end -}}
   {{- $lines = append $lines (printf "%s from %s (%s, %s) -> %s" (trimPrefix "crowdsecurity/" .Scenario) $ip $cn $as $action) -}}
   {{- end -}}
