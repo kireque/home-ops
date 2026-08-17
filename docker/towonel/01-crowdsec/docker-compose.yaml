@@ -11,6 +11,10 @@ services:
       COLLECTIONS: "crowdsecurity/linux crowdsecurity/sshd crowdsecurity/iptables"
       PARSERS: "crowdsecurity/geoip-enrich"
       GID: "1000"
+      # Reused by notifications/http.yaml's format template (via sprig's `env`
+      # function) to alert through the same Pushover app/channel as Gatus.
+      PUSHOVER_TOKEN: ${GATUS_PUSHOVER_TOKEN}
+      PUSHOVER_USER_KEY: ${GATUS_PUSHOVER_KEY}
     volumes:
       - /var/log:/var/log:ro
       - /run/systemd/journal:/run/systemd/journal:ro
@@ -20,6 +24,8 @@ services:
       - ./whitelists:/etc/crowdsec/parsers/s02-enrich/custom:ro
       - ./acquis.d:/etc/crowdsec/acquis.d/custom:ro
       - ./config/config.yaml.local:/etc/crowdsec/config.yaml.local:ro
+      - ./notifications/http.yaml:/etc/crowdsec/notifications/http.yaml:ro
+      - ./config/profiles.yaml:/etc/crowdsec/profiles.yaml:ro
     ports:
       - "127.0.0.1:8088:8080"
     healthcheck:

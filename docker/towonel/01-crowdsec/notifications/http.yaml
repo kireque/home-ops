@@ -1,0 +1,24 @@
+---
+type: http
+name: http_pushover
+log_level: info
+group_wait: 10s
+group_threshold: 5
+max_retry: 3
+timeout: 10s
+
+# Renders the HTTP request body. `env` reads PUSHOVER_TOKEN/PUSHOVER_USER_KEY
+# from the container environment (never written to disk), and `toJson`
+# handles escaping so alert-derived text (scenario, source IP, ...) can't
+# break the JSON body.
+format: |-
+  {{- $lines := list -}}
+  {{- range . -}}
+  {{- $lines = append $lines .Message -}}
+  {{- end -}}
+  {{ dict "token" (env "PUSHOVER_TOKEN") "user" (env "PUSHOVER_USER_KEY") "title" "CrowdSec" "priority" 1 "message" (join "\n" $lines) | toJson }}
+
+url: https://api.pushover.net/1/messages.json
+method: POST
+headers:
+  Content-Type: application/json
