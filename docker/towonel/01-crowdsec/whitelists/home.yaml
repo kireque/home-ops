@@ -4,4 +4,4 @@ description: "Allow home ISP (KPN - AS1136)"
 whitelist:
   reason: "home ISP (KPN)"
   expression:
-    - evt.Meta.ASNNumber == "1136"
+    - evt.Overflow.Alert.Source.AsNumber == "1136"
