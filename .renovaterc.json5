@@ -3,7 +3,7 @@
   extends: [
     "config:recommended",
     "docker:enableMajor",
-    "helpers:pinGitHubActionDigests",
+    "helpers:pinGitHubActionDigestsToSemver",
     "github>kireque/home-ops//.renovate/autoMerge.json5",
     "github>kireque/home-ops//.renovate/changelogs.json5",
     "github>kireque/home-ops//.renovate/customManagers.json5",
