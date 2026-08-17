@@ -8,12 +8,6 @@
       overrideDepName: "{{packageName}}",
     },
     {
-      description: "Override Talos Installer Package Name",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/factory\\.talos\\.dev/"],
-      overridePackageName: "ghcr.io/siderolabs/installer",
-    },
-    {
       description: "Hold Rook-Ceph at v1.19.x",
       matchDatasources: ["docker"],
       matchPackageNames: ["/rook-ceph/", "/rook-ceph-cluster/"],

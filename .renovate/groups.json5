@@ -58,10 +58,12 @@
       minimumGroupSize: 2,
     },
     {
+      // Unmatched matchDatasources on purpose: unites the mise pin (aqua),
+      // the factory installer image, and the tuppr upgrade version, which
+      // all resolve to packageName "siderolabs/talos" across three managers.
       description: "Talos Group",
       groupName: "talos",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/installer/"],
+      matchPackageNames: ["siderolabs/talos"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },

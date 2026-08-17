@@ -47,5 +47,21 @@
       matchUpdateTypes: ["major", "minor", "patch", "digest"],
       ignoreTests: true,
     },
+    {
+      description: "Auto-merge Grafana dashboards",
+      matchDatasources: ["custom.grafana-dashboards"],
+      automerge: true,
+      automergeType: "branch",
+      matchUpdateTypes: ["major"],
+      ignoreTests: true,
+    },
+    {
+      description: "Auto-merge Renovate presets",
+      matchManagers: ["renovate-config"],
+      automerge: true,
+      automergeType: "branch",
+      matchUpdateTypes: ["minor", "patch"],
+      ignoreTests: true,
+    },
   ],
 }
