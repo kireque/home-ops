@@ -11,6 +11,9 @@ services:
       COLLECTIONS: "crowdsecurity/linux crowdsecurity/sshd crowdsecurity/iptables"
       PARSERS: "crowdsecurity/geoip-enrich"
       GID: "1000"
+      # DB is on a local named volume (not a network share), so WAL is safe
+      # and avoids LAPI stalling while inserting the community blocklist.
+      USE_WAL: "true"
       # Reused by notifications/http.yaml's format template (via sprig's `env`
       # function) to alert through the same Pushover app/channel as Gatus.
       PUSHOVER_TOKEN: ${GATUS_PUSHOVER_TOKEN}
