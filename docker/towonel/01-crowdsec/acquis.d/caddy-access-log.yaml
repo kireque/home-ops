@@ -1,6 +1,6 @@
 ---
 source: file
 filenames:
-  - /var/log/caddy/access.log
+  - /caddy-logs/access.log
 labels:
   type: caddy

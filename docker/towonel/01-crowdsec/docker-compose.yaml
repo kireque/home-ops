@@ -22,7 +22,7 @@ services:
       - /var/log:/var/log:ro
       - crowdsec-db:/var/lib/crowdsec/data
       - crowdsec-config:/etc/crowdsec
-      - caddy-access-logs:/var/log/caddy:ro
+      - caddy-access-logs:/caddy-logs:ro
       - ./scenarios:/etc/crowdsec/scenarios/custom:ro
       - ./whitelists:/etc/crowdsec/postoverflows/s01-whitelist/custom:ro
       - ./acquis.d:/etc/crowdsec/acquis.d:ro
