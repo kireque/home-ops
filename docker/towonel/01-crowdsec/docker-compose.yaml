@@ -8,7 +8,7 @@ services:
     container_name: crowdsec
     restart: unless-stopped
     environment:
-      COLLECTIONS: "crowdsecurity/linux crowdsecurity/sshd crowdsecurity/iptables"
+      COLLECTIONS: "crowdsecurity/linux crowdsecurity/sshd crowdsecurity/iptables crowdsecurity/caddy"
       PARSERS: "crowdsecurity/geoip-enrich"
       GID: "1000"
       # DB is on a local named volume (not a network share), so WAL is safe
@@ -22,6 +22,7 @@ services:
       - /var/log:/var/log:ro
       - crowdsec-db:/var/lib/crowdsec/data
       - crowdsec-config:/etc/crowdsec
+      - caddy-access-logs:/var/log/caddy:ro
       - ./scenarios:/etc/crowdsec/scenarios/custom:ro
       - ./whitelists:/etc/crowdsec/postoverflows/s01-whitelist/custom:ro
       - ./acquis.d:/etc/crowdsec/acquis.d:ro
@@ -54,6 +55,10 @@ services:
 volumes:
   crowdsec-db:
   crowdsec-config:
+  # Shared by literal name with the caddy-l4 stack (a separate compose
+  # project); it writes access.log here, we tail it read-only.
+  caddy-access-logs:
+    name: caddy-access-logs
 
 networks:
   default:

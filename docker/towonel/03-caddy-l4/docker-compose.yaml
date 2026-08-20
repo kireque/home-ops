@@ -21,6 +21,7 @@ services:
     volumes:
       - caddy-data:/data
       - caddy-config:/config
+      - caddy-access-logs:/var/log/caddy
 
 configs:
   caddyfile:
@@ -29,6 +30,10 @@ configs:
 volumes:
   caddy-data:
   caddy-config:
+  # Shared by literal name with the crowdsec stack (a separate compose
+  # project) so it can tail access.log for HTTP scenarios.
+  caddy-access-logs:
+    name: caddy-access-logs
 
 networks:
   default:
