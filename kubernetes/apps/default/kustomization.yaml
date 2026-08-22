@@ -6,32 +6,45 @@ namespace: default
 
 components:
   - ../../components/alerts
+  - ../../components/namespace
+
+patches:
+  - patch: |-
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: _
+        annotations:
+          volsync.backube/privileged-movers: "true"
+        labels:
+          resource.kubernetes.io/admin-access: "true"
+    target:
+      kind: Namespace
 
 resources:
-  - ./namespace.yaml
-  # - ./agregarr/ks.yaml
-  # - ./atuin/ks.yaml
-  # - ./autobrr/ks.yaml
-  # - ./bazarr/ks.yaml
-  # - ./brrpolice/ks.yaml
-  # - ./deduparr/ks.yaml
-  # - ./go2rtc/ks.yaml
-  # - ./home-assistant/ks.yaml
-  # - ./mosquitto/ks.yaml
-  # - ./notifier/ks.yaml
-  # - ./plex/ks.yaml
-  # - ./prowlarr/ks.yaml
-  # - ./qbittorrent/ks.yaml
-  # - ./qui/ks.yaml
-  # - ./radarr/ks.yaml
-  # - ./recyclarr/ks.yaml
-  # - ./sabnzbd/ks.yaml
-  # - ./seasonpackerr/ks.yaml
-  # - ./seerr/ks.yaml
-  # - ./slskd/ks.yaml
-  # - ./smtp-relay/ks.yaml
-  # - ./sonarr/ks.yaml
-  # - ./tautulli/ks.yaml
-  # - ./thelounge/ks.yaml
-  # - ./zigbee/ks.yaml
-  # - ./zwave/ks.yaml
+# - ./agregarr/ks.yaml
+# - ./atuin/ks.yaml
+# - ./autobrr/ks.yaml
+# - ./bazarr/ks.yaml
+# - ./brrpolice/ks.yaml
+# - ./deduparr/ks.yaml
+# - ./go2rtc/ks.yaml
+# - ./home-assistant/ks.yaml
+# - ./mosquitto/ks.yaml
+# - ./notifier/ks.yaml
+# - ./plex/ks.yaml
+# - ./prowlarr/ks.yaml
+# - ./qbittorrent/ks.yaml
+# - ./qui/ks.yaml
+# - ./radarr/ks.yaml
+# - ./recyclarr/ks.yaml
+# - ./sabnzbd/ks.yaml
+# - ./seasonpackerr/ks.yaml
+# - ./seerr/ks.yaml
+# - ./slskd/ks.yaml
+# - ./smtp-relay/ks.yaml
+# - ./sonarr/ks.yaml
+# - ./tautulli/ks.yaml
+# - ./thelounge/ks.yaml
+# - ./zigbee/ks.yaml
+# - ./zwave/ks.yaml

@@ -7,9 +7,22 @@ namespace: home-automation
 components:
   - ../../components/alerts
   - ../../components/kopiur/secret
+  - ../../components/namespace
+
+patches:
+  - patch: |-
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: _
+        annotations:
+          volsync.backube/privileged-movers: "true"
+        labels:
+          resource.kubernetes.io/admin-access: "true"
+    target:
+      kind: Namespace
 
 resources:
-  - ./namespace.yaml
   - ./esphome/ks.yaml
   - ./home-assistant/ks.yaml
   # - ./home-assistant-gladius/ks.yaml
