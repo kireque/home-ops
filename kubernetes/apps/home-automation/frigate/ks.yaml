@@ -23,8 +23,6 @@ spec:
       namespace: kube-system
     - name: multus-networks
       namespace: kube-system
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   postBuild:
     substitute:
       APP: frigate

@@ -19,8 +19,6 @@ spec:
   dependsOn:
     - name: mosquitto
       namespace: home-automation
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   postBuild:
     substitute:
       APP: zigbee2mqtt
