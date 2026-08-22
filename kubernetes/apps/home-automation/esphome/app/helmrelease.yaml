@@ -36,6 +36,8 @@ spec:
             image:
               repository: ghcr.io/home-operations/esphome
               tag: 2026.8.0@sha256:d7da3daaf60b07502a929cd8b6a26984a3c07fcbe771798994a040f4110ee2eb
+            env:
+              ESPHOME_ESP_IDF_PREFIX: /cache/idf
             probes:
               liveness:
                 enabled: false
