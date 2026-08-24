@@ -82,4 +82,3 @@ spec:
           - path: /config
       tmp:
         type: emptyDir
-

@@ -1,9 +1,10 @@
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 configMapGenerator:
-- files:
-  - refresh-series.sh=./resources/refresh-series.sh
-  - tag-resolution.sh=./resources/tag-resolution.sh
-  name: sonarr-configmap
+  - files:
+      - refresh-series.sh=./resources/refresh-series.sh
+      - tag-resolution.sh=./resources/tag-resolution.sh
+    name: sonarr-configmap
 generatorOptions:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
@@ -11,28 +12,28 @@ generatorOptions:
 kind: Kustomization
 namespace: downloads
 patches:
-- patch: |-
-    apiVersion: helm.toolkit.fluxcd.io/v2
-    kind: HelmRelease
-    metadata:
-      name: _
-    spec:
-      install:
-        crds: CreateReplace
-      rollback:
-        cleanupOnFail: true
-      upgrade:
-        cleanupOnFail: true
-        crds: CreateReplace
-        strategy:
-          name: RemediateOnFailure
-        remediation:
-          remediateLastFailure: true
-          retries: 2
-  target:
-    group: helm.toolkit.fluxcd.io
-    kind: HelmRelease
+  - patch: |-
+      apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      metadata:
+        name: _
+      spec:
+        install:
+          crds: CreateReplace
+        rollback:
+          cleanupOnFail: true
+        upgrade:
+          cleanupOnFail: true
+          crds: CreateReplace
+          strategy:
+            name: RemediateOnFailure
+          remediation:
+            remediateLastFailure: true
+            retries: 2
+    target:
+      group: helm.toolkit.fluxcd.io
+      kind: HelmRelease
 resources:
-- ./externalsecret.yaml
-- ./helmrelease.yaml
-- ./ocirepository.yaml
+  - ./externalsecret.yaml
+  - ./helmrelease.yaml
+  - ./ocirepository.yaml
