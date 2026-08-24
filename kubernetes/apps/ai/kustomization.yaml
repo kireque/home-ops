@@ -22,6 +22,5 @@ patches:
 resources:
   - ./context7-mcp/ks.yaml
   - ./ha-mcp/ks.yaml
-  - ./litellm-operator/ks.yaml
   - ./open-webui/ks.yaml
   - ./toolhive/ks.yaml
