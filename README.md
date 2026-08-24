@@ -81,7 +81,7 @@ My cluster is a 3-node [Talos Linux](https://www.talos.dev) cluster, currently o
 | `openebs-system` | OpenEBS (hostpath local storage) |
 | `kopiur-system` | kopiur, kopiur-repository (backup/restore) |
 | `network` | Cilium ingress bits, Envoy Gateway, cloudflare-tunnel, cloudflare-dns, unifi-dns, towonel-agent, echo |
-| `observability` | kube-prometheus-stack, Grafana, VictoriaLogs, fluent-bit, Gatus, kromgo, Headlamp, KEDA, silence-operator, unpoller, smartctl-exporter, blackbox-exporter |
+| `observability` | kube-prometheus-stack, Grafana, VictoriaLogs, fluent-bit, Gatus, kromgo, Headlamp, KEDA, silence-operator, smartctl-exporter, blackbox-exporter |
 | `home-automation` | Home Assistant, Zigbee2MQTT, ESPHome, Frigate, Mosquitto |
 | `media` | Jellyfin, Plex, seerr, Tautulli, watchstate, agregarr |
 | `downloads` | sabnzbd, Prowlarr, Sonarr, Radarr, Bazarr, Recyclarr, chaski |
