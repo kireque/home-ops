@@ -13,6 +13,7 @@ services:
       PUSHOVER_TOKEN: ${GATUS_PUSHOVER_TOKEN}
       PUSHOVER_USER_KEY: ${GATUS_PUSHOVER_KEY}
       REMOTE_STATUS_HOSTNAME: hub.econline.nl
+      REMOTE_HEARTBEAT_TOKEN: ${GATUS_REMOTE_HEARTBEAT_TOKEN}
     volumes:
       - gatus-config:/config
     configs:

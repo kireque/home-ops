@@ -29,6 +29,20 @@ endpoints:
     alerts:
       - type: pushover
 
+# Dead-man's-switch: kube-prometheus-stack's Alertmanager routes its
+# always-firing Watchdog alert here every ~2m30s. If this endpoint doesn't
+# hear from the cluster within the heartbeat interval, home is unreachable
+# from outside and gatus alerts via Pushover — the towonel VPS stays up
+# independently of the home connection, so it can actually notice.
+external-endpoints:
+  - name: heartbeat
+    group: home
+    token: ${REMOTE_HEARTBEAT_TOKEN}
+    heartbeat:
+      interval: 5m
+    alerts:
+      - type: pushover
+
 storage:
   type: sqlite
   caching: true

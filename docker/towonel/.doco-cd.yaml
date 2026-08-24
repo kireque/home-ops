@@ -10,6 +10,7 @@ external_secrets:
   # if you keep the alerting block in 04-gatus/config/config.yaml.
   GATUS_PUSHOVER_TOKEN: op://vps/pushover/gatus_token
   GATUS_PUSHOVER_KEY: op://vps/pushover/user_key
+  GATUS_REMOTE_HEARTBEAT_TOKEN: op://vps/towonel/heartbeat_token
   CADDY_ACME_EMAIL: op://vps/towonel-tunnel/acme_email
   TOWONEL_INVITE_HASH_KEY: op://vps/towonel-tunnel/invite_hash_key
 force_recreate: false
