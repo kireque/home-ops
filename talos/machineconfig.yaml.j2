@@ -3,9 +3,7 @@ version: v1alpha1
 machine:
   ca:
     crt: op://kubernetes/talos/MACHINE_CA_CRT
-    {% if ENV.IS_CONTROLLER %}
     key: op://kubernetes/talos/MACHINE_CA_KEY
-    {% endif %}
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
@@ -16,7 +14,6 @@ machine:
     kubePrism:
       enabled: true
       port: 7445
-    {% if ENV.IS_CONTROLLER %}
     kubernetesTalosAPIAccess:
       enabled: true
       allowedKubernetesNamespaces:
@@ -24,7 +21,6 @@ machine:
         - system-upgrade
       allowedRoles:
         - os:admin
-    {% endif %}
     rbac: true
   files:
     - op: create
@@ -98,9 +94,7 @@ machine:
 cluster:
   ca:
     crt: op://kubernetes/talos/CLUSTER_CA_CRT
-    {% if ENV.IS_CONTROLLER %}
     key: op://kubernetes/talos/CLUSTER_CA_KEY
-    {% endif %}
   clusterName: main
   controlPlane:
     endpoint: https://10.1.1.130:6443
@@ -122,7 +116,6 @@ cluster:
       - 10.96.0.0/12
   secret: op://kubernetes/talos/CLUSTER_SECRET
   token: op://kubernetes/talos/CLUSTER_TOKEN
-  {% if ENV.IS_CONTROLLER %}
   aggregatorCA:
     crt: op://kubernetes/talos/CLUSTER_AGGREGATORCA_CRT
     key: op://kubernetes/talos/CLUSTER_AGGREGATORCA_KEY
@@ -182,7 +175,6 @@ cluster:
   secretboxEncryptionSecret: op://kubernetes/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
   serviceAccount:
     key: op://kubernetes/talos/CLUSTER_SERVICEACCOUNT_KEY
-  {% endif %}
 ---
 apiVersion: v1alpha1
 kind: LinkAliasConfig
