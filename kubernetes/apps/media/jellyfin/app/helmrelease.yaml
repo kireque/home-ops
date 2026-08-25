@@ -43,15 +43,17 @@ spec:
               repository: jellyfin/jellyfin
               tag: 10.11.11@sha256:aefb67e6a7ff1debdd154a78a7bbb780fd0c873d8639210a7f6a2016ad2b35db
             env:
-              TZ: Europe/Amsterdam
+              DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
               JELLYFIN_CACHE_DIR: /cache
+              JELLYFIN_PublishedServerUrl: https://jellyfin.econline.nl
+              TZ: Europe/Amsterdam
             probes:
               liveness:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /System/Info/Public
+                    path: /health
                     port: &port 8096
                   failureThreshold: 5
                   periodSeconds: 30
@@ -61,7 +63,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /System/Info/Public
+                    path: /health
                     port: *port
                   failureThreshold: 5
                   periodSeconds: 10
@@ -71,7 +73,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /System/Info/Public
+                    path: /health
                     port: *port
                   failureThreshold: 30
                   periodSeconds: 10
@@ -106,6 +108,10 @@ spec:
           - path: /cache
       config:
         existingClaim: "{{ .Release.Name }}"
+      introskipper:
+        existingClaim: "{{ .Release.Name }}-introskipper"
+        globalMounts:
+          - path: /config/data/introskipper
       media:
         type: nfs
         server: gladius.home.econline.nl
