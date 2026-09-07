@@ -108,3 +108,15 @@ All charts use `OCIRepository` (not `HelmRepository`). Chart versions are pinned
 The cluster has 3 nodes (all controller nodes): `enigma`, `delta`, `felix`
 
 Talos configs are generated from Jinja2 templates in `talos/` using `minijinja-cli` + `op inject`.
+Talos 1.14+ multi-document layout:
+
+- `talos/version.yaml` — `talos_version` / `k8s_version` (Renovate-tracked)
+- `talos/schematic.yaml` — Image Factory schematic (POSTed to get the schematic ID)
+- `talos/cluster.yaml.j2` — shared base machine config (all roles)
+- `talos/controlplane.yaml.j2` — control-plane role patch
+- `talos/nodes/controlplane/<node>.yaml.j2` — per-node patch
+
+`just talos render-config <node>` merges base + role patch + node patch via `talosctl machineconfig patch`.
+Most settings now live in typed documents (`KubeletConfig`, `KubeNodeConfig`, `KubeAPIServerConfig`,
+`SysctlConfig`, `UnattendedInstallConfig`, `ResolverConfig`, …); the `v1alpha1` doc keeps only CAs,
+tokens, cluster name/endpoint, `machine.features`, and `cluster.etcd`.

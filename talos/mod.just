@@ -11,10 +11,18 @@ default:
 apply-node node *args:
     just talos render-config "{{ node }}" | talosctl -n "{{ node }}" apply-config -f /dev/stdin {{ args }}
 
+[confirm('Apply Talos config to all nodes in the cluster [y|N] ?')]
+[doc('Apply Talos config to every node in the cluster')]
+[script]
+apply-cluster *args:
+    kubectl get nodes --no-headers | while read -r node _; do
+        just --yes talos apply-node "${node}" {{ args }}
+    done
+
 [doc('Download Talos machine image')]
 [script]
-download-image version:
-    export SCHEMATIC="$(just talos schematic-id)"
+download-image version node="":
+    export SCHEMATIC="$(just talos schematic-id "{{ node }}")"
     curl -fL --remove-on-error --retry 5 --retry-delay 5 --retry-all-errors --progress-bar \
         -o "{{ source_directory() }}/talos-{{ version }}-${SCHEMATIC:0:8}.iso" \
         "https://factory.talos.dev/image/${SCHEMATIC}/{{ version }}/metal-amd64.iso"
@@ -28,10 +36,17 @@ reboot-node node:
 [doc('Render Talos config for a node')]
 [script]
 render-config node:
-    export CONTROLPLANE="$(just talos machine-controller {{ node }})"
-    export SCHEMATIC="$(just talos schematic-id)"
-    talosctl machineconfig patch <(just template "{{ source_directory() }}/machineconfig.yaml.j2") \
-        -p @<(just template "{{ source_directory() }}/nodes/{{ node }}.yaml.j2")
+    export SCHEMATIC="$(just talos schematic-id "{{ node }}")"
+    export TALOS_VERSION="$(just talos talos-version)"
+    export K8S_VERSION="$(just talos k8s-version)"
+    role="controlplane"
+    if [[ -f "{{ source_directory() }}/nodes/workers/{{ node }}.yaml.j2" ]]; then
+        role="workers"
+    fi
+    talosctl machineconfig patch \
+        <(just template "{{ source_directory() }}/cluster.yaml.j2" -D "schematic=${SCHEMATIC}" -D "talos_version=${TALOS_VERSION}" -D "k8s_version=${K8S_VERSION}") \
+        -p @<(just template "{{ source_directory() }}/${role}.yaml.j2") \
+        -p @<(just template "{{ source_directory() }}/nodes/${role}/{{ node }}.yaml.j2")
 
 [confirm('Reset node ' + node + ' [y|N] ?')]
 [doc('Reset a node')]
@@ -51,18 +66,38 @@ upgrade-k8s version:
 [confirm('Upgrade node ' + node + ' [y|N] ?')]
 [doc('Upgrade Talos version on a node')]
 upgrade-node node *args:
-    talosctl -n "{{ node }}" upgrade -i "$(just talos machine-image)" -m powercycle --timeout=10m {{ args }}
+    talosctl -n "{{ node }}" upgrade -i "$(just talos machine-image "{{ node }}")" -m powercycle --timeout=10m {{ args }}
 
+[doc('Fetch the Talos version from version.yaml')]
 [private]
-schematic-id:
-    curl -sX POST --data-binary @<(just template "{{ source_directory() }}/schematic.yaml.j2") "https://factory.talos.dev/schematics" | jq -r '.id'
+talos-version:
+    yq -e '.talos_version' "{{ source_directory() }}/version.yaml"
 
+[doc('Fetch the Kubernetes version from version.yaml')]
 [private]
-machine-controller node:
-    just template "{{ source_directory() }}/nodes/{{ node }}.yaml.j2" | yq -e 'select(.machine) | (.machine.type == "controlplane") // ""'
+k8s-version:
+    yq -e '.k8s_version' "{{ source_directory() }}/version.yaml"
 
 [private]
 [script]
-machine-image:
-    export SCHEMATIC="$(just talos schematic-id)"
-    just template "{{ source_directory() }}/machineconfig.yaml.j2" | yq -e 'select(.machine) | .machine.install.image'
+schematic-file node="":
+    file="{{ source_directory() }}/schematic.yaml"
+    if [[ -n "{{ node }}" ]]; then
+        for f in "{{ source_directory() }}"/nodes/*/"{{ node }}".schematic.yaml; do
+            [[ -f "$f" ]] && file="$f"
+        done
+    fi
+    echo "$file"
+
+[private]
+schematic-id node="":
+    curl -sX POST --data-binary @<(just template "$(just talos schematic-file "{{ node }}")") "https://factory.talos.dev/schematics" | jq -r '.id'
+
+[private]
+[script]
+machine-image node="":
+    export NODE="{{ node }}"
+    if [[ -z "${NODE}" ]]; then
+        NODE="$(talosctl config info -o yaml | yq -e '.nodes[0]')"
+    fi
+    just talos render-config "${NODE}" | yq -r -e 'select(.kind == "UnattendedInstallConfig") | .installer.image'

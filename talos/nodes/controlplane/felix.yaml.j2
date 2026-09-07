@@ -1,0 +1,18 @@
+---
+machine:
+  type: controlplane
+---
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+provisioning:
+  diskSelector:
+    match: disk.model == "VK0480GDJXV"
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: felix
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+labels:
+  topology.kubernetes.io/zone: m
