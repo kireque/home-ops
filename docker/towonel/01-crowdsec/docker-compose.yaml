@@ -31,6 +31,11 @@ services:
       - caddy-access-logs:/caddy-logs:ro
       - ./scenarios:/etc/crowdsec/scenarios/custom:ro
       - ./whitelists:/etc/crowdsec/postoverflows/s01-whitelist/custom:ro
+      # Ansible renders self.yaml here with the VPS's own public IP (resolved
+      # online at deploy time) so it never lives in git. Stops the gatus
+      # health check — which hairpins off the public IP — from tripping the
+      # ASN scenarios.
+      - /opt/crowdsec/whitelists:/etc/crowdsec/postoverflows/s01-whitelist/managed:ro
       - ./acquis.d:/etc/crowdsec/acquis.d:ro
       - ./config/acquis.yaml:/etc/crowdsec/acquis.yaml:ro
       - ./config/config.yaml.local:/etc/crowdsec/config.yaml.local:ro

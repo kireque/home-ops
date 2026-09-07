@@ -311,6 +311,39 @@
           ansible.builtin.command: systemctl is-active crowdsec-firewall-bouncer
           changed_when: false
 
+        - name: crowdsec | Ensure managed whitelist directory
+          ansible.builtin.file:
+            path: /opt/crowdsec/whitelists
+            state: directory
+            owner: root
+            group: root
+            mode: "0755"
+
+        - name: crowdsec | Resolve the VPS public IPv4
+          ansible.builtin.uri:
+            url: https://api.ipify.org/?format=json
+            return_content: true
+          register: vps_ip
+          retries: 3
+          delay: 2
+          until: vps_ip.status == 200 and vps_ip.json.ip is match('^\d{1,3}(\.\d{1,3}){3}$')
+
+        - name: crowdsec | Render self-allowlist (keeps the public IP out of git)
+          ansible.builtin.copy:
+            dest: /opt/crowdsec/whitelists/self.yaml
+            owner: root
+            group: root
+            mode: "0644"
+            content: |
+              ---
+              name: custom/self-allowlist
+              description: Allow the VPS's own public IP; the gatus health check hairpins off it
+              whitelist:
+                reason: self (VPS public IP)
+                ip:
+                  - "{{ vps_ip.json.ip }}"
+          notify: Restart crowdsec
+
     - name: geo-block
       tags:
         - geo-block
@@ -373,3 +406,9 @@
       ansible.builtin.service:
         name: crowdsec-firewall-bouncer
         state: restarted
+
+    - name: Restart crowdsec
+      community.docker.docker_container:
+        name: crowdsec
+        state: started
+        restart: true
