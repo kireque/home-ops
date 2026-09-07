@@ -12,3 +12,12 @@ spec:
   values:
     operator:
       replicaCount: 1
+      # Chart default limit is 128Mi; the operator idles at ~100Mi and was
+      # OOMKilled during a control-plane restart storm. Give it headroom.
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+        requests:
+          cpu: 10m
+          memory: 128Mi
