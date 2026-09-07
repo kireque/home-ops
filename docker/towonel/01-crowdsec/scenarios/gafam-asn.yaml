@@ -2,8 +2,10 @@
 type: trigger
 name: custom/gafam-asn
 description: 'Ban traffic from GAFAM (Google, Apple, Facebook/Meta, Amazon, Microsoft) AS numbers'
+# geoip-enrich writes the meta key as ASNNumber (evt.Enriched.ASNNumber);
+# evt.Meta.ASNumber was a typo and this scenario never matched.
 filter: >-
-  evt.Meta.ASNumber in [
+  evt.Meta.ASNNumber in [
     "15169", "396982",
     "714", "6185",
     "32934", "63293",

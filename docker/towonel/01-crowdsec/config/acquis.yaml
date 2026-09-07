@@ -1,0 +1,4 @@
+# Intentionally empty. Real acquisitions live in acquis.d/ (mounted separately).
+# This file exists only to override the crowdsec image's default placeholder
+# ({"source": "file", "filename": "/does/not/exist"}), which otherwise logs
+# `No matching files for pattern /does/not/exist` on every start.

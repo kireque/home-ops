@@ -6,7 +6,9 @@ filters:
 decisions:
   - type: ban
     duration: 4h
-# duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+# Progressive ban: 4h on the first decision for a value, +4h for each prior
+# one (4h, 8h, 12h, ...). Falls back to the decision `duration` if it errors.
+duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
 notifications:
   - http_pushover
 on_success: break
@@ -18,7 +20,7 @@ filters:
 decisions:
   - type: ban
     duration: 4h
-# duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
 notifications:
   - http_pushover
 on_success: break
