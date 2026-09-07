@@ -43,6 +43,34 @@
         crowdsec_api_key: "{{ secrets_raw.results[3].stdout }}"
       no_log: true
 
+    - name: patch
+      tags:
+        - patch
+      block:
+        - name: patch | Upgrade all apt packages
+          ansible.builtin.apt:
+            update_cache: true
+            upgrade: full
+            autoremove: true
+            autoclean: true
+
+        - name: patch | Check whether a reboot is required
+          ansible.builtin.stat:
+            path: /var/run/reboot-required
+          register: patch_reboot_required
+
+        - name: patch | Reboot if required
+          # connect_timeout is deliberately loose: fast SSH reconnect bursts to
+          # this VPS get blocked by the home UniFi gateway's IPS.
+          ansible.builtin.reboot:
+            msg: Reboot triggered by Ansible patch run
+            connect_timeout: 10
+            reboot_timeout: 600
+            post_reboot_delay: 20
+          when:
+            - patch_reboot_required.stat.exists
+            - not ansible_check_mode
+
     - name: packages
       tags:
         - packages
