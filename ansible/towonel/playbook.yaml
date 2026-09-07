@@ -257,12 +257,29 @@
             dest: /etc/apt/keyrings/crowdsec.asc
             mode: "0644"
 
+        - name: crowdsec | Remove legacy one-line apt source
+          ansible.builtin.file:
+            path: /etc/apt/sources.list.d/crowdsec.list
+            state: absent
+
         - name: crowdsec | Add apt repository
-          ansible.builtin.apt_repository:
-            repo: "deb [signed-by=/etc/apt/keyrings/crowdsec.asc] https://packagecloud.io/crowdsec/crowdsec/any any main"
-            filename: crowdsec
+          ansible.builtin.deb822_repository:
+            name: crowdsec
+            types:
+              - deb
+            uris: https://packagecloud.io/crowdsec/crowdsec/any
+            suites:
+              - any
+            components:
+              - main
+            signed_by: /etc/apt/keyrings/crowdsec.asc
             state: present
+          register: crowdsec_repo
+
+        - name: crowdsec | Update apt cache
+          ansible.builtin.apt:
             update_cache: true
+          when: crowdsec_repo is changed
 
         - name: crowdsec | Install host firewall bouncer
           ansible.builtin.apt:
