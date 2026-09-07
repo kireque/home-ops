@@ -18,6 +18,9 @@
         name: towonel
 
     - name: Read secrets from 1Password
+      tags:
+        - doco-cd
+        - crowdsec
       ansible.builtin.shell: "op read 'op://{{ item.key }}' < /dev/null"
       delegate_to: localhost
       become: false
@@ -36,6 +39,9 @@
       register: secrets_raw
 
     - name: Set secret facts
+      tags:
+        - doco-cd
+        - crowdsec
       ansible.builtin.set_fact:
         doco_1pw_sa_token: "{{ secrets_raw.results[0].stdout }}"
         doco_api_secret: "{{ secrets_raw.results[1].stdout }}"
