@@ -13,9 +13,10 @@ spec:
       static:
         # - office-jetkvm.home.econline.nl # Decommissioned, re-enable if brought back
         - office-zigbee-adapter.home.econline.nl
-        - living-vacuum.home.econline.nl
+        # - living-vacuum.home.econline.nl
+        - living-james.home.econline.nl
         # - hallway-velux-gateway.home.econline.nl # Decommissioned, re-enable if brought back
-        # - delta.home.econline.nl # Enable when the device is back online
+        - delta.home.econline.nl
         - enigma.home.econline.nl
         - felix.home.econline.nl
         - gladius.home.econline.nl
