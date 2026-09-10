@@ -33,6 +33,8 @@ spec:
         runAsGroup: 1000
         runAsNonRoot: true
         runAsUser: 1000
+      # jellyfin/jellyfin#17831: default 30s can SIGKILL the shutdown VACUUM+ANALYZE on v12
+      terminationGracePeriodSeconds: 120
     controllers:
       jellyfin:
         annotations:
@@ -75,8 +77,10 @@ spec:
                   httpGet:
                     path: /health
                     port: *port
-                  failureThreshold: 30
-                  periodSeconds: 10
+                  # covers the v12 first-boot DB migration + full library scan,
+                  # which upstream documents as 30+ min on a real library
+                  failureThreshold: 80
+                  periodSeconds: 30
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: {drop: ["ALL"]}
