@@ -43,5 +43,21 @@
       semanticCommitScope: "github-release",
       commitMessageTopic: "release {{depName}}",
     },
+    // zer0ver: 0.x minors can break at any time, so treat them like breaking
+    // changes rather than ordinary minors.
+    {
+      description: "zer0ver: give 0.x minors the breaking `!` prefix",
+      matchUpdateTypes: ["minor"],
+      matchCurrentVersion: "/^v?0\\./",
+      semanticCommitType: "feat",
+      commitMessagePrefix: "{{semanticCommitType}}({{semanticCommitScope}})!:",
+      commitMessageExtra: "( {{currentVersion}} ➔ {{newVersion}} )",
+    },
+    {
+      description: "zer0ver: route 0.x minors onto the major branch instead of a minor one",
+      matchUpdateTypes: ["minor"],
+      matchCurrentVersion: "/^v?0\\./",
+      additionalBranchPrefix: "major-",
+    },
   ],
 }

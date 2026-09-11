@@ -37,5 +37,9 @@
       matchDatasources: ["custom.grafana-dashboards"],
       addLabels: ["renovate/grafana-dashboard"],
     },
+    {
+      matchDatasources: ["galaxy", "galaxy-collection"],
+      addLabels: ["renovate/ansible"],
+    },
   ],
 }

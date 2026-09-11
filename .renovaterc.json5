@@ -27,11 +27,25 @@
   ignorePaths: [
     "**/resources/**",
   ],
+  // Resolves mirror.gcr.io references against Docker Hub so Renovate finds
+  // tags/digests via the upstream registry (coredns, envoy-gateway,
+  // cloudflare-tunnel all pull through this mirror).
+  registryAliases: {
+    "mirror.gcr.io": "docker.io",
+  },
   flux: {
     managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
   "helm-values": {
-    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
+    // Scoped to HelmRelease/values files (not every .yaml) so bare `image:`
+    // lines elsewhere aren't double-extracted alongside the kubernetes
+    // manager, which would inflate grouped-update counts (minimumGroupSize).
+    managerFilePatterns: [
+      "/(^|/)values\\.yaml(?:\\.j2)?$/",
+      "/(^|/)helmrelease\\.yaml(?:\\.j2)?$/",
+      "/(^|/)helm-release\\.yaml(?:\\.j2)?$/",
+      "/(^|/)hr\\.yaml(?:\\.j2)?$/",
+    ],
   },
   kubernetes: {
     managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
