@@ -56,7 +56,7 @@ spec:
       app:
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: "{{ .Release.Name }}.econline.nl"
+          external-dns.kubernetes.io/hostname: "{{ .Release.Name }}.econline.nl"
           gatus.home-operations.com/endpoint: |-
             group: services
           lbipam.cilium.io/ips: 10.1.1.135
