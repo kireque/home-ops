@@ -29,6 +29,22 @@ endpoints:
     alerts:
       - type: pushover
 
+  # Canary for the whole app->external.econline.nl->hub.econline.nl DNS/tunnel
+  # path. Runs on the VPS with the box's normal, unmodified DNS resolution, so
+  # unlike any in-cluster/LAN check it can't be fooled by DNS pointing back at
+  # an internal-only IP that happens to still be reachable from the LAN — the
+  # VPS genuinely can't route there, so a misconfiguration like that fails
+  # this check immediately instead of going unnoticed.
+  - name: external dns/tunnel path
+    group: home
+    url: https://echo.econline.nl/
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].kubernetes.podName == pat(*)"
+    alerts:
+      - type: pushover
+
 # Dead-man's-switch: kube-prometheus-stack's Alertmanager routes its
 # always-firing Watchdog alert here every ~2m30s. If this endpoint doesn't
 # hear from the cluster within the heartbeat interval, home is unreachable
