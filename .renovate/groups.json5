@@ -22,10 +22,10 @@
       minimumGroupSize: 3,
     },
     {
-      description: "Intel Device Plugins Group",
-      groupName: "intel-device-plugins",
+      description: "Immich Group",
+      groupName: "immich",
       matchDatasources: ["docker"],
-      matchPackageNames: ["/intel-device-plugins-operator/", "/intel-device-plugins-gpu/"],
+      matchPackageNames: ["/immich-server/", "/immich-machine-learning/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
