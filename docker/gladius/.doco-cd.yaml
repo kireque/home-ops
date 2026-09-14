@@ -1,0 +1,12 @@
+---
+working_dir: ./docker/gladius
+auto_discovery:
+  enabled: true
+  depth: 1
+  delete: true
+external_secrets: {}
+# No stacks yet — add op:// entries here as you add docker/gladius/NN-<app>/ stacks.
+force_recreate: false
+reconciliation:
+  enabled: true
+  interval: 3600
