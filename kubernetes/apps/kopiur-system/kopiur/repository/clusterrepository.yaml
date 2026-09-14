@@ -19,6 +19,17 @@ spec:
       name: kopiur-nas-secret
       namespace: kopiur-system
       key: KOPIA_PASSWORD
+  identityDefaults:
+    hostnameExpr: namespace
+    usernameExpr: policyName
+  maintenance:
+    schedule:
+      quick:
+        cron: 0 * * * *
+        jitter: 10m
+      full:
+        cron: 0 3 * * *
+        jitter: 1h
   moverDefaults:
     cache:
       capacity: 1Mi
@@ -34,6 +45,9 @@ spec:
       runAsUser: 1000
       runAsGroup: 1000
     ttlSecondsAfterFinished: 300
+  parameters:
+    epoch:
+      minDuration: 1h
   scheduleDefaults:
     timezone: Europe/Amsterdam
   server:
