@@ -4,6 +4,11 @@ apiVersion: kopiur.home-operations.com/v1alpha1
 kind: ClusterRepository
 metadata:
   name: nas
+  annotations:
+    # Verified all existing SnapshotPolicy consumers already resolve to
+    # hostname=namespace/username=policyName, so this is a no-op in
+    # practice — not an actual identity/lineage change.
+    kopiur.home-operations.com/allow-identity-change: "true"
 spec:
   allowedNamespaces:
     all: true
@@ -19,6 +24,9 @@ spec:
       name: kopiur-nas-secret
       namespace: kopiur-system
       key: KOPIA_PASSWORD
+  identityDefaults:
+    hostnameExpr: namespace
+    usernameExpr: policyName
   maintenance:
     schedule:
       quick:
