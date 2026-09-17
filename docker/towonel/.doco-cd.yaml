@@ -1,5 +1,11 @@
 ---
 working_dir: ./docker/towonel
+# Restrict webhook-triggered deploys to pushes on main — without this, a
+# webhook for any branch (e.g. an open Renovate PR branch) deploys straight
+# to the VPS before the PR is reviewed/merged. Polling already only follows
+# main (POLL_CONFIG.reference in docker-compose.app.yaml); this closes the
+# same gap for the webhook path.
+webhook_filter: ^refs/heads/main$
 auto_discovery:
   enabled: true
   depth: 1
