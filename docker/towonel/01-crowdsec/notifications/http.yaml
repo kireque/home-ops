@@ -2,8 +2,8 @@
 type: http
 name: http_pushover
 log_level: info
-group_wait: 10s
-group_threshold: 5
+group_wait: 15m
+group_threshold: 20
 max_retry: 3
 timeout: 10s
 

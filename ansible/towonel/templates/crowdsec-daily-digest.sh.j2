@@ -1,0 +1,34 @@
+#!/bin/bash
+set -euo pipefail
+
+ALERTS_JSON=$(docker exec crowdsec cscli alerts list --since 24h -o json)
+COUNT=$(echo "$ALERTS_JSON" | jq 'length')
+
+if [[ "$COUNT" -eq 0 ]]; then
+    exit 0
+fi
+
+TOP_SCENARIOS=$(echo "$ALERTS_JSON" | jq -r '
+  group_by(.scenario) | map({scenario: .[0].scenario, count: length})
+  | sort_by(-.count) | .[:5][]
+  | "\(.count)x \(.scenario | sub("crowdsecurity/"; ""))"
+')
+
+TOP_COUNTRIES=$(echo "$ALERTS_JSON" | jq -r '
+  [.[] | .source.cn // "?"] | group_by(.) | map({cn: .[0], count: length})
+  | sort_by(-.count) | .[:5][]
+  | "\(.count)x \(.cn)"
+')
+
+MESSAGE=$(printf 'Last 24h: %s alerts\n\nTop scenarios:\n%s\n\nTop countries:\n%s' \
+  "$COUNT" "$TOP_SCENARIOS" "$TOP_COUNTRIES")
+
+PUSHOVER_TOKEN=$(docker exec crowdsec printenv PUSHOVER_TOKEN)
+PUSHOVER_USER_KEY=$(docker exec crowdsec printenv PUSHOVER_USER_KEY)
+
+curl -sf -X POST https://api.pushover.net/1/messages.json \
+  -d token="$PUSHOVER_TOKEN" \
+  -d user="$PUSHOVER_USER_KEY" \
+  -d priority=0 \
+  -d title="CrowdSec daily digest" \
+  --data-urlencode "message=$MESSAGE" >/dev/null

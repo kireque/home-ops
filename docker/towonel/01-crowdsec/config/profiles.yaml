@@ -1,6 +1,37 @@
 ---
+name: gafam_asn_silent
+# The gafam-asn scenario is an intentional, expected wholesale block of huge
+# cloud/scraper ASN ranges (Google/Apple/Meta/Amazon/Microsoft) — a hit here
+# isn't a security decision worth paging on, just routine enforcement of a
+# standing policy. Ban, but don't notify.
+filters:
+  - Alert.Remediation == true && Alert.GetScenario() == "custom/gafam-asn"
+decisions:
+  - type: ban
+    duration: 4h
+duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+on_success: break
+---
+name: default_ip_remediation_repeat
+# debug: true
+# A single hit is routine internet background scanning; a value CrowdSec has
+# already decided against before (progressive escalation already kicked in)
+# is a real repeat actor and worth paging on. Must precede
+# default_ip_remediation so it gets first look at repeat offenders.
+filters:
+  - Alert.Remediation == true && Alert.GetScope() == "Ip" && GetDecisionsCount(Alert.GetValue()) >= 1
+decisions:
+  - type: ban
+    duration: 4h
+duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+notifications:
+  - http_pushover
+on_success: break
+---
 name: default_ip_remediation
 # debug: true
+# First offense: ban silently (see default_ip_remediation_repeat above for
+# the notifying repeat-offense branch).
 filters:
   - Alert.Remediation == true && Alert.GetScope() == "Ip"
 decisions:
@@ -8,6 +39,16 @@ decisions:
     duration: 4h
 # Progressive ban: 4h on the first decision for a value, +4h for each prior
 # one (4h, 8h, 12h, ...). Falls back to the decision `duration` if it errors.
+duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
+on_success: break
+---
+name: default_range_remediation_repeat
+# debug: true
+filters:
+  - Alert.Remediation == true && Alert.GetScope() == "Range" && GetDecisionsCount(Alert.GetValue()) >= 1
+decisions:
+  - type: ban
+    duration: 4h
 duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
 notifications:
   - http_pushover
@@ -21,6 +62,4 @@ decisions:
   - type: ban
     duration: 4h
 duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
-notifications:
-  - http_pushover
 on_success: break

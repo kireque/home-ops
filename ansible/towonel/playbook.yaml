@@ -344,6 +344,22 @@
                   - "{{ vps_ip.json.ip }}"
           notify: Restart crowdsec
 
+        - name: crowdsec | Render daily alert digest script
+          ansible.builtin.template:
+            src: crowdsec-daily-digest.sh.j2
+            dest: /opt/crowdsec/daily-digest.sh
+            owner: root
+            group: root
+            mode: "0755"
+
+        - name: crowdsec | Create daily digest cron job
+          ansible.builtin.cron:
+            name: "CrowdSec daily alert digest"
+            minute: "0"
+            hour: "8"
+            job: "/opt/crowdsec/daily-digest.sh >> /var/log/crowdsec-digest.log 2>&1"
+            state: present
+
     - name: geo-block
       tags:
         - geo-block
