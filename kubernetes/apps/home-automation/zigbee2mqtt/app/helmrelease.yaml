@@ -10,6 +10,20 @@ spec:
     name: zigbee2mqtt
   interval: 1h
   values:
+    externalSecrets:
+      zigbee2mqtt:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              ZIGBEE2MQTT_CONFIG_ADVANCED_EXT_PAN_ID: "{{ .ZIGBEE2MQTT_CONFIG_ADVANCED_EXT_PAN_ID }}"
+              ZIGBEE2MQTT_CONFIG_ADVANCED_PAN_ID: "{{ .ZIGBEE2MQTT_CONFIG_ADVANCED_PAN_ID }}"
+              ZIGBEE2MQTT_CONFIG_ADVANCED_NETWORK_KEY: "{{ .ZIGBEE2MQTT_CONFIG_ADVANCED_NETWORK_KEY }}"
+        dataFrom:
+          - extract:
+              key: zigbee2mqtt
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -56,8 +70,8 @@ spec:
               ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: zstack
               # DEBUG: "zigbee-herdsman*"
             envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+              - externalSecretRef:
+                  identifier: zigbee2mqtt
             probes:
               liveness:
                 enabled: true

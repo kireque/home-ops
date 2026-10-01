@@ -10,6 +10,25 @@ spec:
     name: frigate
   interval: 30m
   values:
+    externalSecrets:
+      frigate:
+        # refreshInterval: 12h
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              FRIGATE_DOORBELL_IP: doorbell.home.econline.nl
+              FRIGATE_DOORBELL_USERNAME: "{{ .FRIGATE_DOORBELL_USERNAME }}"
+              FRIGATE_DOORBELL_PASSWORD: "{{ .FRIGATE_DOORBELL_PASSWORD }}"
+        dataFrom:
+          - extract:
+              key: frigate
+            rewrite:
+              - regexp:
+                  source: "(.*)"
+                  target: "FRIGATE_$1"
     defaultPodOptions:
       labels:
         gpu-consumer: "true"
@@ -37,8 +56,8 @@ spec:
               repository: ghcr.io/blakeblackshear/frigate
               tag: 0.18.0@sha256:9678a83a76e4730ac7d9ea7428370e32ae656d6b312aaad30d6c69f3fef14d35
             envFrom:
-              - secretRef:
-                  name: frigate-secret
+              - externalSecretRef:
+                  identifier: frigate
             probes:
               liveness:
                 enabled: true

@@ -10,6 +10,18 @@ spec:
     name: seerr
   interval: 1h
   values:
+    externalSecrets:
+      seerr:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              API_KEY: "{{ .SEERR_API_KEY }}"
+        dataFrom:
+          - extract:
+              key: seerr
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -30,8 +42,8 @@ spec:
               LOG_LEVEL: info
               PORT: &port 80
             envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+              - externalSecretRef:
+                  identifier: seerr
             probes:
               liveness:
                 enabled: true

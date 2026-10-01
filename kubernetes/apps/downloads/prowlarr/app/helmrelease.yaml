@@ -10,6 +10,18 @@ spec:
     name: prowlarr
   interval: 1h
   values:
+    externalSecrets:
+      prowlarr:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              PROWLARR__AUTH__APIKEY: "{{ .PROWLARR_API_KEY }}"
+        dataFrom:
+          - extract:
+              key: prowlarr
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -36,8 +48,8 @@ spec:
               PROWLARR__SERVER__PORT: &port 80
               PROWLARR__UPDATE__BRANCH: develop
             envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+              - externalSecretRef:
+                  identifier: prowlarr
             probes:
               liveness:
                 enabled: true

@@ -10,6 +10,42 @@ spec:
     name: esphome
   interval: 30m
   values:
+    externalSecrets:
+      secrets:
+        refreshInterval: 12h
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              secrets.yaml: |-
+                wifi_ssid: "{{ .esphome_wifi_ssid }}"
+                wifi_pwd: "{{ .esphome_wifi_password }}"
+                wifi_fallback_ssid_password: "{{ .esphome_wifi_fallback_ssid_password }}"
+
+                domain_devices: .home.econline.nl
+
+                api_encryption_key: "{{ .esphome_api_encryption_key }}"
+                ota_password: "{{ .esphome_ota_password }}"
+                web_password: "{{ .esphome_web_password }}"
+        dataFrom:
+          - extract:
+              key: esphome
+            rewrite:
+              - regexp:
+                  source: "(.*)"
+                  target: "esphome_$1"
+      deploykey:
+        refreshInterval: 12h
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        data:
+          - secretKey: id_ed25519
+            remoteRef:
+              key: esphome
+              property: github_deploy_key
     defaultPodOptions:
       securityContext:
         fsGroup: 1000
@@ -142,7 +178,7 @@ spec:
                 subPath: code-server
       secrets:
         type: secret
-        name: esphome-secrets
+        externalSecretRef: secrets
         globalMounts:
           - path: /config/secrets.yaml
             subPath: secrets.yaml
@@ -169,7 +205,7 @@ spec:
                 subPath: nonexistent
       deploy-key:
         type: secret
-        name: esphome-deploykey
+        externalSecretRef: deploykey
         defaultMode: 256
         advancedMounts:
           code-server:

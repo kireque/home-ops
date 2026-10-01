@@ -10,6 +10,18 @@ spec:
     name: radarr
   interval: 1h
   values:
+    externalSecrets:
+      radarr:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              RADARR__AUTH__APIKEY: "{{ .RADARR_API_KEY }}"
+        dataFrom:
+          - extract:
+              key: radarr
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -36,8 +48,8 @@ spec:
               RADARR__SERVER__PORT: &port 80
               RADARR__UPDATE__BRANCH: develop
             envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+              - externalSecretRef:
+                  identifier: radarr
             probes:
               liveness:
                 enabled: true
