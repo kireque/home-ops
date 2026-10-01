@@ -10,6 +10,28 @@ spec:
     name: immich
   interval: 1h
   values:
+    externalSecrets:
+      immich:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              DB_PASSWORD: "{{ .DB_PASSWORD }}"
+              DB_USERNAME: "{{ .DB_USERNAME }}"
+        dataFrom:
+          - extract:
+              key: immich
+    configMaps:
+      immich:
+        data:
+          DB_DATABASE_NAME: immich
+          DB_HOSTNAME: immich-database-postgres.media.svc.cluster.local.
+          DB_PORT: "5432"
+          REDIS_HOSTNAME: immich-database-valkey.media.svc.cluster.local.
+          REDIS_PORT: "6379"
+          UPLOAD_LOCATION: /data
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -30,9 +52,9 @@ spec:
               TZ: Europe/Amsterdam
             envFrom:
               - configMapRef:
-                  name: immich-configmap
-              - secretRef:
-                  name: immich-secret
+                  identifier: immich
+              - externalSecretRef:
+                  identifier: immich
             probes:
               liveness:
                 enabled: true
