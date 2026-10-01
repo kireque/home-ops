@@ -10,6 +10,20 @@ spec:
     name: cloudflare-tunnel
   interval: 1h
   values:
+    externalSecrets:
+      cloudflare-tunnel:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              TUNNEL_TOKEN: |-
+                {{ toJson (dict "a" .CLOUDFLARE_ACCOUNT_TAG "t" .CLOUDFLARE_TUNNEL_ID "s" .CLOUDFLARE_TUNNEL_SECRET) | b64enc }}
+              CLOUDFLARE_TUNNEL_ID: "{{ .CLOUDFLARE_TUNNEL_ID }}"
+        dataFrom:
+          - extract:
+              key: cloudflare
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -30,8 +44,8 @@ spec:
               NO_AUTOUPDATE: true
               TUNNEL_METRICS: 0.0.0.0:8080
             envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+              - externalSecretRef:
+                  identifier: cloudflare-tunnel
             args:
               - tunnel
               - --edge-ip-version=4

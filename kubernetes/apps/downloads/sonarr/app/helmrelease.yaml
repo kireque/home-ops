@@ -10,6 +10,18 @@ spec:
     name: sonarr
   interval: 1h
   values:
+    externalSecrets:
+      sonarr:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              SONARR__AUTH__APIKEY: "{{ .SONARR_API_KEY }}"
+        dataFrom:
+          - extract:
+              key: sonarr
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -36,8 +48,8 @@ spec:
               SONARR__SERVER__PORT: &port 80
               SONARR__UPDATE__BRANCH: develop
             envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+              - externalSecretRef:
+                  identifier: sonarr
             probes:
               liveness:
                 enabled: true

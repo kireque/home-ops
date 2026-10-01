@@ -10,6 +10,19 @@ spec:
     name: sabnzbd
   interval: 1h
   values:
+    externalSecrets:
+      sabnzbd:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              SABNZBD__API_KEY: "{{ .api_key }}"
+              SABNZBD__NZB_KEY: "{{ .nzb_key }}"
+        dataFrom:
+          - extract:
+              key: sabnzbd
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -36,8 +49,8 @@ spec:
                 sabnzbd.downloads.svc.cluster.local,
                 sabnzbd.econline.nl
             envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+              - externalSecretRef:
+                  identifier: sabnzbd
             probes:
               liveness:
                 enabled: true

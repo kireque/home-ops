@@ -10,6 +10,20 @@ spec:
     name: immich-database
   interval: 1h
   values:
+    externalSecrets:
+      immich-database:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              POSTGRES_DB: immich
+              POSTGRES_PASSWORD: "{{ .DB_PASSWORD }}"
+              POSTGRES_USER: "{{ .DB_USERNAME }}"
+        dataFrom:
+          - extract:
+              key: immich
     controllers:
       postgres:
         pod:
@@ -30,8 +44,8 @@ spec:
               PGDATA: /var/lib/postgresql/data/pgdata
               POSTGRES_INITDB_ARGS: --data-checksums
             envFrom:
-              - secretRef:
-                  name: immich-secret
+              - externalSecretRef:
+                  identifier: immich-database
             probes:
               liveness:
                 enabled: true

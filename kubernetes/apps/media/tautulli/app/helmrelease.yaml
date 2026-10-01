@@ -10,6 +10,18 @@ spec:
     name: tautulli
   interval: 1h
   values:
+    externalSecrets:
+      tautulli:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              TAUTULLI_API_KEY: "{{ .TAUTULLI_API_KEY }}"
+        dataFrom:
+          - extract:
+              key: tautulli
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -30,8 +42,8 @@ spec:
               TAUTULLI_HTTP_BASE_URL: https://tautulli.econline.nl
               TAUTULLI_HTTP_PORT: &port 80
             envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+              - externalSecretRef:
+                  identifier: tautulli
             probes:
               liveness:
                 enabled: true

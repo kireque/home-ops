@@ -10,6 +10,21 @@ spec:
     name: recyclarr
   interval: 1h
   values:
+    externalSecrets:
+      recyclarr:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              RADARR_API_KEY: "{{ .RADARR_API_KEY }}"
+              SONARR_API_KEY: "{{ .SONARR_API_KEY }}"
+        dataFrom:
+          - extract:
+              key: radarr
+          - extract:
+              key: sonarr
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -35,8 +50,8 @@ spec:
             env:
               RECYCLARR_DATA_DIR: /tmp
             envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+              - externalSecretRef:
+                  identifier: recyclarr
             args:
               - sync
             securityContext:

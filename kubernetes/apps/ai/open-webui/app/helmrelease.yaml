@@ -18,6 +18,19 @@ spec:
       retries: 3
       strategy: rollback
   values:
+    externalSecrets:
+      open-webui:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              WEBUI_SECRET_KEY: "{{ .WEBUI_SECRET_KEY }}"
+              AZURE_OPENAI_API_KEY: "{{ .AZURE_OPENAI_API_KEY }}"
+        dataFrom:
+          - extract:
+              key: open-webui
     defaultPodOptions:
       securityContext:
         runAsNonRoot: false
@@ -37,12 +50,12 @@ spec:
               WEBUI_SECRET_KEY:
                 valueFrom:
                   secretKeyRef:
-                    name: open-webui-secret
+                    name: open-webui
                     key: WEBUI_SECRET_KEY
               OPENAI_API_KEY:
                 valueFrom:
                   secretKeyRef:
-                    name: open-webui-secret
+                    name: open-webui
                     key: AZURE_OPENAI_API_KEY
             probes:
               liveness: &probes
