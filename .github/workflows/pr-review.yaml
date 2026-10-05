@@ -61,11 +61,11 @@ jobs:
           ai-base-url: http://litellm.ai.svc.cluster.local:4000/v1
           ai-api-format: openai
           ai-api-key: ${{ secrets.LITELLM_API_KEY }}
-          ai-model: gpt-5.4
-          ai-smart-model: gpt-5.4-pro
-          ai-fallback-model: gpt-chat-latest
+          ai-model: gpt-6.1-sol
+          ai-smart-model: gpt-5.6-sol
+          ai-fallback-model: gpt-5.4
           review-routing-mode: auto
-          # GPT-5.x reasoning models reject non-default temperature and max_tokens
+          # GPT-5.x/6.x reasoning models reject non-default temperature and max_tokens
           ai-temperature: ""
           ai-tokens-param: max_completion_tokens
           ai-response-format: json_object
