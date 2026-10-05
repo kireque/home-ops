@@ -106,6 +106,7 @@ spec:
         globalMounts:
           - path: /tmp
     configMaps:
+      # Model names here are what callers (e.g. the AI PR Review workflow) request
       config:
         data:
           config.yaml: |-
