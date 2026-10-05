@@ -79,5 +79,16 @@
       },
       minimumGroupSize: 2,
     },
+    {
+      // Agent (cluster) and node (VPS docker-compose) must stay on matching versions.
+      description: "Towonel Group",
+      groupName: "towonel",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/towonel-agent/", "/towonel-node/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
   ],
 }
