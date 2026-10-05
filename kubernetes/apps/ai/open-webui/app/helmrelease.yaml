@@ -27,10 +27,12 @@ spec:
           template:
             data:
               WEBUI_SECRET_KEY: "{{ .WEBUI_SECRET_KEY }}"
-              AZURE_OPENAI_API_KEY: "{{ .AZURE_OPENAI_API_KEY }}"
+              LITELLM_API_KEY: "{{ .LITELLM_MASTER_KEY }}"
         dataFrom:
           - extract:
               key: open-webui
+          - extract:
+              key: litellm
     defaultPodOptions:
       securityContext:
         runAsNonRoot: false
@@ -46,7 +48,19 @@ spec:
               repository: ghcr.io/open-webui/open-webui
               tag: v0.11.4
             env:
-              OPENAI_API_BASE_URL: https://econline-foundry.services.ai.azure.com/openai/v1
+              # Settings below are authoritative; UI changes are not persisted across restarts
+              ENABLE_PERSISTENT_CONFIG: "False"
+              WEBUI_URL: https://chat.econline.nl
+              # Models via in-cluster LiteLLM (Azure AI Foundry)
+              ENABLE_OLLAMA_API: "False"
+              OPENAI_API_BASE_URL: http://litellm.ai.svc.cluster.local:4000/v1
+              DEFAULT_MODELS: gpt-6.1-sol
+              TASK_MODEL_EXTERNAL: gpt-6.1-sol
+              # Auth: no self sign-up, new accounts need admin approval
+              ENABLE_SIGNUP: "False"
+              DEFAULT_USER_ROLE: pending
+              ENABLE_API_KEYS: "False"
+              ENABLE_COMMUNITY_SHARING: "False"
               WEBUI_SECRET_KEY:
                 valueFrom:
                   secretKeyRef:
@@ -56,7 +70,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: open-webui
-                    key: AZURE_OPENAI_API_KEY
+                    key: LITELLM_API_KEY
             probes:
               liveness: &probes
                 enabled: true
