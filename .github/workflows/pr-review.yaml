@@ -73,6 +73,7 @@ jobs:
           ci-timeout-sec: "180"
           fail-on-request-changes: "false"
           publish-mode: review_comment
+          publish-review-comment: "true"
           standards-file-candidates: CLAUDE.md
           system-prompt-file: .agents/instructions/pr-review.instructions.md
           system-prompt-mode: append
