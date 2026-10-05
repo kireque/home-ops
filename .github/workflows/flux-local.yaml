@@ -18,17 +18,20 @@ jobs:
   filter:
     name: Flux Local - Filter
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
     outputs:
-      changed-files: ${{ steps.changed-files.outputs.changed_files }}
+      any-changed: ${{ steps.changed-files.outputs.any_changed }}
     steps:
       - name: Get Changed Files
         id: changed-files
-        uses: bjw-s-labs/action-changed-files@147be9638332cf68fd60714a610509d7a9360d60 # v0.7.0
+        uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96 # v47.0.6
         with:
-          patterns: kubernetes/**/*
+          files: kubernetes/**
 
   test:
-    if: ${{ needs.filter.outputs.changed-files != '[]' }}
+    if: ${{ needs.filter.outputs.any-changed == 'true' }}
     needs: filter
     name: Flux Local - Test
     runs-on: ubuntu-latest
@@ -60,7 +63,7 @@ jobs:
             --verbose
 
   diff:
-    if: ${{ needs.filter.outputs.changed-files != '[]' }}
+    if: ${{ needs.filter.outputs.any-changed == 'true' }}
     needs: filter
     name: Flux Local - Diff
     runs-on: ubuntu-latest
@@ -117,9 +120,11 @@ jobs:
       - name: Generate Diff
         id: diff
         run: |-
-          echo 'diff<<EOF' >> $GITHUB_OUTPUT
-          cat diff.patch >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          {
+            echo 'diff<<EOF'
+            cat diff.patch
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
 
       - if: ${{ steps.diff.outputs.diff != '' }}
         name: Add Comment
