@@ -1,0 +1,136 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: litellm
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: litellm
+  interval: 1h
+  values:
+    externalSecrets:
+      litellm:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              AZURE_API_KEY: "{{ .AZURE_API_KEY }}"
+              LITELLM_MASTER_KEY: "{{ .LITELLM_MASTER_KEY }}"
+        dataFrom:
+          - extract:
+              key: litellm
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+    controllers:
+      litellm:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/berriai/litellm
+              tag: v1.104.0@sha256:625981c83410a3ea68eb0697590a57ec1d764d634514d54fa5db0591077ee839
+            args:
+              - --config
+              - /app/config.yaml
+              - --port
+              - "4000"
+            env:
+              HOME: /tmp
+              LITELLM_LOG: INFO
+            envFrom:
+              - externalSecretRef:
+                  identifier: litellm
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health/liveliness
+                    port: &port 4000
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health/readiness
+                    port: *port
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health/liveliness
+                    port: *port
+                  failureThreshold: 30
+                  periodSeconds: 10
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 50m
+                memory: 512Mi
+              limits:
+                memory: 1Gi
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    persistence:
+      config-file:
+        type: configMap
+        identifier: config
+        globalMounts:
+          - path: /app/config.yaml
+            subPath: config.yaml
+            readOnly: true
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+    configMaps:
+      config:
+        data:
+          config.yaml: |-
+            model_list:
+              - model_name: gpt-5.4
+                litellm_params:
+                  model: azure/gpt-5.4
+                  api_base: https://econline-foundry.services.ai.azure.com
+                  api_key: os.environ/AZURE_API_KEY
+                  api_version: v1
+              # Responses-API-only deployment, bridged to /chat/completions
+              - model_name: gpt-5.4-pro
+                litellm_params:
+                  model: azure/responses/gpt-5.4-pro
+                  api_base: https://econline-foundry.services.ai.azure.com
+                  api_key: os.environ/AZURE_API_KEY
+                  api_version: v1
+              - model_name: gpt-chat-latest
+                litellm_params:
+                  model: azure/gpt-chat-latest
+                  api_base: https://econline-foundry.services.ai.azure.com
+                  api_key: os.environ/AZURE_API_KEY
+                  api_version: v1
+            litellm_settings:
+              drop_params: true
+              request_timeout: 600
+            general_settings:
+              master_key: os.environ/LITELLM_MASTER_KEY
