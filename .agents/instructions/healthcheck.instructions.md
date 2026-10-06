@@ -208,7 +208,7 @@ Flag any certificate:
 ## 7. External Secrets
 
 ```bash
-# ClusterSecretStore connectivity (onepassword store)
+# ClusterSecretStore connectivity (onepassword-connect store)
 kubectl get clustersecretstore
 
 # All ExternalSecrets — expect STATUS=SecretSynced

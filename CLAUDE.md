@@ -73,9 +73,9 @@ The `ks.yaml` at the app level uses `postBuild.substitute` with `APP: {appname}`
 ### Secret Management
 
 All secrets come from **1Password** via External Secrets Operator:
-- `ClusterSecretStore` named `onepassword` is the root store
-- `ExternalSecret` resources reference secrets as `op://kubernetes/{item}/{field}`
-- Bootstrap secrets (before External Secrets is running) use `op inject` at apply time
+- `ClusterSecretStore` named `onepassword-connect` is the root store
+- `ExternalSecret` resources pull whole 1Password items via `dataFrom.extract.key: {item}` (mapping fields in `target.template`), or single fields via `data[].remoteRef` (`key: {item}`, `property: {field}`)
+- Bootstrap secrets (before External Secrets is running) use `op://kubernetes/{item}/{field}` references resolved by `op inject` at apply time
 - Never commit plaintext secrets
 
 ### Storage
