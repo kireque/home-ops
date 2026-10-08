@@ -51,13 +51,16 @@ endpoints:
 # from outside and gatus alerts via Pushover — the towonel VPS stays up
 # independently of the home connection, so it can actually notice.
 external-endpoints:
-  - name: heartbeat
+  - name: alertmanager watchdog
     group: home
     token: ${REMOTE_HEARTBEAT_TOKEN}
     heartbeat:
       interval: 5m
     alerts:
       - type: pushover
+        description: >-
+          Alertmanager Watchdog heartbeat missing - home cluster unreachable
+          or alerting pipeline down
 
 storage:
   type: sqlite
