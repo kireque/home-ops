@@ -7,7 +7,7 @@ metadata:
 spec:
   groupRef:
     name: mcp-tools
-  image: ghcr.io/stacklok/dockyard/npx/context7:4.1.1@sha256:c9fe713c6f6e3e27980e33db3e323f4b7b76eba69341bace533356b727031904
+  image: ghcr.io/stacklok/dockyard/npx/context7:4.2.0@sha256:724a2ff8da32fd85d75e09ebc2bc845231781590ca575190154efdfee55cacf3
   secrets:
     - name: context7-mcp-secret
       key: api_key
