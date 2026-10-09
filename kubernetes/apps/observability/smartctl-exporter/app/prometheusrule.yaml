@@ -8,62 +8,97 @@ spec:
   groups:
     - name: smartctl-exporter.rules
       rules:
+        # Every rule joins smartctl_device to attach model_name/serial_number,
+        # so the notification identifies the physical drive. `node` is added by
+        # the ServiceMonitor/ScrapeConfig relabelings.
         - alert: SmartDeviceHighTemperature
           expr: |-
-            smartctl_device_temperature{temperature_type="current"} > 65
+            (smartctl_device_temperature{temperature_type="current"} > 65)
+              * on(instance, device) group_left(model_name, serial_number) smartctl_device
           for: 5m
           annotations:
             summary: >-
-              Mounted drive {{ $labels.device }} on device {{ $labels.instance }} has a temperature higher than 65°C
+              Drive {{ $labels.device }} on {{ $labels.node }} is above 65°C
+            description: >-
+              Drive {{ $labels.device }} ({{ $labels.model_name }}, SN {{ $labels.serial_number }})
+              on {{ $labels.node }} is at {{ $value }}°C (threshold 65°C).
           labels:
             severity: critical
 
         - alert: SmartDeviceTestFailed
           expr: |-
             (smartctl_device_smart_status != 1 or smartctl_device_status != 1)
+              * on(instance, device) group_left(model_name, serial_number) smartctl_device
           for: 5m
           annotations:
             summary: >-
-              Mounted drive {{ $labels.device }} on device {{ $labels.instance }} did not pass its SMART test
+              Drive {{ $labels.device }} on {{ $labels.node }} failed its SMART health check
+            description: >-
+              Drive {{ $labels.device }} ({{ $labels.model_name }}, SN {{ $labels.serial_number }})
+              on {{ $labels.node }} reports a failing SMART overall-health status.
           labels:
             severity: critical
 
         - alert: SmartDeviceCriticalWarning
           expr: |-
-            smartctl_device_critical_warning != 0
+            (smartctl_device_critical_warning != 0)
+              * on(instance, device) group_left(model_name, serial_number) smartctl_device
           for: 5m
           annotations:
             summary: >-
-              Mounted drive {{ $labels.device }} on device {{ $labels.instance }} is in a critical state
+              Drive {{ $labels.device }} on {{ $labels.node }} has an NVMe critical warning
+            description: >-
+              Drive {{ $labels.device }} ({{ $labels.model_name }}, SN {{ $labels.serial_number }})
+              on {{ $labels.node }} reports NVMe critical warning bitmask {{ $value }}.
           labels:
             severity: critical
 
+        # media_errors is a lifetime counter; alert on new errors only, so an old
+        # non-zero count does not page forever.
         - alert: SmartDeviceMediaErrors
           expr: |-
-            smartctl_device_media_errors != 0
+            (increase(smartctl_device_media_errors[1d]) > 0)
+              * on(instance, device) group_left(model_name, serial_number) smartctl_device
           for: 5m
           annotations:
             summary: >-
-              Mounted drive {{ $labels.device }} on device {{ $labels.instance }} has media errors
+              Drive {{ $labels.device }} on {{ $labels.node }} logged new media errors
+            description: >-
+              Drive {{ $labels.device }} ({{ $labels.model_name }}, SN {{ $labels.serial_number }})
+              on {{ $labels.node }} logged {{ printf "%.0f" $value }} new media error(s) in the last 24h
+              {{- with printf "smartctl_device_media_errors{instance='%s',device='%s'}" $labels.instance $labels.device | query }}
+              (lifetime total {{ . | first | value }})
+              {{- end }}.
           labels:
             severity: critical
 
         - alert: SmartDeviceAvailableSpareUnderThreshold
           expr: |-
-            smartctl_device_available_spare_threshold > smartctl_device_available_spare
+            (smartctl_device_available_spare < smartctl_device_available_spare_threshold)
+              * on(instance, device) group_left(model_name, serial_number) smartctl_device
           for: 5m
           annotations:
             summary: >-
-              Device {{ $labels.device }} on instance {{ $labels.instance }} is under available spare threshold
+              Drive {{ $labels.device }} on {{ $labels.node }} is below its available spare threshold
+            description: >-
+              Drive {{ $labels.device }} ({{ $labels.model_name }}, SN {{ $labels.serial_number }})
+              on {{ $labels.node }} has {{ $value }}% available spare, below its threshold.
           labels:
             severity: critical
 
         - alert: SmartDeviceInterfaceSlow
           expr: |-
-            smartctl_device_interface_speed{speed_type="current"} != on(device, instance, namespace, pod) smartctl_device_interface_speed{speed_type="max"}
+            (
+              smartctl_device_interface_speed{speed_type="current"}
+                != on(instance, device) smartctl_device_interface_speed{speed_type="max"}
+            )
+              * on(instance, device) group_left(model_name, serial_number) smartctl_device
+          for: 5m
           annotations:
             summary: >-
-              Device {{ $labels.device }} on instance {{ $labels.instance }} interface is slower then it should be
-          for: 5m
+              Drive {{ $labels.device }} on {{ $labels.node }} link is below its maximum speed
+            description: >-
+              Drive {{ $labels.device }} ({{ $labels.model_name }}, SN {{ $labels.serial_number }})
+              on {{ $labels.node }} negotiated {{ $value | humanize }}b/s, below the interface maximum.
           labels:
             severity: critical

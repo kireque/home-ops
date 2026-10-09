@@ -28,6 +28,9 @@ spec:
     - action: replace
       targetLabel: job
       replacement: smartctl-exporter
+    - action: replace
+      targetLabel: node
+      replacement: gladius
 # Decommissioned, re-enable if brought back
 # # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/scrapeconfig_v1alpha1.json
 # apiVersion: monitoring.coreos.com/v1alpha1
