@@ -53,7 +53,7 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
 
       - name: AI PR Review
-        uses: misospace/pr-reviewer-action@829f395f7154b4d87c229500fd09b30a8ad2224d # v3.3.0
+        uses: misospace/pr-reviewer-action@e78e531cee6c7b10279be68454f3f7051fd85048 # v3.4.0
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           pr-number: ${{ github.event.pull_request.number || inputs.pr_number }}
