@@ -77,6 +77,21 @@ radarr:
         min_format_score: 0
         reset_unmatched_scores:
           enabled: true
+    custom_format_groups:
+      add:
+        # Default groups for SQP-1 (2160p); listed so the local Dutch copy gets them too
+        - trash_id: ef20e67b95a381fb3bc6d1f06ea24f46 # [HDR Formats] HDR
+          assign_scores_to:
+            - trash_id: 5128baeb2b081b72126bc8482b2a86a0 # [SQP] SQP-1 (2160p)
+            - trash_id: 8bbc19bff92443eb8b45f77f96e1ecad # [SQP] SQP-1 (2160p) (Dutch)
+        - trash_id: d9cc9a504e5ede6294c8b973aad4f028 # [Streaming Services] General
+          assign_scores_to:
+            - trash_id: 5128baeb2b081b72126bc8482b2a86a0 # [SQP] SQP-1 (2160p)
+            - trash_id: 8bbc19bff92443eb8b45f77f96e1ecad # [SQP] SQP-1 (2160p) (Dutch)
+        - trash_id: 15b1cf0b6f1a1493856a4355907affee # [Unwanted] Unwanted Formats SQP
+          assign_scores_to:
+            - trash_id: 5128baeb2b081b72126bc8482b2a86a0 # [SQP] SQP-1 (2160p)
+            - trash_id: 8bbc19bff92443eb8b45f77f96e1ecad # [SQP] SQP-1 (2160p) (Dutch)
     custom_formats:
       - # Unwanted
         trash_ids:
