@@ -92,3 +92,7 @@ spec:
     socketLB:
       enabled: true
       hostNamespaceOnly: true
+    # One agent at a time, so a LoadBalancer service never loses all its announcing nodes at once
+    updateStrategy:
+      rollingUpdate:
+        maxUnavailable: 1
