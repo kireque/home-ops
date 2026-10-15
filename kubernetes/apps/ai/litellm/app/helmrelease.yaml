@@ -135,6 +135,12 @@ spec:
                   api_base: https://econline-foundry.services.ai.azure.com
                   api_key: os.environ/AZURE_API_KEY
                   api_version: v1
+              - model_name: gpt-chat-latest
+                litellm_params:
+                  model: azure/gpt-chat-latest
+                  api_base: https://econline-foundry.services.ai.azure.com
+                  api_key: os.environ/AZURE_API_KEY
+                  api_version: v1
             litellm_settings:
               drop_params: true
               request_timeout: 600
