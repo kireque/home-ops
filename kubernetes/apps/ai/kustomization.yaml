@@ -24,4 +24,5 @@ resources:
   - ./ha-mcp/ks.yaml
   - ./litellm/ks.yaml
   - ./open-webui/ks.yaml
+  - ./searxng/ks.yaml
   - ./toolhive/ks.yaml
