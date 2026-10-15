@@ -23,3 +23,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      # cache/ holds re-downloadable models (~1Gi, partly root-only); lost+found is root-only
+      KOPIUR_IGNORE_RULES: "[cache,lost+found]"
