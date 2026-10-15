@@ -1,0 +1,7 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/recyclarr/recyclarr/refs/tags/v8.0.0/schemas/settings-schema.json
+resource_providers:
+  - name: local-sonarr-cfs
+    type: custom-formats
+    path: /config/custom-formats/sonarr
+    service: sonarr

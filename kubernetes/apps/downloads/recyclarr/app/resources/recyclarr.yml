@@ -19,6 +19,11 @@ sonarr:
       type: series
     quality_profiles:
       - trash_id: c4cadd6b35b95f62c3d47a408e53e2f7 # WEB-2160p (Combined)
+        name: WEB-2160p (Combined)
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: c4cadd6b35b95f62c3d47a408e53e2f7 # WEB-2160p (Combined)
+        name: WEB-2160p (Dutch)
         reset_unmatched_scores:
           enabled: true
     custom_formats:
@@ -26,7 +31,9 @@ sonarr:
         trash_ids:
           - 5d9fd1b1e06cd8a475462f40214b7df6 # FLUX
         assign_scores_to:
-          - trash_id: c4cadd6b35b95f62c3d47a408e53e2f7 # WEB-2160p (Combined)
+          - name: WEB-2160p (Combined)
+            score: 100
+          - name: WEB-2160p (Dutch)
             score: 100
       - # Unwanted
         trash_ids:
@@ -35,7 +42,18 @@ sonarr:
           - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated
           - 06d66ab109d4d2eddb2794d21526d140 # Retags
         assign_scores_to:
-          - trash_id: c4cadd6b35b95f62c3d47a408e53e2f7 # WEB-2160p (Combined)
+          - name: WEB-2160p (Combined)
+          - name: WEB-2160p (Dutch)
+      - # Dutch audio only: drop the original-language requirement, reject non-Dutch
+        trash_ids:
+          - ae575f95ab639ba5d15f663bf019e3e8 # Language: Not Original
+        assign_scores_to:
+          - name: WEB-2160p (Dutch)
+            score: 0
+      - trash_ids:
+          - 10e8d207ef3b424bb578bbfdf354a2ec # Language: Not Dutch (local, resources/custom-formats)
+        assign_scores_to:
+          - name: WEB-2160p (Dutch)
 
 radarr:
   movies:
