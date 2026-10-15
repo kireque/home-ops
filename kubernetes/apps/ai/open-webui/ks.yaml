@@ -8,6 +8,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/kopiur/backup
   targetNamespace: ai
   path: ./kubernetes/apps/ai/open-webui/app
   interval: 1h
