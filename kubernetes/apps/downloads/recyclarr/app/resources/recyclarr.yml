@@ -73,6 +73,10 @@ radarr:
       - trash_id: 5128baeb2b081b72126bc8482b2a86a0 # [SQP] SQP-1 (2160p)
         reset_unmatched_scores:
           enabled: true
+      - trash_id: 8bbc19bff92443eb8b45f77f96e1ecad # [SQP] SQP-1 (2160p) (Dutch) (local, resources/guides)
+        min_format_score: 0
+        reset_unmatched_scores:
+          enabled: true
     custom_formats:
       - # Unwanted
         trash_ids:
@@ -85,3 +89,9 @@ radarr:
           - f537cf427b64c38c8e36298f657e4828 # Scene
         assign_scores_to:
           - trash_id: 5128baeb2b081b72126bc8482b2a86a0 # [SQP] SQP-1 (2160p)
+          - trash_id: 8bbc19bff92443eb8b45f77f96e1ecad # [SQP] SQP-1 (2160p) (Dutch)
+      - # Dutch audio only: reject releases without Dutch or Flemish audio
+        trash_ids:
+          - c206ef7181a1435591490ae77a814999 # Language: Not Dutch (local, resources/custom-formats)
+        assign_scores_to:
+          - trash_id: 8bbc19bff92443eb8b45f77f96e1ecad # [SQP] SQP-1 (2160p) (Dutch)

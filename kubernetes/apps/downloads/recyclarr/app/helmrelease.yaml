@@ -73,8 +73,14 @@ spec:
         type: configMap
         name: "{{ .Release.Name }}-configmap"
         globalMounts:
+          - path: /config/custom-formats/radarr/language-not-dutch.json
+            subPath: radarr-language-not-dutch.json
           - path: /config/custom-formats/sonarr/language-not-dutch.json
-            subPath: language-not-dutch.json
+            subPath: sonarr-language-not-dutch.json
+          - path: /config/guides/metadata.json
+            subPath: guides-metadata.json
+          - path: /config/guides/quality-profiles/radarr/sqp-1-2160p-dutch.json
+            subPath: guides-radarr-sqp-1-2160p-dutch.json
           - path: /config/recyclarr.yml
             subPath: recyclarr.yml
           - path: /config/settings.yml

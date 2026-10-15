@@ -1,0 +1,28 @@
+{
+  "trash_id": "c206ef7181a1435591490ae77a814999",
+  "trash_scores": {
+    "default": -10000
+  },
+  "name": "Language: Not Dutch",
+  "includeCustomFormatWhenRenaming": false,
+  "specifications": [
+    {
+      "name": "Not Dutch",
+      "implementation": "LanguageSpecification",
+      "negate": true,
+      "required": true,
+      "fields": {
+        "value": 7
+      }
+    },
+    {
+      "name": "Not Flemish",
+      "implementation": "LanguageSpecification",
+      "negate": true,
+      "required": true,
+      "fields": {
+        "value": 19
+      }
+    }
+  ]
+}
