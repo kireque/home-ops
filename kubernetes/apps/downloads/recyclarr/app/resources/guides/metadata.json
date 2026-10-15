@@ -1,0 +1,9 @@
+{
+  "json_paths": {
+    "radarr": {
+      "quality_profiles": [
+        "quality-profiles/radarr"
+      ]
+    }
+  }
+}
