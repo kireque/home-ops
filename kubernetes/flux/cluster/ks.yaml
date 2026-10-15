@@ -6,7 +6,8 @@ metadata:
   name: cluster-apps
   namespace: flux-system
 spec:
-  deletionPolicy: WaitForTermination
+  # Deleting cluster-apps itself must never cascade into deleting every app
+  deletionPolicy: Orphan
   interval: 1h
   path: ./kubernetes/apps
   prune: true
