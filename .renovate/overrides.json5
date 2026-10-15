@@ -19,5 +19,11 @@
       matchPackageNames: ["ghcr.io/coredns/charts/coredns"],
       allowedVersions: "<1.47.0",
     },
+    {
+      description: "SearXNG tags are <date>-<commit>; compare on the date only",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["docker.io/searxng/searxng"],
+      versioning: "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-[0-9a-f]+$",
+    },
   ],
 }
