@@ -93,6 +93,13 @@ spec:
         ports:
           http:
             port: *port
+    route:
+      app:
+        hostnames:
+          - litellm.econline.nl
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
     persistence:
       config-file:
         type: configMap
