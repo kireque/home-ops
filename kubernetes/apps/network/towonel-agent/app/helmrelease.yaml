@@ -56,7 +56,7 @@ spec:
               TOWONEL_AGENT_HEALTH_LISTEN_ADDR: 0.0.0.0:9090
               TOWONEL_AGENT_SERVICES: |
                 [
-                  {"hostname":"*.econline.nl","origin":"envoy-external.network.svc.cluster.local:443"}
+                  {"hostname":"*.econline.nl","origin":"envoy-external.network.svc.cluster.local:8443"}
                 ]
               TOWONEL_INVITE_TOKEN:
                 valueFrom:
