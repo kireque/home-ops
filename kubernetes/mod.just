@@ -46,7 +46,9 @@ restore ns app previous='0':
     fi
     kubectl -n {{ ns }} get pvc {{ app }} -o name
     kubectl -n {{ ns }} get snapshotpolicies.kopiur.home-operations.com {{ app }} -o name
-    if [[ -n "$(kubectl -n {{ ns }} get restores.kopiur.home-operations.com {{ app }}-manual -o name --ignore-not-found)" ]]; then
+    # Standalone assignment so a failed lookup aborts here (errexit is off inside conditions)
+    leftover="$(kubectl -n {{ ns }} get restores.kopiur.home-operations.com {{ app }}-manual -o name --ignore-not-found)"
+    if [[ -n "$leftover" ]]; then
         echo "Restore {{ ns }}/{{ app }}-manual already exists (left over from an earlier run?); inspect and delete it first" >&2
         exit 1
     fi
