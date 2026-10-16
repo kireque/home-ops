@@ -56,9 +56,19 @@ restore ns app previous='0':
     done
     kubectl -n {{ ns }} get deploy,sts -l app.kubernetes.io/name={{ app }} -o name \
         | xargs -r -I{} kubectl -n {{ ns }} scale {} --replicas=0
-    # Finished Job pods linger, so only wait for pods that are still running
-    kubectl -n {{ ns }} wait pod --for=delete --selector="app.kubernetes.io/name={{ app }}" \
-        --field-selector=status.phase!=Succeeded,status.phase!=Failed --timeout=5m
+    # Wait until no app pod is still running: scaled pods get deleted, but an in-flight
+    # Job pod only reaches Succeeded/Failed and lingers, so poll the phase instead
+    stop_deadline=$((SECONDS + 300))
+    until [[ -z "$(kubectl -n {{ ns }} get pods -l app.kubernetes.io/name={{ app }} \
+        --field-selector=status.phase!=Succeeded,status.phase!=Failed -o name)" ]]; do
+        if (( SECONDS >= stop_deadline )); then
+            kubectl -n {{ ns }} get pods -l app.kubernetes.io/name={{ app }} \
+                --field-selector=status.phase!=Succeeded,status.phase!=Failed
+            echo "{{ ns }}/{{ app }} still has running pods; left suspended, scaled down, KEDA-paused and CronJobs suspended" >&2
+            exit 1
+        fi
+        sleep 5
+    done
     jq -n --argjson source "$source" '{
         apiVersion: "kopiur.home-operations.com/v1alpha1",
         kind: "Restore",
