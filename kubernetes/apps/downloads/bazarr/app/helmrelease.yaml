@@ -24,10 +24,17 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/bazarr
-              tag: 1.6.2@sha256:17dc1cff22e99694ffbfb06555526cb47a66b362b4d6c982f06b557f7caae2bb
-            env:
-              BAZARR__PORT: &port 80
+              repository: ghcr.io/lavx/bazarr
+              tag: 2.7.1@sha256:49cf28719e82d49441376521fc5141697712366ed8b802b0fbb9d02daae3d000
+            args:
+              - docker/supervisor.py
+              - --no-update
+              - --config
+              - /config
+              - --port
+              - "80"
+            command:
+              - python
             probes:
               liveness:
                 enabled: true
@@ -41,7 +48,7 @@ spec:
                 spec:
                   httpGet:
                     path: /api/system/ping
-                    port: *port
+                    port: 80
                   periodSeconds: 10
                   timeoutSeconds: 5
                   failureThreshold: 5
@@ -60,11 +67,46 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
+          ai-subtitle-translator:
+            image:
+              repository: ghcr.io/lavx/ai-subtitle-translator
+              tag: v2.1.1@sha256:e22abba9625b96df6727354f10933da312a084ffeae68f0eb1f9a82492f5e48d
+            env:
+              OPENROUTER_API_BASE: http://litellm.ai.svc.cluster.local:4000/v1
+              OPENROUTER_DEFAULT_MODEL: gpt-5.4
+            envFrom:
+              - externalSecretRef:
+                  identifier: ai-subtitle-translator
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8765
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              startup:
+                enabled: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 15m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
     service:
       app:
         ports:
           http:
-            port: *port
+            port: 80
     route:
       app:
         hostnames:
@@ -75,11 +117,32 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
+        advancedMounts:
+          bazarr:
+            app:
+              - path: /config
+            ai-subtitle-translator:
+              - path: /app/data
+                subPath: ai-subtitle-translator
       media:
         type: nfs
         server: gladius.home.econline.nl
         path: /mnt/tank/media
-        globalMounts:
-          - path: /media
+        advancedMounts:
+          bazarr:
+            app:
+              - path: /media
       tmp:
         type: emptyDir
+    externalSecrets:
+      ai-subtitle-translator:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              OPENROUTER_API_KEY: "{{ .LITELLM_MASTER_KEY }}"
+        dataFrom:
+          - extract:
+              key: litellm
