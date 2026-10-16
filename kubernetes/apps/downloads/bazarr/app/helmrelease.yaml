@@ -80,6 +80,14 @@ spec:
             probes:
               liveness:
                 enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8765
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
               readiness:
                 enabled: true
                 custom: true
@@ -92,6 +100,13 @@ spec:
                   failureThreshold: 5
               startup:
                 enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8765
+                  failureThreshold: 30
+                  periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
