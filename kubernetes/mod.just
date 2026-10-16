@@ -48,9 +48,17 @@ restore ns app previous='0':
     if [[ -n "$scaledobject" ]]; then
         kubectl -n {{ ns }} annotate "$scaledobject" --overwrite autoscaling.keda.sh/paused-replicas=0
     fi
+    # Suspend CronJobs (e.g. recyclarr) that aren't already suspended, so no new Job mounts the PVC
+    cronjobs="$(kubectl -n {{ ns }} get cronjobs -l app.kubernetes.io/name={{ app }} -o json \
+        | jq -r '.items[] | select(.spec.suspend != true) | "cronjob/\(.metadata.name)"')"
+    for cronjob in $cronjobs; do
+        kubectl -n {{ ns }} patch "$cronjob" --type merge -p '{"spec":{"suspend":true}}'
+    done
     kubectl -n {{ ns }} get deploy,sts -l app.kubernetes.io/name={{ app }} -o name \
         | xargs -r -I{} kubectl -n {{ ns }} scale {} --replicas=0
-    kubectl -n {{ ns }} wait pod --for=delete --selector="app.kubernetes.io/name={{ app }}" --timeout=5m
+    # Finished Job pods linger, so only wait for pods that are still running
+    kubectl -n {{ ns }} wait pod --for=delete --selector="app.kubernetes.io/name={{ app }}" \
+        --field-selector=status.phase!=Succeeded,status.phase!=Failed --timeout=5m
     jq -n --argjson source "$source" '{
         apiVersion: "kopiur.home-operations.com/v1alpha1",
         kind: "Restore",
@@ -75,17 +83,21 @@ restore ns app previous='0':
     done
     if [[ "$phase" != "Completed" ]]; then
         kubectl -n {{ ns }} get restores.kopiur.home-operations.com {{ app }}-manual -o yaml | yq '.status' || true
-        echo "Restore ${phase}; {{ ns }}/{{ app }} left suspended, scaled down and KEDA-paused" >&2
+        echo "Restore ${phase}; {{ ns }}/{{ app }} left suspended, scaled down, KEDA-paused and CronJobs suspended" >&2
         exit 1
     fi
     kubectl -n {{ ns }} delete restores.kopiur.home-operations.com {{ app }}-manual
     if [[ -n "$scaledobject" ]]; then
         kubectl -n {{ ns }} annotate "$scaledobject" autoscaling.keda.sh/paused-replicas-
     fi
+    for cronjob in $cronjobs; do
+        kubectl -n {{ ns }} patch "$cronjob" --type merge -p '{"spec":{"suspend":false}}'
+    done
     flux -n {{ ns }} resume kustomization {{ app }}
     flux -n {{ ns }} resume helmrelease {{ app }}
     flux -n {{ ns }} reconcile helmrelease {{ app }} --force
-    kubectl -n {{ ns }} wait pod --for=condition=ready --selector="app.kubernetes.io/name={{ app }}" --timeout=5m
+    kubectl -n {{ ns }} get deploy,sts -l app.kubernetes.io/name={{ app }} -o name \
+        | xargs -r -I{} kubectl -n {{ ns }} rollout status {} --timeout=5m
 
 [doc('Snapshot Kopiur PVCs (all, or filter by namespace/app)')]
 [script]
