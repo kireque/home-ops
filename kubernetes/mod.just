@@ -43,6 +43,11 @@ restore ns app previous='0':
     fi
     flux -n {{ ns }} suspend kustomization {{ app }}
     flux -n {{ ns }} suspend helmrelease {{ app }}
+    # Hold any KEDA ScaledObject (e.g. nfs-scaler) at 0 so it can't bring the app back mid-restore
+    scaledobject="$(kubectl -n {{ ns }} get scaledobjects.keda.sh {{ app }} -o name --ignore-not-found)"
+    if [[ -n "$scaledobject" ]]; then
+        kubectl -n {{ ns }} annotate "$scaledobject" --overwrite autoscaling.keda.sh/paused-replicas=0
+    fi
     kubectl -n {{ ns }} get deploy,sts -l app.kubernetes.io/name={{ app }} -o name \
         | xargs -r -I{} kubectl -n {{ ns }} scale {} --replicas=0
     kubectl -n {{ ns }} wait pod --for=delete --selector="app.kubernetes.io/name={{ app }}" --timeout=5m
@@ -57,16 +62,26 @@ restore ns app previous='0':
             target: {pvcRef: {name: "{{ app }}"}}
         }
     }' | kubectl create -f -
-    until phase="$(kubectl -n {{ ns }} get restores.kopiur.home-operations.com {{ app }}-manual -o jsonpath='{.status.phase}')" \
-        && [[ "$phase" == "Completed" || "$phase" == "Failed" ]]; do
+    phase=""
+    deadline=$((SECONDS + 7200))
+    while [[ "$phase" != "Completed" && "$phase" != "Failed" ]]; do
+        if (( SECONDS >= deadline )); then
+            phase="TimedOut"
+            break
+        fi
         sleep 10
+        phase="$(kubectl -n {{ ns }} get restores.kopiur.home-operations.com {{ app }}-manual -o jsonpath='{.status.phase}')" \
+            || echo "Failed to read Restore status; retrying" >&2
     done
-    if [[ "$phase" == "Failed" ]]; then
-        kubectl -n {{ ns }} get restores.kopiur.home-operations.com {{ app }}-manual -o yaml | yq '.status'
-        echo "Restore failed; {{ ns }}/{{ app }} left suspended and scaled down" >&2
+    if [[ "$phase" != "Completed" ]]; then
+        kubectl -n {{ ns }} get restores.kopiur.home-operations.com {{ app }}-manual -o yaml | yq '.status' || true
+        echo "Restore ${phase}; {{ ns }}/{{ app }} left suspended, scaled down and KEDA-paused" >&2
         exit 1
     fi
     kubectl -n {{ ns }} delete restores.kopiur.home-operations.com {{ app }}-manual
+    if [[ -n "$scaledobject" ]]; then
+        kubectl -n {{ ns }} annotate "$scaledobject" autoscaling.keda.sh/paused-replicas-
+    fi
     flux -n {{ ns }} resume kustomization {{ app }}
     flux -n {{ ns }} resume helmrelease {{ app }}
     flux -n {{ ns }} reconcile helmrelease {{ app }} --force
