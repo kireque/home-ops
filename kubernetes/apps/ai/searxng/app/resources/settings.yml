@@ -16,3 +16,19 @@ server:
   image_proxy: false
   limiter: false
   public_instance: false
+
+# Brave rate-limits and DuckDuckGo serves CAPTCHAs to this instance;
+# replace them with web engines that answer reliably from the cluster.
+engines:
+  - name: brave
+    disabled: true
+  - name: duckduckgo
+    disabled: true
+  - name: gmx
+    disabled: false
+  - name: privacywall
+    disabled: false
+  - name: yahoo
+    disabled: false
+  - name: yep
+    disabled: false
