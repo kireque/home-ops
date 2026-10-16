@@ -33,24 +33,40 @@ prune-pods:
         kubectl delete pods -A --field-selector status.phase="$phase" --ignore-not-found=true
     done
 
-[doc('Restore a PVC from VolSync')]
+[doc('Restore a PVC from Kopiur (previous: 0 = latest; or a Snapshot name)')]
 [script]
 restore ns app previous='0':
+    if [[ "{{ previous }}" =~ ^[0-9]+$ ]]; then
+        source='{"fromPolicy":{"name":"{{ app }}","offset":{{ previous }}}}'
+    else
+        source='{"snapshotRef":{"name":"{{ previous }}"}}'
+    fi
     flux -n {{ ns }} suspend kustomization {{ app }}
     flux -n {{ ns }} suspend helmrelease {{ app }}
     kubectl -n {{ ns }} get deploy,sts -l app.kubernetes.io/name={{ app }} -o name \
         | xargs -r -I{} kubectl -n {{ ns }} scale {} --replicas=0
     kubectl -n {{ ns }} wait pod --for=delete --selector="app.kubernetes.io/name={{ app }}" --timeout=5m
-    kubectl -n {{ ns }} get replicationdestination {{ app }}-dst -o json \
-        | jq 'del(.status)
-            | .metadata = {name: "{{ app }}-manual", namespace: .metadata.namespace}
-            | .spec.kopia.copyMethod = "Direct"
-            | .spec.kopia.destinationPVC = "{{ app }}"
-            | .spec.kopia.previous = {{ previous }}' \
-        | kubectl apply --server-side -f -
-    kubectl -n {{ ns }} wait job/volsync-dst-{{ app }}-manual --for=create --timeout=120s
-    kubectl -n {{ ns }} wait job/volsync-dst-{{ app }}-manual --for=condition=complete --timeout=120m
-    kubectl -n {{ ns }} delete replicationdestination {{ app }}-manual
+    jq -n --argjson source "$source" '{
+        apiVersion: "kopiur.home-operations.com/v1alpha1",
+        kind: "Restore",
+        metadata: {name: "{{ app }}-manual", namespace: "{{ ns }}"},
+        spec: {
+            options: {enableFileDeletion: true},
+            policy: {onMissingSnapshot: "Fail"},
+            source: $source,
+            target: {pvcRef: {name: "{{ app }}"}}
+        }
+    }' | kubectl create -f -
+    until phase="$(kubectl -n {{ ns }} get restores.kopiur.home-operations.com {{ app }}-manual -o jsonpath='{.status.phase}')" \
+        && [[ "$phase" == "Completed" || "$phase" == "Failed" ]]; do
+        sleep 10
+    done
+    if [[ "$phase" == "Failed" ]]; then
+        kubectl -n {{ ns }} get restores.kopiur.home-operations.com {{ app }}-manual -o yaml | yq '.status'
+        echo "Restore failed; {{ ns }}/{{ app }} left suspended and scaled down" >&2
+        exit 1
+    fi
+    kubectl -n {{ ns }} delete restores.kopiur.home-operations.com {{ app }}-manual
     flux -n {{ ns }} resume kustomization {{ app }}
     flux -n {{ ns }} resume helmrelease {{ app }}
     flux -n {{ ns }} reconcile helmrelease {{ app }} --force
