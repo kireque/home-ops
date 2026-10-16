@@ -56,12 +56,29 @@ restore ns app previous='0':
     flux -n {{ ns }} reconcile helmrelease {{ app }} --force
     kubectl -n {{ ns }} wait pod --for=condition=ready --selector="app.kubernetes.io/name={{ app }}" --timeout=5m
 
-[doc('Snapshot VolSync PVCs')]
+[doc('Snapshot Kopiur PVCs (all, or filter by namespace/app)')]
 [script]
-snapshot:
-    kubectl get replicationsources --no-headers -A | while read -r ns name _; do
-        kubectl -n "$ns" patch replicationsources "$name" --type merge -p '{"spec":{"trigger":{"manual":"$(date +%s)"}}}'
-    done
+snapshot ns='' app='':
+    kubectl get snapshotschedules.kopiur.home-operations.com \
+        {{ if ns == '' { '--all-namespaces' } else { '--namespace ' + ns } }} -o json \
+        | jq --arg app '{{ app }}' --arg ts "$(date +%s)" '{
+            apiVersion: "v1",
+            kind: "List",
+            items: [.items[] | select($app == "" or .metadata.name == $app) | {
+                apiVersion: "kopiur.home-operations.com/v1alpha1",
+                kind: "Snapshot",
+                metadata: {
+                    name: "\(.metadata.name)-manual-\($ts)",
+                    namespace: .metadata.namespace,
+                    labels: {
+                        "kopiur.home-operations.com/config": .spec.policyRef.name,
+                        "kopiur.home-operations.com/origin": "manual"
+                    }
+                },
+                spec: {policyRef: .spec.policyRef}
+            }]
+        }' \
+        | kubectl create -f -
 
 [arg('state', pattern='suspend|resume')]
 [doc('Suspend or resume VolSync')]
