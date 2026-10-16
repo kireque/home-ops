@@ -100,6 +100,20 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+          - filters:
+              - type: ExtensionRef
+                extensionRef:
+                  group: gateway.envoyproxy.io
+                  kind: HTTPRouteFilter
+                  name: litellm-not-found
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /metrics
     persistence:
       config-file:
         type: configMap
@@ -144,5 +158,10 @@ spec:
             litellm_settings:
               drop_params: true
               request_timeout: 600
+            router_settings:
+              cooldown_time: 30
+              enable_pre_call_checks: true
+              num_retries: 2
+              retry_after: 5
             general_settings:
               master_key: os.environ/LITELLM_MASTER_KEY
