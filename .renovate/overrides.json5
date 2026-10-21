@@ -14,12 +14,6 @@
       allowedVersions: "<1.20.0",
     },
     {
-      description: "Hold CoreDNS chart at 1.46.x (CoreDNS 1.13.1) until coredns/coredns#8390 is fixed upstream",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/coredns/charts/coredns"],
-      allowedVersions: "<1.47.0",
-    },
-    {
       description: "SearXNG tags are <date>-<commit>; compare on the date only",
       matchDatasources: ["docker"],
       matchPackageNames: ["docker.io/searxng/searxng"],
