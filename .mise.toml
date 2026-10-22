@@ -42,7 +42,7 @@ _.file = [
 "yamllint" = "1.38.0"
 "zizmor" = "1.31.1"
 "github:home-operations/flate" = "v0.6.5"
-"github:nklmilojevic/sofka" = "0.31.14"
+"github:nklmilojevic/sofka" = "0.32.0"
 
 [hooks]
 postinstall = [
