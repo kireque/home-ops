@@ -1,0 +1,266 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: silo
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: silo
+  interval: 1h
+  timeout: 15m
+  values:
+    externalSecrets:
+      silo:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              DATABASE_URL: "postgres://{{ .POSTGRES_USER }}:{{ urlquery .POSTGRES_PASSWORD }}@silo-database-postgres.media.svc.cluster.local.:5432/silo?sslmode=disable"
+              REDIS_URL: redis://silo-database-valkey.media.svc.cluster.local.:6379/0
+              SECRET_KEY: "{{ .SECRET_KEY }}"
+        dataFrom:
+          - extract:
+              key: silo
+    defaultPodOptions:
+      labels:
+        gpu-consumer: "true"
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: silo-gpu
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+    controllers:
+      silo:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          # Silo fails readiness, then drains in-flight requests on stop
+          terminationGracePeriodSeconds: 120
+        containers:
+          app:
+            image: &image
+              repository: ghcr.io/silo-server/silo-server
+              tag: build-1645@sha256:cad1d321c6d94e5aa4f6ac8a38ace7e049c2bfbe59486d2f20fa1483efdf70c8
+            env: &env
+              HOME: /tmp
+              JF_PORT: &jfPort 8096
+              PORT: &port 8080
+              SILO_METRICS_LISTEN: :9091
+              SILO_PLUGIN_CACHE_DIR: /tmp/silo-plugins
+              SILO_TRUSTED_PROXIES: 10.244.0.0/16
+            envFrom: &envFrom
+              - externalSecretRef:
+                  identifier: silo
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/health
+                    port: *port
+                  failureThreshold: 5
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/ready
+                    port: *port
+                  failureThreshold: 5
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/health
+                    port: *port
+                  failureThreshold: 60
+                  periodSeconds: 10
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
+              capabilities: {drop: ["ALL"]}
+              readOnlyRootFilesystem: true
+            resources:
+              claims:
+                - name: gpu
+              requests:
+                cpu: 100m
+                memory: 2Gi
+              limits:
+                memory: 6Gi
+      transcode:
+        type: statefulset
+        replicas: 3
+        annotations:
+          reloader.stakater.com/auto: "true"
+        statefulset:
+          podManagementPolicy: Parallel
+          serviceName:
+            identifier: transcode
+        pod:
+          # one transcode worker per node, so each iGPU gets its own
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - topologyKey: kubernetes.io/hostname
+                  labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/controller: transcode
+                      app.kubernetes.io/instance: silo
+          # SILO_NODE_DRAIN_TIMEOUT defaults to 10m; cover it plus shutdown
+          terminationGracePeriodSeconds: 700
+        initContainers:
+          wait-for-api:
+            image:
+              repository: busybox
+              tag: 1.38.0@sha256:fd7dc98638c8e305f4dc34e979f1c0fdfdcaeb0fbf8fcff77ae834b6da3d7e6e
+            command:
+              - /bin/sh
+              - -c
+              - until wget -q -O /dev/null http://silo-app.media.svc.cluster.local:8080/api/v1/ready; do sleep 3; done
+            securityContext: *securityContext
+        containers:
+          app:
+            image: *image
+            env:
+              <<: *env
+              MODE: transcode
+              POD_NAME:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.name
+              NODE_NAME:
+                value: $(POD_NAME)
+                dependsOn: POD_NAME
+              NODE_URL:
+                value: http://$(POD_NAME).silo-transcode.media.svc.cluster.local:8080
+                dependsOn: POD_NAME
+            envFrom: *envFrom
+            probes:
+              liveness: &nodeProbe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/health
+                    port: *port
+                  failureThreshold: 5
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+              readiness: *nodeProbe
+            securityContext: *securityContext
+            resources:
+              claims:
+                - name: gpu
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 4Gi
+    service:
+      app:
+        controller: silo
+        ports:
+          http:
+            port: *port
+          jellyfin:
+            port: *jfPort
+          metrics:
+            port: 9091
+      transcode:
+        controller: transcode
+        clusterIP: None
+        ports:
+          http:
+            port: *port
+    serviceMonitor:
+      app:
+        serviceName: silo-app
+        endpoints:
+          - port: metrics
+            relabelings:
+              - sourceLabels:
+                  - __meta_kubernetes_pod_name
+                targetLabel: instance
+              - targetLabel: job
+                replacement: silo
+              - targetLabel: process_role
+                replacement: api
+      transcode:
+        serviceName: silo-transcode
+        endpoints:
+          - port: http
+            relabelings:
+              - sourceLabels:
+                  - __meta_kubernetes_pod_name
+                targetLabel: instance
+              - targetLabel: job
+                replacement: silo
+              - targetLabel: process_role
+                replacement: transcode
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            url: https://silo.econline.nl/api/v1/health
+            conditions: ["[STATUS] == 200"]
+        hostnames:
+          - "{{ .Release.Name }}.econline.nl"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+            timeouts:
+              backendRequest: 3600s
+      jellyfin:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            url: https://silo-jf.econline.nl/System/Info/Public
+            conditions: ["[STATUS] == 200"]
+        hostnames:
+          - "{{ .Release.Name }}-jf.econline.nl"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *jfPort
+            timeouts:
+              backendRequest: 3600s
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        advancedMounts:
+          silo:
+            app:
+              - path: /var/lib/silo
+      media:
+        type: nfs
+        server: gladius.home.econline.nl
+        path: /mnt/tank/media
+        globalMounts:
+          - path: /media
+            readOnly: true
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
