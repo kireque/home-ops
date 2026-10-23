@@ -152,7 +152,7 @@ spec:
                 dependsOn: POD_NAME
             envFrom: *envFrom
             probes:
-              liveness: &nodeProbe
+              liveness:
                 enabled: true
                 custom: true
                 spec:
@@ -162,7 +162,17 @@ spec:
                   failureThreshold: 5
                   periodSeconds: 30
                   timeoutSeconds: 5
-              readiness: *nodeProbe
+              # headless-service DNS for NODE_URL only resolves while Ready
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/health
+                    port: *port
+                  failureThreshold: 5
+                  periodSeconds: 10
+                  timeoutSeconds: 5
             securityContext: *securityContext
             resources:
               claims:
