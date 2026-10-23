@@ -175,15 +175,15 @@ spec:
               - |
                 set -eu
                 api=http://silo-app.media.svc.cluster.local:8080/api/v2/admin/nodes
-                auth="Authorization: Bearer ${SILO_ADMIN_API_KEY}"
-                if wget -qO- --header "${auth}" "${api}" | grep -qF "\"url\":\"${NODE_URL}\""; then
-                  echo "${NODE_NAME} already registered"
+                auth="Authorization: Bearer $SILO_ADMIN_API_KEY"
+                if wget -qO- --header "$auth" "$api" | grep -qF "\"url\":\"$NODE_URL\""; then
+                  echo "$NODE_NAME already registered"
                   exit 0
                 fi
-                wget -qO- --header "${auth}" --header "Content-Type: application/json" \
-                  --post-data "{\"name\":\"${NODE_NAME}\",\"type\":\"transcode\",\"url\":\"${NODE_URL}\"}" "${api}"
+                wget -qO- --header "$auth" --header "Content-Type: application/json" \
+                  --post-data "{\"name\":\"$NODE_NAME\",\"type\":\"transcode\",\"url\":\"$NODE_URL\"}" "$api"
                 echo
-                echo "${NODE_NAME} registered as ${NODE_URL}"
+                echo "$NODE_NAME registered as $NODE_URL"
             securityContext: *securityContext
         containers:
           app:
