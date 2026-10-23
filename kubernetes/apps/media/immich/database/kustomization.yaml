@@ -2,6 +2,33 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+# PGDATA is 0700 and owned by the postgres uid (999); run the kopiur mover as that uid
+# instead of the default 1000, for backups (from the live pod) and restores (from the snapshot)
+patches:
+  - patch: |-
+      apiVersion: kopiur.home-operations.com/v1alpha1
+      kind: SnapshotPolicy
+      metadata:
+        name: _
+      spec:
+        mover:
+          inheritSecurityContextFrom:
+            pvcConsumer: {}
+    target:
+      group: kopiur.home-operations.com
+      kind: SnapshotPolicy
+  - patch: |-
+      apiVersion: kopiur.home-operations.com/v1alpha1
+      kind: Restore
+      metadata:
+        name: _
+      spec:
+        mover:
+          inheritSecurityContextFrom:
+            snapshot: {}
+    target:
+      group: kopiur.home-operations.com
+      kind: Restore
 resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
