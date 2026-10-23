@@ -222,7 +222,7 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.econline.nl"
         parentRefs:
-          - name: envoy-external
+          - name: envoy-internal
             namespace: network
         rules:
           - backendRefs:
