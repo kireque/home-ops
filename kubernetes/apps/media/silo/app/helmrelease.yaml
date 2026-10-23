@@ -70,6 +70,9 @@ spec:
               SILO_METRICS_LISTEN: :9091
               SILO_PLUGIN_CACHE_DIR: /tmp/silo-plugins
               SILO_TRUSTED_PROXIES: 10.244.0.0/16
+              # legacy Intel OpenCL runtime (copied in by the intel-opencl-legacy init container)
+              LD_LIBRARY_PATH: /opt/intel-legacy/lib
+              OCL_ICD_VENDORS: /opt/intel-legacy/vendors
             envFrom: &envFrom
               - externalSecretRef:
                   identifier: silo
@@ -115,6 +118,27 @@ spec:
                 memory: 2Gi
               limits:
                 memory: 6Gi
+        initContainers:
+          # Silo's image only ships Intel NEO 26.x, which dropped Gen9-Gen11 iGPUs (UHD 620 here),
+          # so OpenCL tone mapping is unavailable and HDR transcodes fall back to software.
+          # Borrow the frozen legacy1 runtime (NEO 24.35 + IGC 1.0.17537) from the Jellyfin image.
+          intel-opencl-legacy: &oclLegacy
+            image:
+              repository: ghcr.io/jellyfin/jellyfin
+              tag: 12.3@sha256:2038fe038ab3876a80f6e7b7e0aef6607b032c7dc0c9b3ad3296d0b2eba3bbb5
+            command:
+              - /bin/sh
+              - -c
+              - |
+                set -eu
+                d=/opt/intel-legacy
+                mkdir -p $d/lib $d/vendors
+                cp -L /usr/lib/x86_64-linux-gnu/intel-opencl/libigdrcl_legacy1.so \
+                  /usr/local/lib/libigc.so.1 /usr/local/lib/libigdfcl.so.1 \
+                  /usr/local/lib/libiga64.so.1 /usr/local/lib/libopencl-clang.so.14 $d/lib/
+                echo $d/lib/libigdrcl_legacy1.so > $d/vendors/intel_legacy1.icd
+                echo /usr/lib/x86_64-linux-gnu/intel-opencl/libigdrcl.so > $d/vendors/intel.icd
+            securityContext: *securityContext
       transcode:
         type: statefulset
         replicas: 3
@@ -137,6 +161,7 @@ spec:
           # SILO_NODE_DRAIN_TIMEOUT defaults to 10m; cover it plus shutdown
           terminationGracePeriodSeconds: 700
         initContainers:
+          intel-opencl-legacy: *oclLegacy
           wait-for-api:
             image:
               repository: busybox
@@ -306,6 +331,10 @@ spec:
           silo:
             app:
               - path: /var/lib/silo
+      intel-legacy:
+        type: emptyDir
+        globalMounts:
+          - path: /opt/intel-legacy
       media:
         type: nfs
         server: gladius.home.econline.nl
