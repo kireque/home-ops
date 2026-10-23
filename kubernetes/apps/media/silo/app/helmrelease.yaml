@@ -25,6 +25,18 @@ spec:
         dataFrom:
           - extract:
               key: silo
+      # admin API key, mounted only by the transcode register-node init container
+      node-registration:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              SILO_ADMIN_API_KEY: "{{ .SILO_ADMIN_API_KEY }}"
+        dataFrom:
+          - extract:
+              key: silo
     defaultPodOptions:
       labels:
         gpu-consumer: "true"
@@ -134,22 +146,53 @@ spec:
               - -c
               - until wget -q -O /dev/null http://silo-app.media.svc.cluster.local:8080/api/v1/ready; do sleep 3; done
             securityContext: *securityContext
+          # Silo has no node self-registration; add this pod to stream_nodes via the admin API if missing
+          register-node:
+            dependsOn: wait-for-api
+            image:
+              repository: busybox
+              tag: 1.38.0@sha256:fd7dc98638c8e305f4dc34e979f1c0fdfdcaeb0fbf8fcff77ae834b6da3d7e6e
+            env:
+              <<: &nodeIdentity
+                POD_NAME:
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                NODE_NAME:
+                  value: $(POD_NAME)
+                  dependsOn: POD_NAME
+                NODE_URL:
+                  value: http://$(POD_NAME).silo-transcode.media.svc.cluster.local:8080
+                  dependsOn: POD_NAME
+              SILO_ADMIN_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: silo-node-registration
+                    key: SILO_ADMIN_API_KEY
+            command:
+              - /bin/sh
+              - -c
+              - |
+                set -eu
+                api=http://silo-app.media.svc.cluster.local:8080/api/v2/admin/nodes
+                auth="Authorization: Bearer ${SILO_ADMIN_API_KEY}"
+                if wget -qO- --header "${auth}" "${api}" | grep -qF "\"url\":\"${NODE_URL}\""; then
+                  echo "${NODE_NAME} already registered"
+                  exit 0
+                fi
+                wget -qO- --header "${auth}" --header "Content-Type: application/json" \
+                  --post-data "{\"name\":\"${NODE_NAME}\",\"type\":\"transcode\",\"url\":\"${NODE_URL}\"}" "${api}"
+                echo
+                echo "${NODE_NAME} registered as ${NODE_URL}"
+            securityContext: *securityContext
         containers:
           app:
             image: *image
             env:
-              <<: *env
+              <<:
+                - *env
+                - *nodeIdentity
               MODE: transcode
-              POD_NAME:
-                valueFrom:
-                  fieldRef:
-                    fieldPath: metadata.name
-              NODE_NAME:
-                value: $(POD_NAME)
-                dependsOn: POD_NAME
-              NODE_URL:
-                value: http://$(POD_NAME).silo-transcode.media.svc.cluster.local:8080
-                dependsOn: POD_NAME
             envFrom: *envFrom
             probes:
               liveness:
