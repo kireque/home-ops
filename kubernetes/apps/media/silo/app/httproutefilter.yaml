@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.envoyproxy.io/httproutefilter_v1alpha1.json
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: HTTPRouteFilter
+metadata:
+  name: silo-jellyfin-items-path
+spec:
+  # Silo's Jellyfin-compat API 404s on /Users/{id}/items/ (lowercase *and* a trailing
+  # slash; either alone works), which is the exact path watchstate uses for import and
+  # library listing. Rewrite it to /Users/{id}/Items/; every other path is untouched.
+  urlRewrite:
+    path:
+      type: ReplaceRegexMatch
+      replaceRegexMatch:
+        pattern: ^/Users/([^/]+)/items/
+        substitution: /Users/\1/Items/

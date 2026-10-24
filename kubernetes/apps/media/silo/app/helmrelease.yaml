@@ -322,6 +322,12 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *jfPort
+            filters:
+              - type: ExtensionRef
+                extensionRef:
+                  group: gateway.envoyproxy.io
+                  kind: HTTPRouteFilter
+                  name: silo-jellyfin-items-path
             timeouts:
               backendRequest: 3600s
     persistence:
