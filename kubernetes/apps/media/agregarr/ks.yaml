@@ -7,7 +7,6 @@ metadata:
 spec:
   components:
     - ../../../../components/kopiur/backup
-    - ../../../../components/nfs-scaler
   targetNamespace: media
   path: ./kubernetes/apps/media/agregarr/app
   interval: 1h
