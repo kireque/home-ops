@@ -7,11 +7,25 @@ metadata:
 spec:
   image: ghcr.io/berriai/litellm:v1.106.4@sha256:c169fb3adc514fcf210377c203f3de406d54f10bfdacf13948a4a839db9af7de
   replicas: 1
+  # Admin API access for DB-backed resources (LiteLLMTeam, LiteLLMVirtualKey).
+  # Models stay file-backed because applyMode is left at its default.
+  apiAccess:
+    masterKeyRef:
+      name: litellm-secret
+      key: LITELLM_MASTER_KEY
   env:
+    - name: DATABASE_URL
+      valueFrom:
+        secretKeyRef:
+          name: litellm-postgres-app
+          key: uri
     - name: HOME
       value: /tmp
     - name: LITELLM_LOG
       value: INFO
+    # Prisma baselines/migrates from a copy here; the root filesystem is read-only
+    - name: LITELLM_MIGRATION_DIR
+      value: /tmp/migrations
   envFrom:
     - secretRef:
         name: litellm-secret
