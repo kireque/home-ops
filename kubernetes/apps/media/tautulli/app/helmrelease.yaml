@@ -33,6 +33,8 @@ spec:
       tautulli:
         annotations:
           reloader.stakater.com/auto: "true"
+        # Archived with Plex: scaled down, PVC and backups kept until removal
+        replicas: 0
         containers:
           app:
             image:
@@ -83,6 +85,8 @@ spec:
             port: *port
     route:
       app:
+        # Archived with Plex: no route, so Gatus stops probing it
+        enabled: false
         hostnames:
           - "{{ .Release.Name }}.econline.nl"
         parentRefs:
