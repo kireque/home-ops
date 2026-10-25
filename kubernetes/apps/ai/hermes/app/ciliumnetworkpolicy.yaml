@@ -18,6 +18,20 @@ spec:
         - ports:
             - port: "8787"
               protocol: TCP
+    # With DSR and host-only socket LB, a same-node ClusterIP backend's replies
+    # arrive already reverse-NATed to the service IP, miss conntrack and hit
+    # ingress policy. Admit the egress targets below so their replies get in.
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: ai
+            app.kubernetes.io/managed-by: litellm-operator
+            app.kubernetes.io/name: litellm
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: ai
+            app.kubernetes.io/name: searxng
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
   # Egress is allowlisted: LiteLLM (models + MCP), SearXNG, and the package
   # and source hosts mise/uv need. Everything else is dropped.
   egress:
