@@ -6,9 +6,9 @@ metadata:
   name: ${APP}-postgres
 spec:
   configuration:
-    # Garage on the NAS (gladius); off-cluster, next to the Kopiur repository.
+    # Garage on the NAS (docker/gladius/04-garage); off-cluster.
     destinationPath: s3://${CNPG_BUCKET:=cnpg}/
-    endpointURL: ${CNPG_ENDPOINT:=http://gladius.home.econline.nl:3900}
+    endpointURL: ${CNPG_ENDPOINT:=https://s3.econline.nl}
     s3Credentials:
       accessKeyId:
         name: ${APP}-postgres-objectstore-secret
