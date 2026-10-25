@@ -41,6 +41,9 @@ spec:
     substitute:
       APP: immich-database
       KOPIUR_CAPACITY: 10Gi
+      # PGDATA is 0700 and owned by the postgres uid (999); the mover must match to read it
+      KOPIUR_MOVER_GID: "999"
+      KOPIUR_MOVER_UID: "999"
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
