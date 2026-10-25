@@ -6,10 +6,10 @@ metadata:
   name: hermes
 spec:
   alias: hermes
-  # Virtual keys get no MCP servers unless the team grants them; home_assistant
-  # stays off until the agent has proven itself unattended.
+  # Virtual keys get no MCP servers unless the team grants them
   mcpServers:
     - context7
+    - home_assistant
   models:
     - all-proxy-models
   proxyRef: litellm
