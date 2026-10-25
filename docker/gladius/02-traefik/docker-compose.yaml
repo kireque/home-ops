@@ -1,0 +1,35 @@
+---
+networks:
+  apps:
+    name: apps
+    external: false
+services:
+  traefik:
+    command:
+      - --certificatesresolvers.cf.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
+      - --certificatesresolvers.cf.acme.dnsChallenge.provider=cloudflare
+      - --certificatesresolvers.cf.acme.storage=/certs/acme.json
+      - --entryPoints.web.address=:80
+      - --entryPoints.web.http.redirections.entryPoint.scheme=https
+      - --entryPoints.web.http.redirections.entryPoint.to=websecure
+      - --entryPoints.websecure.address=:443
+      - --entrypoints.websecure.http.tls=true
+      - --entrypoints.websecure.http.tls.certResolver=cf
+      - --entrypoints.websecure.http.tls.domains[0].main=*.econline.nl
+      - --providers.docker=true
+      - --providers.docker.exposedByDefault=false
+    container_name: traefik
+    environment:
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
+    image: ghcr.io/traefik/traefik:v3.7.16@sha256:6d3e069ee484ab1da5adfdda555a75eb9b1545ef09096a0cc7c3043101986a20
+    networks:
+      - apps
+    ports:
+      - 10.1.6.21:80:80
+      - 10.1.6.21:443:443
+    restart: unless-stopped
+    volumes:
+      - acme:/certs
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+volumes:
+  acme:
