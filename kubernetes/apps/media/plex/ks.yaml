@@ -8,7 +8,6 @@ spec:
   components:
     - ../../../../components/gpu
     - ../../../../components/kopiur/backup
-    - ../../../../components/nfs-scaler
   targetNamespace: media
   path: ./kubernetes/apps/media/plex/app
   interval: 1h
