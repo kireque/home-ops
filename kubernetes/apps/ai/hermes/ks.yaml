@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: hermes
+spec:
+  components:
+    - ../../../../components/kopiur/backup
+  targetNamespace: ai
+  path: ./kubernetes/apps/ai/hermes/app
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: litellm
+      namespace: ai
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  postBuild:
+    substitute:
+      APP: hermes
+      KOPIUR_CAPACITY: 10Gi
+      # The image's hermes user is 10000; the mover must match to read 0600 profile files
+      KOPIUR_MOVER_GID: "10000"
+      KOPIUR_MOVER_UID: "10000"

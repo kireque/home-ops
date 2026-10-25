@@ -9,6 +9,10 @@ spec:
     compressor: zstd
   files:
     ignoreRules: ${KOPIUR_IGNORE_RULES:=[]}
+  mover:
+    securityContext:
+      runAsUser: ${KOPIUR_MOVER_UID:=1000}
+      runAsGroup: ${KOPIUR_MOVER_GID:=1000}
   repository:
     kind: ClusterRepository
     name: nas
