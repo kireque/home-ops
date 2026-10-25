@@ -293,10 +293,6 @@ spec:
                 replacement: transcode
     route:
       app:
-        annotations:
-          gatus.home-operations.com/endpoint: |-
-            url: https://silo.econline.nl/api/v1/health
-            conditions: ["[STATUS] == 200"]
         hostnames:
           - "{{ .Release.Name }}.econline.nl"
         parentRefs:
@@ -309,10 +305,6 @@ spec:
             timeouts:
               backendRequest: 3600s
       jellyfin:
-        annotations:
-          gatus.home-operations.com/endpoint: |-
-            url: https://silo-jf.econline.nl/System/Info/Public
-            conditions: ["[STATUS] == 200"]
         hostnames:
           - "{{ .Release.Name }}-jf.econline.nl"
         parentRefs:
