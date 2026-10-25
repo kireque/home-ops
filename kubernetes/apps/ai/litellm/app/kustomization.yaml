@@ -7,4 +7,5 @@ resources:
   - ./httproute.yaml
   - ./httproutefilter.yaml
   - ./litellmproxy.yaml
+  - ./mcp-servers/
   - ./models/

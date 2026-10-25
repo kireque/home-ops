@@ -1,0 +1,39 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: home-assistant-mcp
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: home-assistant-mcp
+  # ha-mcp has no auth of its own: only LiteLLM may call it.
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: ai
+            app.kubernetes.io/managed-by: litellm-operator
+            app.kubernetes.io/name: litellm
+      toPorts:
+        - ports:
+            - port: "8080"
+              protocol: TCP
+  # No cluster-wide DNS allow exists, so DNS is listed here explicitly.
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: home-automation
+            app.kubernetes.io/name: home-assistant
+      toPorts:
+        - ports:
+            - port: "8123"
+              protocol: TCP
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: ANY
