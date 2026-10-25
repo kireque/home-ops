@@ -17,6 +17,11 @@ spec:
         name: litellm-secret
   generalSettings:
     master_key: os.environ/LITELLM_MASTER_KEY
+    # Envoy gateway pods sit in the pod CIDR; trust only them for X-Forwarded-For
+    # so logs and rate limits see the real client address.
+    trusted_proxy_ranges:
+      - 10.244.0.0/16
+    use_x_forwarded_for: true
   litellmSettings:
     drop_params: true
     request_timeout: 600
