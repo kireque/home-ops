@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/litellm.home-operations.com/litellmmodel_v1alpha1.json
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: gpt-chat-latest
+spec:
+  modelName: gpt-chat-latest
+  proxyRef: litellm
+  params:
+    model: azure/gpt-chat-latest
+    apiBase: https://econline-foundry.services.ai.azure.com
+    apiKeyRef:
+      name: litellm-secret
+      key: AZURE_API_KEY
+    apiVersion: v1
+    # Strips OpenRouter-only fields (e.g. sent by ai-subtitle-translator)
+    # that Azure rejects as unknown parameters
+    additional:
+      additional_drop_params:
+        - "provider"
+        - "reasoning"
