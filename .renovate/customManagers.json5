@@ -20,6 +20,17 @@
     },
     {
       customType: "regex",
+      description: "CloudNativePG Cluster imageName (image:tag@digest)",
+      managerFilePatterns: [
+        "/(^|/)kubernetes/components/cnpg/.+\\.yaml$/",
+      ],
+      matchStrings: [
+        "imageName:\\s*(?<depName>[^:\\s]+):(?<currentValue>[^@\\s]+)(@(?<currentDigest>sha256:[a-f0-9]+))?",
+      ],
+      datasourceTemplate: "docker",
+    },
+    {
+      customType: "regex",
       description: "Pick up oci://... URI references (Flux OCIRepository, Helm OCI charts, ...)",
       managerFilePatterns: [
         "/\\.yaml(?:\\.j2)?$/",

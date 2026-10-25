@@ -26,5 +26,12 @@
       versioning: "regex:^build-(?<major>\\d+)$",
       automerge: false,
     },
+    {
+      description: "CNPG major upgrades need a new cnpg/pgNN component, never an in-place bump",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/cloudnative-pg/postgresql", "ghcr.io/tensorchord/cloudnative-vectorchord"],
+      matchUpdateTypes: ["major"],
+      enabled: false,
+    },
   ],
 }
