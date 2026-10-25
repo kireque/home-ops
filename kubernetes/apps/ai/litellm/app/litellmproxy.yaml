@@ -1,0 +1,69 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/litellm.home-operations.com/litellmproxy_v1alpha1.json
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMProxy
+metadata:
+  name: litellm
+spec:
+  image: ghcr.io/berriai/litellm:v1.106.3@sha256:74d0696a9f0afcc993c7659d246f0c542f003368298633e852228250779f1032
+  replicas: 1
+  env:
+    - name: HOME
+      value: /tmp
+    - name: LITELLM_LOG
+      value: INFO
+  envFrom:
+    - secretRef:
+        name: litellm-secret
+  generalSettings:
+    master_key: os.environ/LITELLM_MASTER_KEY
+  litellmSettings:
+    drop_params: true
+    request_timeout: 600
+  # No startupProbe field; the delay covers LiteLLM's slow first boot.
+  livenessProbe:
+    httpGet:
+      path: /health/liveliness
+      port: 4000
+    initialDelaySeconds: 60
+    periodSeconds: 30
+    timeoutSeconds: 5
+    failureThreshold: 5
+  podSecurityContext:
+    runAsGroup: 65534
+    runAsNonRoot: true
+    runAsUser: 65534
+    seccompProfile:
+      type: RuntimeDefault
+  readinessProbe:
+    httpGet:
+      path: /health/readiness
+      port: 4000
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 5
+  resources:
+    requests:
+      cpu: 50m
+      memory: 512Mi
+    limits:
+      memory: 1Gi
+  routerSettings:
+    cooldown_time: 30
+    enable_pre_call_checks: true
+    num_retries: 2
+    retry_after: 5
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop:
+        - ALL
+  service:
+    port: 4000
+  volumeMounts:
+    - name: tmp
+      mountPath: /tmp
+  volumes:
+    - name: tmp
+      emptyDir: {}
