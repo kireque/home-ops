@@ -21,8 +21,6 @@ patches:
       kind: Namespace
 
 resources:
-  - ./context7-mcp/ks.yaml
-  - ./ha-mcp/ks.yaml
   - ./litellm/ks.yaml
   - ./litellm-operator/ks.yaml
   - ./open-webui/ks.yaml

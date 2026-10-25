@@ -38,27 +38,3 @@ spec:
     namespace: flux-system
   dependsOn:
     - name: toolhive-operator-crds
----
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: toolhive-operator-config
-spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: toolhive-operator-config
-  targetNamespace: ai
-  path: ./kubernetes/apps/ai/toolhive/config
-  interval: 1h
-  timeout: 5m
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  dependsOn:
-    - name: toolhive-operator-crds
-  postBuild:
-    substitute:
-      APP: toolhive
