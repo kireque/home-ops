@@ -85,7 +85,7 @@ My cluster is a 3-node [Talos Linux](https://www.talos.dev) cluster, currently o
 | `home-automation` | Home Assistant, Zigbee2MQTT, ESPHome, Frigate, Mosquitto |
 | `media` | Jellyfin, Plex, seerr, Tautulli, watchstate, agregarr |
 | `downloads` | sabnzbd, Prowlarr, Sonarr, Radarr, Bazarr, Recyclarr, chaski |
-| `llm-system` | Ollama, Open WebUI, OpenClaw, ToolHive operator + MCP servers (context7, flux, home-assistant, kubectl) |
+| `ai` | LiteLLM (litellm-operator) + MCP servers (context7, home-assistant), Open WebUI, SearXNG |
 | `actions-runner-system` | actions-runner-controller + runners |
 | `system-upgrade` | tuppr |
 

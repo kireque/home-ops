@@ -25,4 +25,3 @@ resources:
   - ./litellm-operator/ks.yaml
   - ./open-webui/ks.yaml
   - ./searxng/ks.yaml
-  - ./toolhive/ks.yaml
