@@ -52,7 +52,7 @@ My cluster is a 3-node [Talos Linux](https://www.talos.dev) cluster, currently o
 - **Image mirroring**: [Spegel](https://github.com/spegel-org/spegel) runs a stateless, cluster-local OCI image mirror so nodes don't all hit the same upstream registry.
 - **CI/CD**: [actions-runner-controller](https://github.com/actions/actions-runner-controller) runs self-hosted GitHub Actions runners inside the cluster.
 - **Upgrades**: [tuppr](https://github.com/home-operations/tuppr) automates Talos and Kubernetes version upgrades.
-- **GPU**: an Intel iGPU on every node is exposed cluster-wide via Kubernetes [Dynamic Resource Allocation](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) (`intel-gpu-resource-driver`), used for Quick Sync hardware transcoding (Jellyfin/Plex) and local LLM inference (Ollama).
+- **GPU**: an Intel iGPU on every node is exposed cluster-wide via Kubernetes [Dynamic Resource Allocation](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) (`intel-gpu-resource-driver`), used for Quick Sync hardware transcoding (Jellyfin) and local LLM inference (Ollama).
 
 ### GitOps
 
@@ -83,7 +83,7 @@ My cluster is a 3-node [Talos Linux](https://www.talos.dev) cluster, currently o
 | `network` | Cilium ingress bits, Envoy Gateway, cloudflare-tunnel, cloudflare-dns, unifi-dns, towonel-agent, echo |
 | `observability` | kube-prometheus-stack, Grafana, VictoriaLogs, fluent-bit, Gatus, kromgo, Headlamp, KEDA, silence-operator, smartctl-exporter, blackbox-exporter |
 | `home-automation` | Home Assistant, Zigbee2MQTT, ESPHome, Frigate, Mosquitto |
-| `media` | Jellyfin, Plex, seerr, Tautulli, watchstate, agregarr |
+| `media` | Jellyfin, seerr, watchstate (Plex, Tautulli and agregarr archived: scaled to zero) |
 | `downloads` | sabnzbd, Prowlarr, Sonarr, Radarr, Bazarr, Recyclarr, chaski |
 | `ai` | LiteLLM (litellm-operator) + MCP servers (context7, home-assistant), Open WebUI, SearXNG |
 | `actions-runner-system` | actions-runner-controller + runners |
