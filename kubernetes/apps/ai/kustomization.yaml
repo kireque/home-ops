@@ -24,5 +24,4 @@ resources:
   - ./hermes/ks.yaml
   - ./litellm/ks.yaml
   - ./litellm-operator/ks.yaml
-  - ./open-webui/ks.yaml
   - ./searxng/ks.yaml
