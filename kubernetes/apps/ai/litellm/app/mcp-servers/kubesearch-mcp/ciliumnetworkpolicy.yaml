@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: kubesearch-mcp
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: kubesearch-mcp
+  # kubesearch-mcp has no auth of its own: only LiteLLM may call it.
+  # Egress stays open: it pulls its index from GitHub releases and clones public repos.
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: ai
+            app.kubernetes.io/managed-by: litellm-operator
+            app.kubernetes.io/name: litellm
+      toPorts:
+        - ports:
+            - port: "3000"
+              protocol: TCP
