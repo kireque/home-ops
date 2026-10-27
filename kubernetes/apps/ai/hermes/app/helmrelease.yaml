@@ -225,7 +225,7 @@ spec:
               - path: /app
       mise:
         type: image
-        image: ghcr.io/jdx/mise:2026.10.19@sha256:6bd2515bf27389f537921fc8c3e5a6579f15cf889a63a8432dc542670174e50a
+        image: ghcr.io/jdx/mise:2026.10.21@sha256:a9a1654a19d150535bcaede142ff69368f18ec11f32986f6ed944d1c811702af
         advancedMounts:
           hermes:
             app:
