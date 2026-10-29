@@ -160,7 +160,6 @@ spec:
               HERMES_WEBUI_STATE_DIR: /home/hermeswebui/.hermes/webui
               HOME: /home/hermeswebui
               LITELLM_API_KEY: *litellmKey
-              OPENAI_API_KEY: *litellmKey
               UV_CACHE_DIR: /uv_cache
               WANTED_GID: "10000"
               WANTED_UID: "10000"
