@@ -264,7 +264,10 @@ def show(number, token):
     print(f"PR #{number}: {pr['title']}")
     print(f"category: {kind}  author: {pr['user']['login']}  head: {pr['head']['sha']}")
     print(f"labels: {', '.join(label['name'] for label in pr['labels'])}\n")
-    print("## Description\n" + (pr["body"] or "(none)")[:12000] + "\n")
+    body = pr["body"] or "(none)"
+    if len(body) > 12000:
+        body = body[:12000] + "\n\n[description truncated: release notes are incomplete]"
+    print("## Description\n" + body + "\n")
     print("## Diff")
     print(diff)
 
