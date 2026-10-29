@@ -54,6 +54,10 @@ DOCS_PATHS = ["*.md", ".agents/*"]
 HUMAN_MAX_FILES = 4
 HUMAN_MAX_LINES = 40
 DOCS_MAX_LINES = 300
+# Version bumps are a few lines; anything bigger needs a human
+RENOVATE_MAX_LINES = 100
+# show prints at most this much; larger diffs are refused, never reviewed partially
+MAX_DIFF_CHARS = 20000
 SECRET_PATTERN = re.compile(r"(?im)^\+.*\b(kind:\s*secret|password|token|private[_-]?key)\b")
 GOOD_CONCLUSIONS = {"success", "skipped", "neutral"}
 
@@ -116,6 +120,9 @@ def category(pr, files):
     labels = {label["name"] for label in pr["labels"]}
     paths = [f["filename"] for f in files]
     if pr["user"]["login"] == RENOVATE_LOGIN and pr["head"]["ref"].startswith("renovate/"):
+        lines = sum(f["additions"] + f["deletions"] for f in files)
+        if lines > RENOVATE_MAX_LINES:
+            raise GateError(f"too large for a version bump ({lines} lines)")
         if "!" in pr["title"].split(":", 1)[0]:
             raise GateError("breaking change (! in title)")
         if "Automerge**: Enabled" in (pr["body"] or ""):
@@ -210,25 +217,33 @@ def scan(token, bot):
             print(f"#{pr['number']} {pr['head']['sha']} {kind} {pr['title']}")
 
 
-def show(number, token):
-    pr, files, kind = gate(number, token, check_ci=False)
-    print(f"PR #{number}: {pr['title']}")
-    print(f"category: {kind}  author: {pr['user']['login']}  head: {pr['head']['sha']}")
-    print(f"labels: {', '.join(label['name'] for label in pr['labels'])}\n")
-    print("## Description\n" + (pr["body"] or "(none)")[:12000] + "\n")
-    print("## Diff")
-    # Diff of exactly the printed head, so a concurrent push can't swap what is reviewed
+def full_diff(pr, token):
+    """Diff of exactly pr's head SHA, refused when show could not print all of it."""
     diff = request(
         "GET",
         f"/repos/{REPO}/compare/{pr['base']['sha']}...{pr['head']['sha']}",
         token,
         accept="application/vnd.github.diff",
     )
-    print(diff[:20000] + ("\n... [diff truncated]" if len(diff) > 20000 else ""))
+    if len(diff) > MAX_DIFF_CHARS:
+        raise GateError(f"diff too large to review in full ({len(diff)} chars)")
+    return diff
+
+
+def show(number, token):
+    pr, files, kind = gate(number, token, check_ci=False)
+    diff = full_diff(pr, token)
+    print(f"PR #{number}: {pr['title']}")
+    print(f"category: {kind}  author: {pr['user']['login']}  head: {pr['head']['sha']}")
+    print(f"labels: {', '.join(label['name'] for label in pr['labels'])}\n")
+    print("## Description\n" + (pr["body"] or "(none)")[:12000] + "\n")
+    print("## Diff")
+    print(diff)
 
 
 def approve(number, sha, summary, token, bot):
     pr, _, kind = gate(number, token, sha=sha)
+    full_diff(pr, token)
     if decided(number, sha, token, bot):
         raise GateError("already declined for this SHA")
     if not approved(number, sha, token, bot):
