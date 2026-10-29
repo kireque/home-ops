@@ -119,12 +119,12 @@ def matches(path, patterns):
 def category(pr, files):
     labels = {label["name"] for label in pr["labels"]}
     paths = [f["filename"] for f in files]
+    if "!" in pr["title"].split(":", 1)[0]:
+        raise GateError("breaking change (! in title)")
     if pr["user"]["login"] == RENOVATE_LOGIN and pr["head"]["ref"].startswith("renovate/"):
         lines = sum(f["additions"] + f["deletions"] for f in files)
         if lines > RENOVATE_MAX_LINES:
             raise GateError(f"too large for a version bump ({lines} lines)")
-        if "!" in pr["title"].split(":", 1)[0]:
-            raise GateError("breaking change (! in title)")
         if "Automerge**: Enabled" in (pr["body"] or ""):
             raise GateError("Renovate automerges this itself")
         for update in ("digest", "patch", "minor"):
