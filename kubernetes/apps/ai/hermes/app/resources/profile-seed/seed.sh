@@ -64,3 +64,17 @@ done
 
 mkdir -p "$data/.local/bin"
 ln -sfn /opt/mise/mise "$data/.local/bin/mise"
+
+install -D -m 755 /seed/pr-gate.py "$data/scripts/pr-gate.py"
+install -D -m 644 /seed/pr-approval-skill.md "$data/skills/devops/home-ops-pr-approval/SKILL.md"
+
+# Register the PR approval job once; its behaviour lives in the skill and helper
+# above, which are refreshed on every start
+if [[ -f /var/run/secrets/hermes-github/app-id ]] &&
+  ! grep -qs '"name": "home-ops-pr-approval"' "$data/cron/jobs.json"; then
+  /opt/hermes/bin/hermes cron create 15m \
+    "Review the candidate pull requests in the monitor output using the home-ops-pr-approval skill." \
+    --name home-ops-pr-approval \
+    --skill home-ops-pr-approval \
+    --monitor-script pr-gate.py
+fi

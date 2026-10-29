@@ -45,6 +45,8 @@ spec:
                   secretKeyRef:
                     name: hermes-litellm
                     key: key
+              # seed.sh registers cron jobs with the hermes CLI
+              HERMES_HOME: /opt/data
               SEARXNG_URL: &searxng http://searxng.ai.svc.cluster.local:8080
             resources:
               requests:
@@ -138,6 +140,34 @@ spec:
               limits:
                 memory: 1Gi
             securityContext: *securityContext
+          # Holds the GitHub App key and enforces the PR approval rules, so the key
+          # never reaches the agent's shell. Loopback only; the agent calls it via pr-gate.py
+          pr-gate:
+            image: *image
+            command:
+              - /opt/hermes/.venv/bin/python3
+              - /seed/pr-gate-server.py
+            env:
+              PYTHONUNBUFFERED: "1"
+            probes:
+              liveness: &prGateProbes
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /opt/hermes/.venv/bin/python3
+                      - -c
+                      - import urllib.request; urllib.request.urlopen("http://127.0.0.1:8765/healthz", timeout=3)
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+              readiness: *prGateProbes
+            resources:
+              requests:
+                cpu: 5m
+              limits:
+                memory: 128Mi
+            securityContext: *securityContext
           webui:
             image:
               repository: ghcr.io/nesquena/hermes-webui
@@ -223,6 +253,24 @@ spec:
           hermes:
             webui:
               - path: /app
+      # GitHub App identity for PR approvals. Only the pr-gate sidecar may read it;
+      # never mount it into app, where the agent has a shell. Optional so Hermes
+      # still starts before the App exists; seed.sh then skips the cron job
+      github-app:
+        type: custom
+        volumeSpec:
+          secret:
+            secretName: hermes-github
+            defaultMode: 288
+            optional: true
+        advancedMounts:
+          hermes:
+            pr-gate:
+              - path: &githubApp /var/run/secrets/hermes-github
+                readOnly: true
+            profile-seed:
+              - path: *githubApp
+                readOnly: true
       mise:
         type: image
         image: ghcr.io/jdx/mise:2026.10.23@sha256:c13bf248d1d2939fb0597df3fbeeac5bd39c53d0210364d1ca00b126ed1212d2
@@ -241,6 +289,9 @@ spec:
         name: hermes-profile-seed
         advancedMounts:
           hermes:
+            pr-gate:
+              - path: /seed
+                readOnly: true
             profile-seed:
               - path: /seed
                 readOnly: true
