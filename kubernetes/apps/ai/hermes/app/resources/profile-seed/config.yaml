@@ -8,6 +8,14 @@ providers:
     key_env: LITELLM_API_KEY
     transport: chat_completions
     discover_models: true
+    # The WebUI picker can't live-discover custom providers; it only lists
+    # these. Keep in sync with the models in ../../litellmvirtualkey.yaml.
+    models:
+      - gpt-6.1-sol
+      - gpt-6.1-terra
+      - gpt-5.6-sol
+      - gpt-5.4
+      - gpt-chat-latest
 
 model:
   default: gpt-6.1-sol
