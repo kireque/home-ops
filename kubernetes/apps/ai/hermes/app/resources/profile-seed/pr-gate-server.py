@@ -183,7 +183,7 @@ def decided(number, sha, token, bot):
     """Hermes already declined this exact head SHA.
 
     An approval alone is not final: an open PR carrying one means the merge
-    failed, so it stays a candidate and approve() retries the merge.
+    failed, and scan() retries it.
     """
     for comment in paginate(f"/repos/{REPO}/issues/{number}/comments", token):
         if comment["user"]["login"] == bot and f"{MARKER} sha={sha}" in comment["body"]:
@@ -219,12 +219,24 @@ def gate(number, token, sha=None, check_ci=True):
 def scan(token, bot):
     # Output must be byte-stable between ticks: the cron monitor only wakes the agent on change
     for pr in paginate(f"/repos/{REPO}/pulls?state=open&base={BASE}&sort=created&direction=asc", token):
+        number = pr["number"]
         try:
-            _, _, kind = gate(pr["number"], token)
+            pr, _, kind = gate(number, token)
         except GateError:
             continue
-        if not decided(pr["number"], pr["head"]["sha"], token, bot):
-            print(f"#{pr['number']} {pr['head']['sha']} {kind} {pr['title']}")
+        sha = pr["head"]["sha"]
+        if decided(number, sha, token, bot):
+            continue
+        if approved(number, sha, token, bot):
+            # Hermes already approved this exact head and the gate still passes, so
+            # retry the merge here: the candidate line would not change and would
+            # never wake the agent again. Bounded by the cron schedule.
+            try:
+                merge(pr, sha, token)
+            except GateError as err:
+                print(f"merge retry for #{number} failed: {err}", file=sys.__stderr__, flush=True)
+            continue
+        print(f"#{number} {sha} {kind} {pr['title']}")
 
 
 def full_diff(pr, token):
@@ -251,6 +263,15 @@ def show(number, token):
     print(diff)
 
 
+def merge(pr, sha, token):
+    merged = request("PUT", f"/repos/{REPO}/pulls/{pr['number']}/merge", token, {
+        "sha": sha,
+        "merge_method": "squash",
+        "commit_title": f"{pr['title']} (#{pr['number']})",
+    })
+    return merged["sha"]
+
+
 def approve(number, sha, summary, token, bot):
     pr, _, kind = gate(number, token, sha=sha)
     full_diff(pr, token)
@@ -262,12 +283,7 @@ def approve(number, sha, summary, token, bot):
             "event": "APPROVE",
             "body": f"{summary}\n\n_Approved by Hermes ({kind})._\n{MARKER} sha={sha} decision=approve -->",
         })
-    merged = request("PUT", f"/repos/{REPO}/pulls/{number}/merge", token, {
-        "sha": sha,
-        "merge_method": "squash",
-        "commit_title": f"{pr['title']} (#{number})",
-    })
-    print(f"approved and merged #{number} as {merged['sha']}")
+    print(f"approved and merged #{number} as {merge(pr, sha, token)}")
 
 
 def decline(number, sha, reason, token, bot):
