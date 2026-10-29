@@ -159,7 +159,7 @@ spec:
               HERMES_WEBUI_PORT: &port 8787
               HERMES_WEBUI_STATE_DIR: /home/hermeswebui/.hermes/webui
               HOME: /home/hermeswebui
-              OPENAI_API_KEY: *litellmKey
+              LITELLM_API_KEY: *litellmKey
               UV_CACHE_DIR: /uv_cache
               WANTED_GID: "10000"
               WANTED_UID: "10000"
