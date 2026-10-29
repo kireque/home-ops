@@ -68,6 +68,7 @@ DOCS_MAX_LINES = 300
 RENOVATE_MAX_LINES = 100
 # show prints at most this much; larger diffs are refused, never reviewed partially
 MAX_DIFF_CHARS = 20000
+CRD_PATTERN = re.compile(r"(?im)^\+\s*kind:\s*CustomResourceDefinition\b")
 SECRET_PATTERN = re.compile(r"(?im)^\+.*\b(kind:\s*secret|password|token|private[_-]?key)\b")
 GOOD_CONCLUSIONS = {"success", "skipped", "neutral"}
 
@@ -153,6 +154,8 @@ def category(pr, files):
             raise GateError("removes or renames files")
         if any(SECRET_PATTERN.search(f.get("patch", "")) for f in files):
             raise GateError("diff mentions secrets")
+        if any(CRD_PATTERN.search(f.get("patch", "")) for f in files):
+            raise GateError("adds or changes a CRD")
         return "human-small"
     raise GateError(f"author {pr['user']['login']} not allowed")
 
