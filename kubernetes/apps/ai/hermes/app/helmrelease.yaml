@@ -140,6 +140,34 @@ spec:
               limits:
                 memory: 1Gi
             securityContext: *securityContext
+          # Holds the GitHub App key and enforces the PR approval rules, so the key
+          # never reaches the agent's shell. Loopback only; the agent calls it via pr-gate.py
+          pr-gate:
+            image: *image
+            command:
+              - /opt/hermes/.venv/bin/python3
+              - /seed/pr-gate-server.py
+            env:
+              PYTHONUNBUFFERED: "1"
+            probes:
+              liveness: &prGateProbes
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /opt/hermes/.venv/bin/python3
+                      - -c
+                      - import urllib.request; urllib.request.urlopen("http://127.0.0.1:8765/healthz", timeout=3)
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+              readiness: *prGateProbes
+            resources:
+              requests:
+                cpu: 5m
+              limits:
+                memory: 128Mi
+            securityContext: *securityContext
           webui:
             image:
               repository: ghcr.io/nesquena/hermes-webui
@@ -225,7 +253,8 @@ spec:
           hermes:
             webui:
               - path: /app
-      # GitHub App identity for PR approvals, read by pr-gate.py. Optional so Hermes
+      # GitHub App identity for PR approvals. Only the pr-gate sidecar may read it;
+      # never mount it into app, where the agent has a shell. Optional so Hermes
       # still starts before the App exists; seed.sh then skips the cron job
       github-app:
         type: custom
@@ -236,7 +265,7 @@ spec:
             optional: true
         advancedMounts:
           hermes:
-            app:
+            pr-gate:
               - path: &githubApp /var/run/secrets/hermes-github
                 readOnly: true
             profile-seed:
@@ -260,6 +289,9 @@ spec:
         name: hermes-profile-seed
         advancedMounts:
           hermes:
+            pr-gate:
+              - path: /seed
+                readOnly: true
             profile-seed:
               - path: /seed
                 readOnly: true

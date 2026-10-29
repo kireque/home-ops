@@ -14,6 +14,7 @@ configMapGenerator:
     files:
       - ./resources/profile-seed/config.yaml
       - ./resources/profile-seed/pr-approval-skill.md
+      - ./resources/profile-seed/pr-gate-server.py
       - ./resources/profile-seed/pr-gate.py
       - ./resources/profile-seed/SOUL.md
       - ./resources/profile-seed/seed.sh
