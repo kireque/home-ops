@@ -3,6 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 configMapGenerator:
   - files:
       - refresh-series.sh=./resources/refresh-series.sh
+      - theme-music.sh=./resources/theme-music.sh
       - tag-resolution.sh=./resources/tag-resolution.sh
     name: sonarr-configmap
 generatorOptions:

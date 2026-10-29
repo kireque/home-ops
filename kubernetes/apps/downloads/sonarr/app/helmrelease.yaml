@@ -35,7 +35,7 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
-            image:
+            image: &image
               repository: ghcr.io/home-operations/sonarr
               tag: 5.0.0.2838@sha256:5d4f89a36a06fe44039e7533e743b4c7bf0e0d82868c86ea8ed8178abd1cbe4b
             env:
@@ -47,7 +47,7 @@ spec:
               SONARR__LOG__LEVEL: info
               SONARR__SERVER__PORT: &port 80
               SONARR__UPDATE__BRANCH: develop
-            envFrom:
+            envFrom: &envFrom
               - externalSecretRef:
                   identifier: sonarr
             probes:
@@ -72,7 +72,7 @@ spec:
                 spec:
                   failureThreshold: 30
                   periodSeconds: 10
-            securityContext:
+            securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
@@ -82,8 +82,34 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
+      # theme.mp3 per series folder, played by Silo on the detail page
+      theme-music:
+        type: cronjob
+        cronjob:
+          schedule: 30 4 * * *
+          backoffLimit: 0
+          concurrencyPolicy: Forbid
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+          ttlSecondsAfterFinished: 86400
+        containers:
+          app:
+            image: *image
+            envFrom: *envFrom
+            command:
+              - /scripts/theme-music.sh
+            securityContext: *securityContext
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+        pod:
+          restartPolicy: Never
     service:
       app:
+        controller: sonarr
         ports:
           http:
             port: *port
@@ -97,6 +123,10 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
+        advancedMounts:
+          sonarr:
+            app:
+              - path: /config
       scripts:
         type: configMap
         name: sonarr-configmap
