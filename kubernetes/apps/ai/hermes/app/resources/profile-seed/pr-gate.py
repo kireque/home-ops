@@ -54,7 +54,7 @@ DOCS_PATHS = ["*.md", ".agents/*"]
 HUMAN_MAX_FILES = 4
 HUMAN_MAX_LINES = 40
 DOCS_MAX_LINES = 300
-SECRET_PATTERN = re.compile(r"(?i)^\+.*\b(kind:\s*secret|password|token|private[_-]?key)\b")
+SECRET_PATTERN = re.compile(r"(?im)^\+.*\b(kind:\s*secret|password|token|private[_-]?key)\b")
 GOOD_CONCLUSIONS = {"success", "skipped", "neutral"}
 
 
@@ -155,11 +155,19 @@ def ci_green(sha, token):
         raise GateError(f"commit status {status['state']}")
 
 
+def approved(number, sha, token, bot):
+    return any(
+        review["user"]["login"] == bot and review["commit_id"] == sha and review["state"] == "APPROVED"
+        for review in paginate(f"/repos/{REPO}/pulls/{number}/reviews", token)
+    )
+
+
 def decided(number, sha, token, bot):
-    """Hermes already approved or declined this exact head SHA."""
-    for review in paginate(f"/repos/{REPO}/pulls/{number}/reviews", token):
-        if review["user"]["login"] == bot and review["commit_id"] == sha:
-            return True
+    """Hermes already declined this exact head SHA.
+
+    An approval alone is not final: an open PR carrying one means the merge
+    failed, so it stays a candidate and approve() retries the merge.
+    """
     for comment in paginate(f"/repos/{REPO}/issues/{number}/comments", token):
         if comment["user"]["login"] == bot and f"{MARKER} sha={sha}" in comment["body"]:
             return True
@@ -209,19 +217,26 @@ def show(number, token):
     print(f"labels: {', '.join(label['name'] for label in pr['labels'])}\n")
     print("## Description\n" + (pr["body"] or "(none)")[:12000] + "\n")
     print("## Diff")
-    diff = request("GET", f"/repos/{REPO}/pulls/{number}", token, accept="application/vnd.github.diff")
+    # Diff of exactly the printed head, so a concurrent push can't swap what is reviewed
+    diff = request(
+        "GET",
+        f"/repos/{REPO}/compare/{pr['base']['sha']}...{pr['head']['sha']}",
+        token,
+        accept="application/vnd.github.diff",
+    )
     print(diff[:20000] + ("\n... [diff truncated]" if len(diff) > 20000 else ""))
 
 
 def approve(number, sha, summary, token, bot):
     pr, _, kind = gate(number, token, sha=sha)
     if decided(number, sha, token, bot):
-        raise GateError("already decided for this SHA")
-    request("POST", f"/repos/{REPO}/pulls/{number}/reviews", token, {
-        "commit_id": sha,
-        "event": "APPROVE",
-        "body": f"{summary}\n\n_Approved by Hermes ({kind})._\n{MARKER} sha={sha} decision=approve -->",
-    })
+        raise GateError("already declined for this SHA")
+    if not approved(number, sha, token, bot):
+        request("POST", f"/repos/{REPO}/pulls/{number}/reviews", token, {
+            "commit_id": sha,
+            "event": "APPROVE",
+            "body": f"{summary}\n\n_Approved by Hermes ({kind})._\n{MARKER} sha={sha} decision=approve -->",
+        })
     merged = request("PUT", f"/repos/{REPO}/pulls/{number}/merge", token, {
         "sha": sha,
         "merge_method": "squash",
