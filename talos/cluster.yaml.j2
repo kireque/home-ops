@@ -28,7 +28,8 @@ name: bond0
 links:
   - net0
 bondMode: active-backup
-mtu: 9000
+# Jumbo frames make e1000e cap CPU wake-up latency (~42us), blocking C-states below C1E
+mtu: 1500
 ---
 apiVersion: v1alpha1
 kind: DHCPv4Config
@@ -40,7 +41,7 @@ kind: VLANConfig
 name: bond0.40
 vlanID: 40
 parent: bond0
-mtu: 9000
+mtu: 1500
 ---
 apiVersion: v1alpha1
 kind: EthernetConfig
