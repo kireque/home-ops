@@ -89,6 +89,8 @@ spec:
               claims:
                 - name: gpu
               limits:
+                # Background tasks can otherwise saturate the node for hours
+                cpu: 4
                 memory: 8Gi
               requests:
                 cpu: 100m
