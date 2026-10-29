@@ -4,7 +4,7 @@ _config_version: 46
 providers:
   litellm:
     name: LiteLLM
-    api: http://litellm.ai.svc.cluster.local:4000/v1
+    base_url: http://litellm.ai.svc.cluster.local:4000/v1
     key_env: LITELLM_API_KEY
     transport: chat_completions
     discover_models: true
