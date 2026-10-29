@@ -22,8 +22,9 @@ message from the helper.
 
 ## Procedure
 
-The monitor output lists undecided candidates as `#<pr> <head-sha> <category> <title>`. If it lists
-none, stop and reply `No PRs to review.` For each candidate:
+The monitor output lists undecided candidates as `#<pr> <head-sha> <category> <title>`, under a
+`retry window:` line that only exists to re-wake you; ignore it. If it lists no candidates, stop and
+reply `No PRs to review.` For each candidate:
 
 1. Run `python3 /opt/data/scripts/pr-gate.py show <pr>` and read the description and full diff.
 2. Decide using the rules for its category below.

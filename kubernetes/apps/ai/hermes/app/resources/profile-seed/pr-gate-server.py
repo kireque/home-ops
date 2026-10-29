@@ -218,6 +218,7 @@ def gate(number, token, sha=None, check_ci=True):
 
 def scan(token, bot):
     # Output must be byte-stable between ticks: the cron monitor only wakes the agent on change
+    lines = []
     for pr in paginate(f"/repos/{REPO}/pulls?state=open&base={BASE}&sort=created&direction=asc", token):
         number = pr["number"]
         try:
@@ -236,7 +237,12 @@ def scan(token, bot):
             except GateError as err:
                 print(f"merge retry for #{number} failed: {err}", file=sys.__stderr__, flush=True)
             continue
-        print(f"#{number} {sha} {kind} {pr['title']}")
+        lines.append(f"#{number} {sha} {kind} {pr['title']}")
+    if lines:
+        # Changes every 6h, so candidates left undecided by a failed agent run are retried
+        hour = time.gmtime().tm_hour // 6 * 6
+        print(f"retry window: {time.strftime('%Y-%m-%d', time.gmtime())}T{hour:02d}Z")
+        print("\n".join(lines))
 
 
 def full_diff(pr, token):
