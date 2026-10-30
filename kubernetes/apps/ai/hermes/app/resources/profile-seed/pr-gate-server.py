@@ -77,6 +77,10 @@ class GateError(Exception):
     pass
 
 
+class Ineligible(GateError):
+    """Holds for the whole head SHA, so scan() tells the PR why it is left for a human."""
+
+
 def request(method, path, token, body=None, accept="application/vnd.github+json"):
     data = json.dumps(body).encode() if body is not None else None
     req = urllib.request.Request(
@@ -210,8 +214,11 @@ def gate(number, token, sha=None, check_ci=True):
     denied = [f["filename"] for f in files if matches(f["filename"], DENY_PATHS)]
     denied += [f["previous_filename"] for f in files if matches(f.get("previous_filename", ""), DENY_PATHS)]
     if denied:
-        raise GateError(f"touches protected paths: {', '.join(denied)}")
-    kind = category(pr, files)
+        raise Ineligible(f"touches protected paths: {', '.join(denied)}")
+    try:
+        kind = category(pr, files)
+    except GateError as err:
+        raise Ineligible(str(err)) from None
     if check_ci:
         ci_green(pr["head"]["sha"], token)
         if pr["mergeable_state"] != "clean":
@@ -226,7 +233,19 @@ def scan(token, bot):
         number = pr["number"]
         try:
             pr, _, kind = gate(number, token)
-        except GateError:
+        except Ineligible as err:
+            # Never reaches the agent, so say why on the PR, once per head SHA
+            print(f"skip #{number}: {err}", file=sys.__stderr__, flush=True)
+            sha = pr["head"]["sha"]
+            try:
+                if not decided(number, sha, token, bot):
+                    leave_for_human(number, sha, f"{err} (pr-gate rule)", token)
+            except GateError as comment_err:
+                print(f"comment on #{number} failed: {comment_err}", file=sys.__stderr__, flush=True)
+            continue
+        except GateError as err:
+            # Transient (CI, mergeability, draft, hold label): retried next tick
+            print(f"skip #{number}: {err}", file=sys.__stderr__, flush=True)
             continue
         sha = pr["head"]["sha"]
         if decided(number, sha, token, bot):
@@ -298,12 +317,16 @@ def approve(number, sha, summary, token, bot):
     print(f"approved and merged #{number} as {merge(pr, sha, token)}")
 
 
-def decline(number, sha, reason, token, bot):
-    if decided(number, sha, token, bot):
-        raise GateError("already decided for this SHA")
+def leave_for_human(number, sha, reason, token):
     request("POST", f"/repos/{REPO}/issues/{number}/comments", token, {
         "body": f"Hermes is leaving this one for a human: {reason}\n{MARKER} sha={sha} decision=decline -->",
     })
+
+
+def decline(number, sha, reason, token, bot):
+    if decided(number, sha, token, bot):
+        raise GateError("already decided for this SHA")
+    leave_for_human(number, sha, reason, token)
     print(f"declined #{number}")
 
 
