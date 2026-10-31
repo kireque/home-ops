@@ -62,7 +62,7 @@ spec:
           app:
             image: &image
               repository: ghcr.io/silo-server/silo-server
-              tag: build-1819@sha256:e864a916b2917ca7924553d5ba493001d29ac461732083c89c9ce4ce5c1bf7a3
+              tag: build-1871@sha256:61f056d86da4559e349bf118ba409be7fcdb485e01751dd039b9a625d7ac3d1a
             env: &env
               HOME: /tmp
               JF_PORT: &jfPort 8096
