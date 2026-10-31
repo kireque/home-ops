@@ -1,0 +1,15 @@
+---
+# Creates UniFi DNS records for containers labelled dexd.enabled, from their
+# traefik Host() rules, pointing at the docker apps IP.
+name: dexd
+services:
+  dexd:
+    container_name: dexd
+    environment:
+      DEFAULT_TARGET: 10.1.6.21
+      UNIFI_API_KEY: ${DEXD_UNIFI_API_KEY}
+      UNIFI_HOST: https://10.1.1.1
+    image: ghcr.io/ishioni/dexd:0.4.5@sha256:f1e793713645dfe1aa2f7c85ee89814e5e96741d83c2a927a25700f910c5db21
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro

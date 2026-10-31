@@ -95,3 +95,18 @@
           retries: 30
           delay: 10
           when: not ansible_check_mode
+
+    # doco-cd bind-mounts these into the garage stack; docker won't create them.
+    - name: garage | Create data directories
+      tags:
+        - garage
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: "568"
+        group: "568"
+        mode: "0750"
+      loop:
+        - /mnt/tank/apps/garage
+        - /mnt/tank/apps/garage/data
+        - /mnt/tank/apps/garage/meta
