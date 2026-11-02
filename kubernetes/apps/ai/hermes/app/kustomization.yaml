@@ -6,6 +6,7 @@ resources:
   - ./ciliumnetworkpolicy.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./kanidmoauth2client.yaml
   - ./litellmteam.yaml
   - ./litellmvirtualkey.yaml
   - ./ocirepository.yaml

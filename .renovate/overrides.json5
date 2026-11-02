@@ -22,6 +22,14 @@
       allowedVersions: "<1.12.0",
     },
     {
+      // Hermes moved from calendar tags (v2026.9.24) to semver (v0.22.x); the
+      // old calendar tags would otherwise always look newer
+      description: "Ignore Hermes Agent's retired calendar-version tags",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["docker.io/nousresearch/hermes-agent"],
+      allowedVersions: "!/^v20\\d\\d\\./",
+    },
+    {
       description: "SearXNG tags are <date>-<commit>; compare on the date only",
       matchDatasources: ["docker"],
       matchPackageNames: ["docker.io/searxng/searxng"],

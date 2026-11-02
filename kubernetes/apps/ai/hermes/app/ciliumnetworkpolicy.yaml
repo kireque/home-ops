@@ -8,7 +8,7 @@ spec:
   endpointSelector:
     matchLabels:
       app.kubernetes.io/name: hermes
-  # The agent has a shell: only the internal gateway may reach the WebUI.
+  # The agent has a shell: only the internal gateway may reach the Webapp and Dashboard.
   ingress:
     - fromEndpoints:
         - matchLabels:
@@ -16,7 +16,9 @@ spec:
             gateway.networking.k8s.io/gateway-name: envoy-internal
       toPorts:
         - ports:
-            - port: "8787"
+            - port: "9119"
+              protocol: TCP
+            - port: "9120"
               protocol: TCP
     # With DSR and host-only socket LB, a same-node ClusterIP backend's replies
     # arrive already reverse-NATed to the service IP, miss conntrack and hit
@@ -32,8 +34,12 @@ spec:
         - matchLabels:
             k8s:io.kubernetes.pod.namespace: kube-system
             k8s-app: kube-dns
-  # Egress is allowlisted: LiteLLM (models + MCP), SearXNG, and the package
-  # and source hosts mise/uv need. Everything else is dropped.
+        # Kanidm sign-in goes out through envoy-internal
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: network
+            gateway.networking.k8s.io/gateway-name: envoy-internal
+  # Egress is allowlisted: LiteLLM (models + MCP), SearXNG, Kanidm for sign-in,
+  # and the package and source hosts mise/uv need. Everything else is dropped.
   egress:
     - toEndpoints:
         - matchLabels:
@@ -52,6 +58,18 @@ spec:
         - ports:
             - port: "8080"
               protocol: TCP
+    # Kanidm (OIDC discovery and token exchange) is only reachable through
+    # envoy-internal, whose HTTPS listener is 10443 on the pod
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: network
+            gateway.networking.k8s.io/gateway-name: envoy-internal
+      toPorts:
+        - ports:
+            - port: "10443"
+              protocol: TCP
+          serverNames:
+            - idm.econline.nl
     # No cluster-wide DNS allow exists; the dns rule also feeds toFQDNs below.
     - toEndpoints:
         - matchLabels:

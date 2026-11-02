@@ -30,7 +30,7 @@ spec:
           profile-seed:
             image: &image
               repository: docker.io/nousresearch/hermes-agent
-              tag: v2026.9.24@sha256:fca358f12efd65bfaaca05884166f15c0e2788375ca30d77061ac1ebc96452b7
+              tag: v0.22.6@sha256:d27689bc6e8581ec884a7227c9101fdaebf6c853cff8859020dac14f21452b4d
             command:
               - /bin/bash
               - /seed/seed.sh
@@ -81,12 +81,21 @@ spec:
         containers:
           app:
             image: *image
+            # Start the gateway (which serves the Webapp) under s6
             args:
-              - sleep
-              - infinity
+              - gateway
+              - run
             env:
               API_SERVER_KEY: *apiServerKey
               BASH_ENV: /opt/data/.hermes-terminal-env.sh
+              HERMES_DASHBOARD: "true"
+              HERMES_DASHBOARD_HOST: 0.0.0.0
+              HERMES_DASHBOARD_OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: hermes-kanidm-oauth2-credentials
+                    key: CLIENT_SECRET
+              HERMES_DASHBOARD_PORT: "9119"
               HERMES_DISABLE_LAZY_INSTALLS: "true"
               HERMES_HOME: /opt/data
               HERMES_WRITE_SAFE_ROOT: /opt/data
@@ -134,11 +143,12 @@ spec:
                   failureThreshold: 30
                   periodSeconds: 10
                   timeoutSeconds: 5
+            # The gateway now also serves the Webapp and the Dashboard
             resources:
               requests:
-                cpu: 10m
+                cpu: 100m
               limits:
-                memory: 1Gi
+                memory: 4Gi
             securityContext: *securityContext
           # Holds the GitHub App key and enforces the PR approval rules, so the key
           # never reaches the agent's shell. Loopback only; the agent calls it via pr-gate.py
@@ -168,63 +178,6 @@ spec:
               limits:
                 memory: 128Mi
             securityContext: *securityContext
-          webui:
-            image:
-              repository: ghcr.io/nesquena/hermes-webui
-              tag: 0.52.578@sha256:ac3bb983530bd5b50353ea0d64d8a3d9efc30a7b2cfa2ae5c92c0abfb88e0bde
-            env:
-              HERMES_API_URL: http://127.0.0.1:8642
-              HERMES_HOME: /home/hermeswebui/.hermes
-              HERMES_WEBUI_CHAT_BACKEND: gateway
-              HERMES_WEBUI_DEFAULT_WORKSPACE: /home/hermeswebui/.hermes/workspace
-              HERMES_WEBUI_GATEWAY_API_KEY: *apiServerKey
-              HERMES_WEBUI_GATEWAY_BASE_URL: http://127.0.0.1:8642
-              HERMES_WEBUI_GATEWAY_USE_RUNS_API: "true"
-              HERMES_WEBUI_HOST: 0.0.0.0
-              HERMES_WEBUI_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: hermes-secret
-                    key: WEBUI_PASSWORD
-              HERMES_WEBUI_PORT: &port 8787
-              HERMES_WEBUI_STATE_DIR: /home/hermeswebui/.hermes/webui
-              HOME: /home/hermeswebui
-              LITELLM_API_KEY: *litellmKey
-              UV_CACHE_DIR: /uv_cache
-              WANTED_GID: "10000"
-              WANTED_UID: "10000"
-            # The init script runs as PID 1 without forwarding SIGTERM; signal server.py directly
-            lifecycle:
-              preStop:
-                exec:
-                  command:
-                    - /bin/sh
-                    - -c
-                    - kill -TERM $(cat /proc/1/task/1/children)
-            probes:
-              liveness: &webuiProbes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: *port
-              readiness: *webuiProbes
-              startup:
-                enabled: true
-                custom: true
-                spec:
-                  failureThreshold: 90
-                  httpGet:
-                    path: /health
-                    port: *port
-                  periodSeconds: 10
-            resources:
-              requests:
-                cpu: 100m
-              limits:
-                memory: 4Gi
-            securityContext: *securityContext
     persistence:
       data:
         existingClaim: hermes
@@ -236,23 +189,6 @@ spec:
               - path: /opt/data
             profile-seed:
               - path: /opt/data
-            webui:
-              - path: /home/hermeswebui/.hermes
-      agent-source:
-        type: image
-        image: *image
-        advancedMounts:
-          hermes:
-            webui:
-              - path: /home/hermeswebui/.hermes/hermes-agent
-                subPath: opt/hermes
-                readOnly: true
-      app:
-        type: emptyDir
-        advancedMounts:
-          hermes:
-            webui:
-              - path: /app
       # GitHub App identity for PR approvals. Only the pr-gate sidecar may read it;
       # never mount it into app, where the agent has a shell. Optional so Hermes
       # still starts before the App exists; seed.sh then skips the cron job
@@ -303,21 +239,36 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /tmp
-      uv-cache:
-        type: emptyDir
-        advancedMounts:
-          hermes:
-            webui:
-              - path: /uv_cache
     route:
-      app:
+      dashboard:
+        hostnames:
+          - hermes-dash.econline.nl
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: dashboard
+      webapp:
         hostnames:
           - hermes.econline.nl
         parentRefs:
           - name: envoy-internal
             namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: webapp
+            # Chats stream over long-lived websockets
+            timeouts:
+              request: 0s
     service:
       app:
         ports:
-          http:
-            port: *port
+          dashboard:
+            appProtocol: kubernetes.io/wss
+            port: 9119
+          webapp:
+            appProtocol: kubernetes.io/wss
+            port: 9120

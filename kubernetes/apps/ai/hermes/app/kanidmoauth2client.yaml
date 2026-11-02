@@ -1,0 +1,40 @@
+---
+# TODO: add schema
+# Every member gets full agent (shell) access; Kanidm only issues tokens to this group
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmGroup
+metadata:
+  name: hermes-admins
+spec:
+  kanidmRef:
+    name: sso
+    namespace: security
+  members:
+    - erik
+---
+# TODO: add schema
+# Confidential client shared by the native Webapp and the Dashboard; both also use PKCE.
+# kaniop writes the credentials to hermes-kanidm-oauth2-credentials.
+# Issuer: https://idm.econline.nl/oauth2/openid/hermes
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmOAuth2Client
+metadata:
+  name: hermes
+spec:
+  disableConsentPrompt: true
+  displayname: Hermes
+  kanidmRef:
+    name: sso
+    namespace: security
+  origin: https://hermes.econline.nl/
+  preferShortUsername: true
+  redirectUrl:
+    - https://hermes.econline.nl/auth/callback
+    - https://hermes-dash.econline.nl/auth/callback
+  scopeMap:
+    - group: hermes-admins@idm.econline.nl
+      scopes:
+        - email
+        - openid
+        - profile
+  strictRedirectUrl: true
