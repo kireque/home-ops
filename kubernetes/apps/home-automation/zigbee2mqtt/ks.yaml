@@ -22,3 +22,31 @@ spec:
   postBuild:
     substitute:
       APP: zigbee2mqtt
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: zigbee2mqtt-oidc
+spec:
+  # The frontend controls and re-pairs every Zigbee device
+  components:
+    - ../../../../components/oidc
+  targetNamespace: home-automation
+  path: ./kubernetes/apps/home-automation/zigbee2mqtt/oidc
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: kanidm
+      namespace: security
+    - name: zigbee2mqtt
+  postBuild:
+    substitute:
+      APP: zigbee2mqtt
+      OIDC_HOSTNAME: zigbee2mqtt.econline.nl
+      OIDC_ROUTE: zigbee2mqtt
