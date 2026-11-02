@@ -20,6 +20,15 @@
       versioning: "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-[0-9a-f]+$",
     },
     {
+      // A month rollover parses as a minor, but SearXNG ships continuously and
+      // publishes no release notes, so it carries no more risk than a daily bump
+      description: "Label SearXNG month rollovers like the daily patch bumps",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["docker.io/searxng/searxng"],
+      matchUpdateTypes: ["minor"],
+      labels: ["type/patch"],
+    },
+    {
       description: "Silo publishes ordered build-N tags and has no downgrade path; never automerge",
       matchDatasources: ["docker"],
       matchPackageNames: ["ghcr.io/silo-server/silo-server"],

@@ -68,5 +68,12 @@
       matchCurrentVersion: "/^v?0\\./",
       additionalBranchPrefix: "major-",
     },
+    {
+      description: "Title SearXNG month rollovers as fixes, matching their type/patch label",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["docker.io/searxng/searxng"],
+      matchUpdateTypes: ["minor"],
+      semanticCommitType: "fix",
+    },
   ],
 }
