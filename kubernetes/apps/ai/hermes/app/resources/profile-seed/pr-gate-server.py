@@ -71,6 +71,9 @@ MAX_DIFF_CHARS = 20000
 CRD_PATTERN = re.compile(r"(?im)^\+\s*kind:\s*CustomResourceDefinition\b")
 SECRET_PATTERN = re.compile(r"(?im)^\+.*\b(kind:\s*secret|password|token|private[_-]?key)\b")
 GOOD_CONCLUSIONS = {"success", "skipped", "neutral"}
+# GitHub needs a few seconds to recompute mergeability after main moves
+MERGEABLE_RETRIES = 5
+MERGEABLE_DELAY = 3
 
 
 class GateError(Exception):
@@ -198,6 +201,21 @@ def decided(number, sha, token, bot):
     return False
 
 
+def settled(pr, token):
+    """Re-read pr until GitHub has finished computing its mergeability.
+
+    Every merge moves main, and GitHub then recomputes mergeable_state for all
+    open PRs in the background, reporting "unknown" for a few seconds. Without
+    this wait only the first approval of a run could merge.
+    """
+    for _ in range(MERGEABLE_RETRIES):
+        if pr["mergeable_state"] != "unknown":
+            break
+        time.sleep(MERGEABLE_DELAY)
+        pr = request("GET", f"/repos/{REPO}/pulls/{pr['number']}", token)
+    return pr
+
+
 def gate(number, token, sha=None, check_ci=True):
     """Return (pr, files, category) or raise GateError with the reason."""
     pr = request("GET", f"/repos/{REPO}/pulls/{number}", token)
@@ -221,6 +239,9 @@ def gate(number, token, sha=None, check_ci=True):
         raise Ineligible(str(err)) from None
     if check_ci:
         ci_green(pr["head"]["sha"], token)
+        pr = settled(pr, token)
+        if sha and pr["head"]["sha"] != sha:
+            raise GateError(f"head moved to {pr['head']['sha']}; review again")
         if pr["mergeable_state"] != "clean":
             raise GateError(f"mergeable_state is {pr['mergeable_state']}")
     return pr, files, kind
