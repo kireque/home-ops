@@ -56,13 +56,13 @@ volumes:
   data:
     driver: local
     driver_opts:
-      device: /mnt/tank/apps/garage/data
+      device: /mnt/tank/garage/data
       o: bind
       type: none
   meta:
     driver: local
     driver_opts:
-      device: /mnt/tank/apps/garage/meta
+      device: /mnt/tank/garage/meta
       o: bind
       type: none
   garage-ui-data:
