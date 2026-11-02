@@ -14,3 +14,32 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: flux-operator-oidc
+spec:
+  # The web UI is anonymous with flux-admin rights; sign-in is enforced at the
+  # gateway instead, so the operator itself never depends on Kanidm at bootstrap
+  components:
+    - ../../../../components/oidc
+  targetNamespace: flux-system
+  path: ./kubernetes/apps/flux-system/flux-operator/oidc
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: flux-operator
+    - name: kanidm
+      namespace: security
+  postBuild:
+    substitute:
+      APP: flux-operator
+      OIDC_HOSTNAME: flux-operator.econline.nl
+      OIDC_ROUTE: flux-operator

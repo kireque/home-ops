@@ -23,3 +23,31 @@ spec:
     substitute:
       APP: esphome
       KOPIUR_CAPACITY: 5Gi
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: esphome-oidc
+spec:
+  # code-server is a shell on the ESPHome config volume
+  components:
+    - ../../../../components/oidc
+  targetNamespace: home-automation
+  path: ./kubernetes/apps/home-automation/esphome/oidc
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: esphome
+    - name: kanidm
+      namespace: security
+  postBuild:
+    substitute:
+      APP: esphome
+      OIDC_HOSTNAME: esphome-code.econline.nl
+      OIDC_ROUTE: esphome-code-server

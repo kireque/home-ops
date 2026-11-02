@@ -1,0 +1,12 @@
+---
+# TODO: add schema
+# Signs in to every route behind the oidc component (kubernetes/components/oidc)
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmGroup
+metadata:
+  name: homelab-admins
+spec:
+  kanidmRef:
+    name: sso
+  members:
+    - erik
