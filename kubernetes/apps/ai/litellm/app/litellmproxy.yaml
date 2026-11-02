@@ -19,6 +19,25 @@ spec:
         secretKeyRef:
           name: litellm-postgres-app
           key: uri
+    # Admin UI sign-in through Kanidm (kanidmoauth2client.yaml)
+    - name: GENERIC_AUTHORIZATION_ENDPOINT
+      value: https://idm.econline.nl/ui/oauth2
+    - name: GENERIC_CLIENT_USE_PKCE
+      value: "true"
+    - name: GENERIC_SCOPE
+      value: openid profile email
+    - name: GENERIC_TOKEN_ENDPOINT
+      value: https://idm.econline.nl/oauth2/token
+    - name: GENERIC_USER_DISPLAY_NAME_ATTRIBUTE
+      value: name
+    - name: GENERIC_USER_EMAIL_ATTRIBUTE
+      value: email
+    - name: GENERIC_USER_ID_ATTRIBUTE
+      value: sub
+    - name: GENERIC_USER_ROLE_ATTRIBUTE
+      value: litellm_role
+    - name: GENERIC_USERINFO_ENDPOINT
+      value: https://idm.econline.nl/oauth2/openid/litellm/userinfo
     - name: HOME
       value: /tmp
     - name: LITELLM_LOG
@@ -26,10 +45,18 @@ spec:
     # Prisma baselines/migrates from a copy here; the root filesystem is read-only
     - name: LITELLM_MIGRATION_DIR
       value: /tmp/migrations
+    # The SSO callback is built from this, not from the request
+    - name: PROXY_BASE_URL
+      value: https://litellm.econline.nl
   envFrom:
+    - secretRef:
+        name: litellm-kanidm-oauth2-credentials
     - secretRef:
         name: litellm-secret
   generalSettings:
+    # Kanidm is the only Admin UI login; the master key no longer works as the
+    # UI password but still authenticates API calls (operator, virtual keys)
+    disable_env_credential_login: true
     master_key: os.environ/LITELLM_MASTER_KEY
     # Envoy gateway pods sit in the pod CIDR; trust only them for X-Forwarded-For
     # so logs and rate limits see the real client address.
