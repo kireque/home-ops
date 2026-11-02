@@ -68,6 +68,8 @@ DOCS_MAX_LINES = 300
 RENOVATE_MAX_LINES = 100
 # show prints at most this much; larger diffs are refused, never reviewed partially
 MAX_DIFF_CHARS = 20000
+# Renovate bodies with several releases' notes run past 15k; beyond this show truncates
+MAX_DESCRIPTION_CHARS = 32000
 CRD_PATTERN = re.compile(r"(?im)^\+\s*kind:\s*CustomResourceDefinition\b")
 SECRET_PATTERN = re.compile(r"(?im)^\+.*\b(kind:\s*secret|password|token|private[_-]?key)\b")
 GOOD_CONCLUSIONS = {"success", "skipped", "neutral"}
@@ -308,8 +310,8 @@ def show(number, token):
     print(f"category: {kind}  author: {pr['user']['login']}  head: {pr['head']['sha']}")
     print(f"labels: {', '.join(label['name'] for label in pr['labels'])}\n")
     body = pr["body"] or "(none)"
-    if len(body) > 12000:
-        body = body[:12000] + "\n\n[description truncated: release notes are incomplete]"
+    if len(body) > MAX_DESCRIPTION_CHARS:
+        body = body[:MAX_DESCRIPTION_CHARS] + "\n\n[description truncated: release notes are incomplete]"
     print("## Description\n" + body + "\n")
     print("## Diff")
     print(diff)
