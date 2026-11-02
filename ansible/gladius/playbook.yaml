@@ -95,3 +95,35 @@
           retries: 30
           delay: 10
           when: not ansible_check_mode
+
+    # Own dataset rather than tank/apps, which is NFS-exported to the LAN.
+    - name: garage | Check dataset
+      tags:
+        - garage
+      ansible.builtin.command: >-
+        midclt call pool.dataset.query '[["id", "=", "tank/garage"]]'
+      changed_when: false
+      check_mode: false
+      register: garage_dataset
+
+    - name: garage | Create dataset
+      tags:
+        - garage
+      ansible.builtin.command: >-
+        midclt call pool.dataset.create '{"name": "tank/garage"}'
+      when: garage_dataset.stdout | from_json | length == 0
+
+    # doco-cd bind-mounts these into the garage stack; docker won't create them.
+    - name: garage | Create data directories
+      tags:
+        - garage
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: "568"
+        group: "568"
+        mode: "0750"
+      loop:
+        - /mnt/tank/garage
+        - /mnt/tank/garage/data
+        - /mnt/tank/garage/meta

@@ -4,8 +4,11 @@ auto_discovery:
   enabled: true
   depth: 1
   delete: true
-external_secrets: {}
-# No stacks yet — add op:// entries here as you add docker/gladius/NN-<app>/ stacks.
+external_secrets:
+  CF_DNS_API_TOKEN: op://Docker/Cloudflare - Traefik/credential
+  DEXD_UNIFI_API_KEY: op://Docker/UniFi - dexd/password
+  GARAGE_ADMIN_TOKEN: op://Docker/Garage/admin_key
+  GARAGE_RPC_SECRET: op://Docker/Garage/rpc_secret
 force_recreate: false
 reconciliation:
   enabled: true
