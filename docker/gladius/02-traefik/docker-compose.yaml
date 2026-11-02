@@ -7,6 +7,8 @@ services:
   traefik:
     command:
       - --certificatesresolvers.cf.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
+      # 1.1.1.1 sees the record instantly; give Let's Encrypt's validators time to see it too
+      - --certificatesresolvers.cf.acme.dnsChallenge.propagation.delayBeforeChecks=60s
       # UniFi blocks DNS to Cloudflare's authoritative servers; check propagation via the allowed public resolvers
       - --certificatesresolvers.cf.acme.dnsChallenge.propagation.disableANSChecks=true
       - --certificatesresolvers.cf.acme.dnsChallenge.provider=cloudflare
