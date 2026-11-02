@@ -14,6 +14,14 @@
       allowedVersions: "<1.20.0",
     },
     {
+      // kaniop refuses a server newer than the Kanidm client it is built with and
+      // never creates the StatefulSet; raise this together with the kaniop chart
+      description: "Hold Kanidm at the 1.11.x client kaniop 0.21.0 supports",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["docker.io/kanidm/server"],
+      allowedVersions: "<1.12.0",
+    },
+    {
       description: "SearXNG tags are <date>-<commit>; compare on the date only",
       matchDatasources: ["docker"],
       matchPackageNames: ["docker.io/searxng/searxng"],
