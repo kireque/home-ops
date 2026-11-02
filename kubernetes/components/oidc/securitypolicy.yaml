@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.envoyproxy.io/securitypolicy_v1alpha1.json
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: ${APP}-oidc
+spec:
+  # Envoy sends PKCE (S256), which Kanidm requires
+  oidc:
+    clientID: ${APP}-oidc
+    clientSecret:
+      name: ${APP}-oidc-kanidm-oauth2-credentials
+    logoutPath: /oauth2/logout
+    provider:
+      issuer: https://idm.econline.nl/oauth2/openid/${APP}-oidc
+    redirectURL: https://${OIDC_HOSTNAME}/oauth2/callback
+    refreshToken: true
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: ${OIDC_ROUTE}

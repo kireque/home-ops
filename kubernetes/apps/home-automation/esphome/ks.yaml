@@ -7,6 +7,7 @@ metadata:
 spec:
   components:
     - ../../../../components/kopiur/backup
+    - ../../../../components/oidc
   targetNamespace: home-automation
   path: ./kubernetes/apps/home-automation/esphome/app
   interval: 1h
@@ -23,3 +24,6 @@ spec:
     substitute:
       APP: esphome
       KOPIUR_CAPACITY: 5Gi
+      # code-server is a shell on the config volume
+      OIDC_HOSTNAME: esphome-code.econline.nl
+      OIDC_ROUTE: esphome-code-server

@@ -1,0 +1,10 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+# Puts Kanidm sign-in in front of one HTTPRoute, for apps without their own OIDC.
+# Needs postBuild.substitute: APP, OIDC_HOSTNAME (the route's hostname) and
+# OIDC_ROUTE (the HTTPRoute name). Only homelab-admins members get through.
+resources:
+  - ./kanidmoauth2client.yaml
+  - ./securitypolicy.yaml
