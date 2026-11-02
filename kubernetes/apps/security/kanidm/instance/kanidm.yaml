@@ -1,0 +1,44 @@
+---
+# TODO: add schema
+apiVersion: kaniop.rs/v1beta1
+kind: Kanidm
+metadata:
+  name: sso
+spec:
+  # Baked into passkeys and OAuth2 issuer URLs; changing it means re-enrolling every passkey
+  domain: idm.econline.nl
+  gateway:
+    backendTlsPolicy:
+      validation:
+        hostname: idm.econline.nl
+        wellKnownCaCertificates: System
+    hostnames:
+      - idm.econline.nl
+    parentRefs:
+      - name: envoy-internal
+        namespace: network
+  # OAuth2 clients and groups live next to the apps that use them
+  groupNamespaceSelector: {}
+  image: docker.io/kanidm/server:1.12.0@sha256:71b6ff5a9c9c32b632894d8acef5a2afc77941b35a0aa95dcee959fe688d5ce9
+  logLevel: info
+  oauth2ClientNamespaceSelector: {}
+  origin: https://idm.econline.nl
+  replicaGroups:
+    - name: default
+      primaryNode: true
+      replicas: 1
+      resources:
+        limits:
+          memory: 512Mi
+        requests:
+          cpu: 10m
+  storage:
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+        storageClassName: ceph-block
+  tlsSecretName: idm-econline-nl-tls

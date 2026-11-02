@@ -1,0 +1,29 @@
+---
+# TODO: add schema
+apiVersion: kaniop.rs/v1alpha1
+kind: KanidmBackupRepository
+metadata:
+  name: garage
+spec:
+  authentication:
+    deleter:
+      secretRef:
+        name: kanidm-backup-secret
+    reader:
+      secretRef:
+        name: kanidm-backup-secret
+    writer:
+      secretRef:
+        name: kanidm-backup-secret
+  # Backups hold password hashes and TOTP seeds, so encrypt before upload
+  encryption:
+    keyRef:
+      name: kanidm-backup-secret
+    mode: clientSide
+  s3:
+    # Garage on the NAS (docker/gladius/04-garage); off-cluster
+    bucket: kanidm
+    endpoint: https://s3.econline.nl
+    forcePathStyle: true
+    prefix: sso
+    region: us-east-1

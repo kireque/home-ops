@@ -1,0 +1,14 @@
+---
+# TODO: add schema
+# Passwords and passkeys are never in git: kaniop publishes a one-time
+# credential reset link as an Event on the account (kubectl describe).
+# Attributes not listed here (e.g. mail) are left alone, so set them in Kanidm.
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmPersonAccount
+metadata:
+  name: erik
+spec:
+  kanidmRef:
+    name: sso
+  personAttributes:
+    displayname: Erik

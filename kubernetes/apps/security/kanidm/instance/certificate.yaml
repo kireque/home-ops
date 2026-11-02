@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: idm-econline-nl
+spec:
+  # Kanidm terminates TLS itself; Envoy re-encrypts to it and validates this name
+  dnsNames:
+    - idm.econline.nl
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-production
+  privateKey:
+    algorithm: ECDSA
+    rotationPolicy: Always
+    size: 256
+  secretName: idm-econline-nl-tls
