@@ -24,9 +24,10 @@ services:
     image: ghcr.io/traefik/traefik:v3.7.17@sha256:30ff62491aacdb862ceb8c9edcf2627da638d7deafdd4b6dab32fe34f8aa3e90
     networks:
       - apps
+    # TrueNAS UI owns 80/443 on 10.1.1.11; 10.1.1.18 is a second br0 alias for docker apps
     ports:
-      - 10.1.6.21:80:80
-      - 10.1.6.21:443:443
+      - 10.1.1.18:80:80
+      - 10.1.1.18:443:443
     restart: unless-stopped
     volumes:
       - acme:/certs
