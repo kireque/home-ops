@@ -25,12 +25,6 @@ update_env() (
 cp /seed/config.yaml "$data/config.yaml"
 cp /seed/SOUL.md "$data/SOUL.md"
 
-# The container command is `sleep infinity`, so container_boot only starts the
-# root gateway when a prior run intent exists. Seed one on a fresh volume.
-if [[ ! -f $data/gateway_state.json ]]; then
-  printf '{"desired_state": "running"}\n' > "$data/gateway_state.json"
-fi
-
 cat > "$data/.hermes-terminal-env.sh" <<'EOF'
 # Bash sources this file through BASH_ENV for every Hermes terminal command.
 for directory in /opt/data/.local/bin /opt/hermes/.venv/bin /opt/hermes/bin; do
@@ -58,7 +52,6 @@ for profile in "$data"/profiles/*; do
 LITELLM_API_KEY=$LITELLM_API_KEY
 API_SERVER_KEY=$API_SERVER_KEY
 SEARXNG_URL=$SEARXNG_URL
-HERMES_WEBUI_GATEWAY_BASE_URL=http://127.0.0.1:8642/p/${profile##*/}
 EOF
 done
 

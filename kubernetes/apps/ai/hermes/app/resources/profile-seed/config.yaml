@@ -8,8 +8,7 @@ providers:
     key_env: LITELLM_API_KEY
     transport: chat_completions
     discover_models: true
-    # The WebUI picker can't live-discover custom providers; it only lists
-    # these. Keep in sync with the models in ../../litellmvirtualkey.yaml.
+    # Keep in sync with the models in ../../litellmvirtualkey.yaml
     models:
       - gpt-6.1-sol
       - gpt-6.1-terra
@@ -105,6 +104,24 @@ telemetry:
 
 gateway:
   multiplex_profiles: true
+
+# The Webapp binds a wildcard address, so it sits behind the same sign-in as
+# the Dashboard: Kanidm, via the hermes OAuth2 client (kanidmoauth2client.yaml).
+# The client secret comes from HERMES_DASHBOARD_OIDC_CLIENT_SECRET.
+dashboard:
+  oauth:
+    provider: self-hosted
+    self_hosted:
+      client_id: hermes
+      issuer: https://idm.econline.nl/oauth2/openid/hermes
+      scopes: openid profile email
+  public_url: https://hermes-dash.econline.nl
+
+webapp:
+  enabled: true
+  host: 0.0.0.0
+  port: 9120
+  public_url: https://hermes.econline.nl
 
 streaming:
   enabled: true
