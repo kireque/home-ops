@@ -62,7 +62,10 @@ spec:
           app:
             image: &image
               repository: ghcr.io/silo-server/silo-server
-              tag: build-1819@sha256:e864a916b2917ca7924553d5ba493001d29ac461732083c89c9ce4ce5c1bf7a3
+              tag: build-1936@sha256:50475101300320a04cc2646922cb24eda6a51ed8cd269eff8d4f0b590a9698c0
+            # The image's /init (s6-overlay) needs root; run the binary directly as uid 1000
+            command: &command
+              - silo
             env: &env
               HOME: /tmp
               JF_PORT: &jfPort 8096
@@ -213,6 +216,7 @@ spec:
         containers:
           app:
             image: *image
+            command: *command
             env:
               <<:
                 - *env
@@ -323,12 +327,19 @@ spec:
             timeouts:
               backendRequest: 3600s
     persistence:
+      # /var/lib/silo is a link to /config/silo in the image
       config:
         existingClaim: "{{ .Release.Name }}"
         advancedMounts:
           silo:
             app:
-              - path: /var/lib/silo
+              - path: /config/silo
+      transcode-state:
+        type: emptyDir
+        advancedMounts:
+          transcode:
+            app:
+              - path: /config/silo
       intel-legacy:
         type: emptyDir
         globalMounts:
