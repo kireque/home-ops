@@ -1,0 +1,26 @@
+---
+# TODO: add schema
+# kaniop writes the credentials to radarr-kanidm-oauth2-credentials.
+# Issuer: https://idm.econline.nl/oauth2/openid/radarr
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmOAuth2Client
+metadata:
+  name: radarr
+spec:
+  disableConsentPrompt: true
+  displayname: Radarr
+  kanidmRef:
+    name: sso
+    namespace: security
+  origin: https://radarr.econline.nl/
+  preferShortUsername: true
+  redirectUrl:
+    - https://radarr.econline.nl/signin-oidc
+  # RADARR__AUTH__OIDCSCOPES defaults to openid profile email
+  scopeMap:
+    - group: homelab-admins@idm.econline.nl
+      scopes:
+        - email
+        - openid
+        - profile
+  strictRedirectUrl: true

@@ -41,7 +41,20 @@ spec:
             env:
               SONARR__APP__INSTANCENAME: Sonarr
               SONARR__APP__THEME: dark
-              SONARR__AUTH__METHOD: External
+              SONARR__AUTH__METHOD: Oidc
+              SONARR__AUTH__OIDCAUTHORITY: https://idm.econline.nl/oauth2/openid/sonarr
+              SONARR__AUTH__OIDCCLIENTID:
+                valueFrom:
+                  secretKeyRef:
+                    name: sonarr-kanidm-oauth2-credentials
+                    key: CLIENT_ID
+              SONARR__AUTH__OIDCCLIENTSECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: sonarr-kanidm-oauth2-credentials
+                    key: CLIENT_SECRET
+              # Kanidm uuid (sub) of erik; the app lets in exactly one user
+              SONARR__AUTH__OIDCUSERIDENTIFIER: a44371c2-5039-4335-8331-4997f012d19b
               SONARR__AUTH__REQUIRED: Enabled
               SONARR__LOG__DBENABLED: "False"
               SONARR__LOG__LEVEL: info
