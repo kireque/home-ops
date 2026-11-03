@@ -20,3 +20,31 @@ spec:
   postBuild:
     substitute:
       APP: bazarr
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: bazarr-oidc
+spec:
+  # Bazarr has no login of its own
+  components:
+    - ../../../../components/oidc
+  targetNamespace: downloads
+  path: ./kubernetes/apps/downloads/bazarr/oidc
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: bazarr
+    - name: kanidm
+      namespace: security
+  postBuild:
+    substitute:
+      APP: bazarr
+      OIDC_HOSTNAME: bazarr.econline.nl
+      OIDC_ROUTE: bazarr

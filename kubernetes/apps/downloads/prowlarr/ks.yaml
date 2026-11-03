@@ -20,3 +20,31 @@ spec:
   postBuild:
     substitute:
       APP: prowlarr
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: prowlarr-oidc
+spec:
+  # AUTH__METHOD External: the app trusts whatever reaches it
+  components:
+    - ../../../../components/oidc
+  targetNamespace: downloads
+  path: ./kubernetes/apps/downloads/prowlarr/oidc
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: prowlarr
+    - name: kanidm
+      namespace: security
+  postBuild:
+    substitute:
+      APP: prowlarr
+      OIDC_HOSTNAME: prowlarr.econline.nl
+      OIDC_ROUTE: prowlarr
