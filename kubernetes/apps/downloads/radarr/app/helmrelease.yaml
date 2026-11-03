@@ -41,11 +41,26 @@ spec:
             env:
               RADARR__APP__INSTANCENAME: Radarr
               RADARR__APP__THEME: dark
-              RADARR__AUTH__METHOD: External
+              RADARR__AUTH__METHOD: Oidc
+              RADARR__AUTH__OIDCAUTHORITY: https://idm.econline.nl/oauth2/openid/radarr
+              RADARR__AUTH__OIDCCLIENTID:
+                valueFrom:
+                  secretKeyRef:
+                    name: radarr-kanidm-oauth2-credentials
+                    key: CLIENT_ID
+              RADARR__AUTH__OIDCCLIENTSECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: radarr-kanidm-oauth2-credentials
+                    key: CLIENT_SECRET
+              # Kanidm uuid (sub) of erik; the app lets in exactly one user
+              RADARR__AUTH__OIDCUSERIDENTIFIER: a44371c2-5039-4335-8331-4997f012d19b
               RADARR__AUTH__REQUIRED: Enabled
               RADARR__LOG__DBENABLED: "False"
               RADARR__LOG__LEVEL: info
               RADARR__SERVER__PORT: &port 80
+              # trust X-Forwarded-Proto from envoy so the OIDC callback is https
+              RADARR__SERVER__TRUSTEDNETWORKS: 10.244.0.0/16
               RADARR__UPDATE__BRANCH: develop
             envFrom:
               - externalSecretRef:

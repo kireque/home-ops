@@ -17,6 +17,9 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  dependsOn:
+    - name: kanidm
+      namespace: security
   postBuild:
     substitute:
       APP: radarr

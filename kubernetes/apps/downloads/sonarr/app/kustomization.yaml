@@ -36,4 +36,5 @@ patches:
       kind: HelmRelease
 resources:
   - ./helmrelease.yaml
+  - ./kanidmoauth2client.yaml
   - ./ocirepository.yaml
