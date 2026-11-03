@@ -14,3 +14,31 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: headlamp-oidc
+spec:
+  # Headlamp signs every visitor in as cluster-admin
+  components:
+    - ../../../../components/oidc
+  targetNamespace: observability
+  path: ./kubernetes/apps/observability/headlamp/oidc
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: kanidm
+      namespace: security
+    - name: headlamp
+  postBuild:
+    substitute:
+      APP: headlamp
+      OIDC_HOSTNAME: headlamp.econline.nl
+      OIDC_ROUTE: headlamp
