@@ -13,12 +13,18 @@ spec:
   allowedNamespaces:
     all: true
   backend:
-    filesystem:
-      path: /repo
-      volume:
-        nfs:
-          server: gladius.home.econline.nl
-          path: /mnt/tank/backup/kopiur
+    s3:
+      auth:
+        secretRef:
+          name: kopiur-nas-secret
+          namespace: kopiur-system
+      # Garage on the NAS (docker/gladius/04-garage); off-cluster
+      bucket: kopiur
+      endpoint: s3.econline.nl
+      region: us-east-1
+  # The bucket holds the repo copied over from NFS; never initialise an empty one
+  create:
+    enabled: false
   encryption:
     passwordSecretRef:
       name: kopiur-nas-secret
