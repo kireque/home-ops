@@ -42,4 +42,5 @@ spec:
     substitute:
       APP: flux-operator
       OIDC_HOSTNAME: flux-operator.econline.nl
+      OIDC_ICON_URL: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/flux-cd.svg
       OIDC_ROUTE: flux-operator

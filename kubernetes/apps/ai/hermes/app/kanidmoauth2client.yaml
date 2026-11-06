@@ -23,6 +23,8 @@ metadata:
 spec:
   disableConsentPrompt: true
   displayname: Hermes
+  image:
+    url: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/hermes-agent.svg
   kanidmRef:
     name: sso
     namespace: security

@@ -8,6 +8,10 @@ metadata:
 spec:
   disableConsentPrompt: true
   displayname: ${APP}
+  # Shown on the Kanidm apps page; apps whose dashboard-icons name differs
+  # from the app name set OIDC_ICON_URL in their ks.yaml
+  image:
+    url: ${OIDC_ICON_URL:=https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/${APP}.svg}
   kanidmRef:
     name: sso
     namespace: security
