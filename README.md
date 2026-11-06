@@ -47,7 +47,7 @@ My cluster is a 3-node [Talos Linux](https://www.talos.dev) cluster, currently o
 - **Networking**: [Cilium](https://github.com/cilium/cilium) provides eBPF-based CNI with kube-proxy replacement and [Multus](https://github.com/k8snetworkplumbingwg/multus-cni) enables secondary network interfaces for pods that need them (e.g. Frigate/Zigbee2MQTT). [Envoy Gateway](https://github.com/envoyproxy/gateway) implements the Kubernetes Gateway API for both internal and external HTTP routing.
 - **Ingress & DNS**: Two `HTTPRoute` classes — `internal` and `external` — are synced by two separate [external-dns](https://github.com/kubernetes-sigs/external-dns) instances: one to a local UniFi controller via the [UniFi webhook provider](https://github.com/kashalls/external-dns-unifi-webhook), the other to Cloudflare (DNS-only, unproxied records). External access is served through [Towonel](https://towonel.dev) via TLS-passthrough into Envoy Gateway; [Cloudflare Tunnel](https://github.com/cloudflare/cloudflared) is still deployed but idle, kept only as a fast rollback path.
 - **Secrets**: [external-secrets](https://github.com/external-secrets/external-secrets) with an [1Password Connect](https://github.com/1Password/connect) `ClusterSecretStore` injects secrets from 1Password at reconcile time — nothing sensitive is committed in plaintext.
-- **Storage & Data Protection**: [Rook-Ceph](https://github.com/rook/rook) provides replicated block/filesystem storage across all three nodes, [OpenEBS](https://github.com/openebs/openebs) hostpath handles single-node local volumes, and [Volsync](https://github.com/backube/volsync) plus a custom backup/restore component called [kopiur](./kubernetes/components/kopiur) handle PVC backup and restore.
+- **Storage & Data Protection**: [Rook-Ceph](https://github.com/rook/rook) provides replicated block/filesystem storage across all three nodes, [OpenEBS](https://github.com/openebs/openebs) hostpath handles single-node local volumes, and [kopiur](./kubernetes/components/kopiur) handles PVC backup and restore to S3 ([Garage](https://garagehq.deuxfleurs.fr/) on the NAS).
 - **Certificates**: [cert-manager](https://github.com/cert-manager/cert-manager) issues and renews TLS certificates automatically.
 - **Image mirroring**: [Spegel](https://github.com/spegel-org/spegel) runs a stateless, cluster-local OCI image mirror so nodes don't all hit the same upstream registry.
 - **CI/CD**: [actions-runner-controller](https://github.com/actions/actions-runner-controller) runs self-hosted GitHub Actions runners inside the cluster.
@@ -65,7 +65,7 @@ My cluster is a 3-node [Talos Linux](https://www.talos.dev) cluster, currently o
 ```sh
 📁 kubernetes
 ├── 📁 apps       # applications, grouped by namespace
-├── 📁 components # re-usable kustomize components (volsync/kopiur backups, alerting, nfs-scaler)
+├── 📁 components # re-usable kustomize components (kopiur backups, alerting, nfs-scaler)
 └── 📁 flux       # Flux system + root Kustomization
 ```
 

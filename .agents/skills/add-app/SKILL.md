@@ -268,4 +268,3 @@ Show the user the created files and get confirmation before committing.
 - **Forgetting `reloader.stakater.com/auto`** — without it, secret/config changes don't restart pods.
 - **`readOnlyRootFilesystem: true` without writable scratch space** — apps that write to `/tmp` will crash; mount an emptyDir via `persistence.tmp`.
 - **Skipping the sorting conventions** — HelmRelease values follow `.agents/instructions/flux.sorting.instructions.md`.
-- **Using `volsync`** — CLAUDE.md's storage section still mentions it, but new apps use the `kopiur` components (`components/kopiur/backup`, `components/kopiur/secret`); check which is actually current before relying on either doc.
