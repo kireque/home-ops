@@ -10,14 +10,6 @@ spec:
     name: kopiur
   interval: 1h
   values:
-    extraVolumeMounts:
-      - name: repo
-        mountPath: /repo
-    extraVolumes:
-      - name: repo
-        nfs:
-          server: gladius.home.econline.nl
-          path: /mnt/tank/backup/kopiur
     features:
       kopiaUi:
         enabled: true
