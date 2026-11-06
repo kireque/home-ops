@@ -9,7 +9,9 @@ spec:
   # Virtual keys get no MCP servers unless the team grants them
   mcpServers:
     - context7
+    - flux
     - home_assistant
+    - kubectl
     - kubesearch
   models:
     - all-proxy-models
