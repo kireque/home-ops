@@ -190,13 +190,6 @@ snapshot ns='' app='':
         }' \
         | kubectl create -f -
 
-[arg('state', pattern='suspend|resume')]
-[doc('Suspend or resume VolSync')]
-volsync state:
-    flux -n volsync-system {{ state }} kustomization volsync
-    flux -n volsync-system {{ state }} helmrelease volsync
-    kubectl -n volsync-system scale deployment volsync --replicas {{ if state != "suspend" { "1" } else { "0" } }}
-
 [arg('resource', pattern='hr|ks|gitrepo|ocirepo|es')]
 [doc('Sync a resource')]
 [script]

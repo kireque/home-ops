@@ -4,11 +4,6 @@ apiVersion: kopiur.home-operations.com/v1alpha1
 kind: ClusterRepository
 metadata:
   name: nas
-  annotations:
-    # Verified all existing SnapshotPolicy consumers already resolve to
-    # hostname=namespace/username=policyName, so this is a no-op in
-    # practice — not an actual identity/lineage change.
-    kopiur.home-operations.com/allow-identity-change: "true"
 spec:
   allowedNamespaces:
     all: true
@@ -22,7 +17,7 @@ spec:
       bucket: kopiur
       endpoint: s3.econline.nl
       region: us-east-1
-  # The bucket holds the repo copied over from NFS; never initialise an empty one
+  # The repository must already exist in the bucket; never initialise an empty one
   create:
     enabled: false
   encryption:
