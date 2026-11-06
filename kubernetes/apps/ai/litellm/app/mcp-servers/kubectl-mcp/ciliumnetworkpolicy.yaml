@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: kubectl-mcp
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: kubectl-mcp
+  # kubectl-mcp has no auth of its own: only LiteLLM may call it.
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: ai
+            app.kubernetes.io/managed-by: litellm-operator
+            app.kubernetes.io/name: litellm
+      toPorts:
+        - ports:
+            - port: "8000"
+              protocol: TCP
+    # With DSR and host-only socket LB, a same-node ClusterIP backend's replies
+    # arrive already reverse-NATed to the service IP, miss conntrack and hit
+    # ingress policy. Admit the egress targets below so their replies get in.
+    - fromEntities:
+        - kube-apiserver
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+  # Only the Kubernetes API is needed. No cluster-wide DNS allow exists, so DNS is listed here explicitly.
+  egress:
+    - toEntities:
+        - kube-apiserver
+      toPorts:
+        - ports:
+            - port: "6443"
+              protocol: TCP
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: ANY
