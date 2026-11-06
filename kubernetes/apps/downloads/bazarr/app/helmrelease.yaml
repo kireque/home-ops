@@ -35,6 +35,10 @@ spec:
               - "80"
             command:
               - python
+            env:
+              # No Bazarr login (Kanidm sits in front), so Bazarr+ only answers
+              # hostnames on its allowlist
+              BAZARR_ALLOWED_HOSTS: "{{ .Release.Name }}.econline.nl"
             probes:
               liveness:
                 enabled: true
