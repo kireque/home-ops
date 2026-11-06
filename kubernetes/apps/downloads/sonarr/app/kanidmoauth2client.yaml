@@ -9,6 +9,8 @@ metadata:
 spec:
   disableConsentPrompt: true
   displayname: Sonarr
+  image:
+    url: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/sonarr.svg
   kanidmRef:
     name: sso
     namespace: security

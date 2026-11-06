@@ -64,4 +64,5 @@ spec:
     substitute:
       APP: kopiur
       OIDC_HOSTNAME: kopiur.econline.nl
+      OIDC_ICON_URL: https://cdn.jsdelivr.net/gh/home-operations/kopiur/crates/ui/web/public/favicon.svg
       OIDC_ROUTE: kopiur

@@ -9,6 +9,8 @@ metadata:
 spec:
   disableConsentPrompt: true
   displayname: Radarr
+  image:
+    url: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/radarr.svg
   kanidmRef:
     name: sso
     namespace: security

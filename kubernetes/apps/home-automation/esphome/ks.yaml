@@ -78,4 +78,5 @@ spec:
     substitute:
       APP: esphome-dashboard
       OIDC_HOSTNAME: esphome.econline.nl
+      OIDC_ICON_URL: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/esphome.svg
       OIDC_ROUTE: esphome-app

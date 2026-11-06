@@ -30,6 +30,8 @@ spec:
             - proxy_admin
   disableConsentPrompt: true
   displayname: LiteLLM
+  image:
+    url: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/litellm.svg
   kanidmRef:
     name: sso
     namespace: security
