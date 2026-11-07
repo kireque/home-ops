@@ -209,7 +209,7 @@ spec:
                 readOnly: true
       mise:
         type: image
-        image: ghcr.io/jdx/mise:2026.11.2@sha256:39cd8aad519a3dbc860eceb64dfd8cb5efe4cdbb8ad741a6867b544b2787b79c
+        image: ghcr.io/jdx/mise:2026.11.3@sha256:60a4852b1632aebb032c94bfbaf8196a1088c091bfd6cfa1ce8f182ab39c7d8e
         advancedMounts:
           hermes:
             app:
