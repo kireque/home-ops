@@ -20,3 +20,5 @@ spec:
       additional_drop_params:
         - "provider"
         - "reasoning"
+
+# model alias note
