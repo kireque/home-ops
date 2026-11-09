@@ -23,6 +23,7 @@ patches:
 resources:
   - ./bazarr/ks.yaml
   - ./chaski/ks.yaml
+  - ./listenarr/ks.yaml
   - ./prowlarr/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
