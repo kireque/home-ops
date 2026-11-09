@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: audiobookshelf
+spec:
+  components:
+    - ../../../../components/kopiur/backup
+    - ../../../../components/nfs-scaler
+  targetNamespace: media
+  path: ./kubernetes/apps/media/audiobookshelf/app
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  postBuild:
+    substitute:
+      APP: audiobookshelf
+      # covers and metadata cache live on the config volume
+      KOPIUR_CAPACITY: 10Gi

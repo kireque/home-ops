@@ -22,6 +22,7 @@ patches:
 
 resources:
   - ./agregarr/ks.yaml
+  - ./audiobookshelf/ks.yaml
   - ./immich/ks.yaml
   - ./jellyfin/ks.yaml
   - ./plex/ks.yaml
