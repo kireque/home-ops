@@ -12,4 +12,5 @@ generatorOptions:
   disableNameSuffixHash: true
 resources:
   - ./helmrelease.yaml
+  - ./kanidmoauth2client.yaml
   - ./ocirepository.yaml

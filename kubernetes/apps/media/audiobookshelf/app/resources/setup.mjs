@@ -1,4 +1,4 @@
-// Idempotent first-run setup: root user from 1Password, then the Audiobooks library.
+// Idempotent setup: root user from 1Password, the Audiobooks library, then Kanidm sign-in.
 const base = process.env.ABS_URL
 const username = process.env.ABS_ROOT_USERNAME
 const password = process.env.ABS_ROOT_PASSWORD
@@ -59,3 +59,35 @@ if (libraries.some((lib) => lib.folders.some((f) => f.fullPath === libraryPath))
   })
   console.log(`created library Audiobooks at ${libraryPath}`)
 }
+
+// Kanidm sign-in next to local login; existing users are matched by preferred_username, no auto-register
+const issuer = process.env.OIDC_ISSUER
+const discovery = await (await fetch(`${issuer}/.well-known/openid-configuration`)).json()
+await call('/api/auth-settings', {
+  method: 'PATCH',
+  token,
+  body: {
+    authActiveAuthMethods: ['local', 'openid'],
+    authOpenIDIssuerURL: discovery.issuer,
+    authOpenIDAuthorizationURL: discovery.authorization_endpoint,
+    authOpenIDTokenURL: discovery.token_endpoint,
+    authOpenIDUserInfoURL: discovery.userinfo_endpoint,
+    authOpenIDJwksURL: discovery.jwks_uri,
+    authOpenIDLogoutURL: discovery.end_session_endpoint ?? null,
+    authOpenIDClientID: process.env.OIDC_CLIENT_ID,
+    authOpenIDClientSecret: process.env.OIDC_CLIENT_SECRET,
+    authOpenIDTokenSigningAlgorithm: discovery.id_token_signing_alg_values_supported[0],
+    authOpenIDButtonText: 'Login with Kanidm',
+    authOpenIDAutoRegister: false,
+    authOpenIDMatchExistingBy: 'username',
+    authOpenIDMobileRedirectURIs: ['audiobookshelf://oauth'],
+    // unset, ABS builds redirect URLs as "undefined/auth/openid/..."; served at the root, so empty
+    authOpenIDSubfolderForRedirectURLs: ''
+  }
+})
+// the PATCH silently skips invalid values, so read back what took effect
+const { authActiveAuthMethods, authOpenIDIssuerURL } = await call('/api/auth-settings', { token })
+if (!authActiveAuthMethods.includes('openid') || authOpenIDIssuerURL !== discovery.issuer) {
+  throw new Error(`OpenID not active: methods=${authActiveAuthMethods} issuer=${authOpenIDIssuerURL}`)
+}
+console.log(`Kanidm sign-in active (${discovery.issuer})`)
