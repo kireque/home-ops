@@ -1,0 +1,51 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: listenarr
+spec:
+  components:
+    - ../../../../components/kopiur/backup
+    - ../../../../components/nfs-scaler
+  targetNamespace: downloads
+  path: ./kubernetes/apps/downloads/listenarr/app
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  postBuild:
+    substitute:
+      APP: listenarr
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: listenarr-oidc
+spec:
+  # Listenarr has no OIDC and its own login is off: the app trusts whatever reaches it
+  components:
+    - ../../../../components/oidc
+  targetNamespace: downloads
+  path: ./kubernetes/apps/downloads/listenarr/oidc
+  interval: 1h
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  dependsOn:
+    - name: listenarr
+    - name: kanidm
+      namespace: security
+  postBuild:
+    substitute:
+      APP: listenarr
+      OIDC_HOSTNAME: listenarr.econline.nl
+      OIDC_ICON_URL: https://cdn.jsdelivr.net/gh/listenarrs/listenarr@canary/fe/public/logo.svg
+      OIDC_ROUTE: listenarr
