@@ -5,6 +5,8 @@ kind: Kustomization
 metadata:
   name: &app litellm
 spec:
+  components:
+    - ../../../../components/cnpg/pg18
   targetNamespace: ai
   path: ./kubernetes/apps/ai/litellm/app
   interval: 1h
@@ -16,6 +18,8 @@ spec:
     namespace: flux-system
   dependsOn:
     - name: cloudnative-pg
+      namespace: database
+    - name: cloudnative-pg-barman-plugin
       namespace: database
     - name: litellm-operator
   postBuild:
