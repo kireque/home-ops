@@ -25,17 +25,3 @@ spec:
   postBuild:
     substitute:
       APP: *app
-  # First creation only: the backup bucket is still empty, so the component's
-  # recovery bootstrap has nothing to restore. Drop this patch once the first
-  # base backup exists.
-  patches:
-    - target:
-        group: postgresql.cnpg.io
-        kind: Cluster
-      patch: |-
-        - op: replace
-          path: /spec/bootstrap
-          value:
-            initdb:
-              database: litellm
-              owner: litellm
