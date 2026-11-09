@@ -1,4 +1,4 @@
-"""Idempotent setup: SABnzbd category for Listenarr, then SABnzbd as Listenarr's download client."""
+"""Idempotent setup: SABnzbd category and download client for Listenarr, then its indexers from Prowlarr."""
 
 import http.cookiejar
 import json
@@ -74,3 +74,14 @@ test = call(f"{LISTENARR}/api/v1/download-clients/test", client, {"X-XSRF-TOKEN"
 if not test.get("success"):
     sys.exit(f"Listenarr can't reach SABnzbd: {test.get('message')}")
 print(f"Listenarr download client SABnzbd saved and tested: {test.get('message')}")
+
+# 3. Indexers from Prowlarr (Listenarr pulls those with audio categories 3000/3030 and skips ones it
+#    already has, so a rerun also picks up indexers added to Prowlarr since)
+result = call(
+    f"{LISTENARR}/api/v1/indexers/prowlarr/import",
+    {"url": os.environ["PROWLARR_URL"], "apiKey": os.environ["PROWLARR_API_KEY"]},
+    {"X-XSRF-TOKEN": token},
+)
+print(f"Prowlarr import: {result['addedCount']} added, {result['skippedCount']} skipped, {result['total']} in Prowlarr")
+for indexer in result["indexers"]:
+    print(f"  + {indexer['name']}")
