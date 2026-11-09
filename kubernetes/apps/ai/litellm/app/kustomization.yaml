@@ -10,3 +10,18 @@ resources:
   - ./litellmproxy.yaml
   - ./mcp-servers/
   - ./models/
+# First creation only: the backup bucket is still empty, so the cnpg/pg18
+# component's recovery bootstrap has nothing to restore. Lives here, not in
+# ks.yaml, because cluster-apps replaces every child's spec.patches. Drop it
+# once the first base backup exists.
+patches:
+  - target:
+      group: postgresql.cnpg.io
+      kind: Cluster
+    patch: |-
+      - op: replace
+        path: /spec/bootstrap
+        value:
+          initdb:
+            database: litellm
+            owner: litellm
