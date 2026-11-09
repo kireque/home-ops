@@ -10,4 +10,3 @@ resources:
   - ./litellmproxy.yaml
   - ./mcp-servers/
   - ./models/
-  - ./postgrescluster.yaml
