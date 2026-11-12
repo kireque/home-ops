@@ -7,7 +7,7 @@ metadata:
 spec:
   kubernetes:
     # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-    version: v1.37.0
+    version: v1.37.2
   healthChecks:
     # Don't upgrade while a kopiur backup is being written
     - apiVersion: kopiur.home-operations.com/v1alpha1
