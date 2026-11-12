@@ -17,8 +17,11 @@ releases:
 
   - name: envoy-gateway
     namespace: network
-    chart: oci://mirror.gcr.io/envoyproxy/gateway-helm
-    version: v1.9.1
+    # docker.io, not mirror.gcr.io: the registryAliases lookup rewrites the
+    # mirror to docker.io and the helmfile manager then refuses the update
+    # (depName mismatch), leaving this pin stuck
+    chart: oci://docker.io/envoyproxy/gateway-helm
+    version: 1.10.0
 
   - name: grafana-operator
     namespace: observability
