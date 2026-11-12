@@ -45,7 +45,10 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      minimumGroupSize: 5,
+      // Only ghcr.io/siderolabs/kubelet is tracked (talos/version.yaml and the
+      // tuppr KubernetesUpgrade), so the group holds 2 updates; any higher
+      // minimum keeps Kubernetes upgrades parked under "Group Size Not Met".
+      minimumGroupSize: 2,
     },
     {
       description: "Rook-Ceph Group",
@@ -61,9 +64,14 @@
       // Unmatched matchDatasources on purpose: unites the mise pin (aqua),
       // the factory installer image, and the tuppr upgrade version, which
       // all resolve to packageName "siderolabs/talos" across three managers.
+      // The talosFactory preset sets separateMinorPatch for the factory and
+      // tuppr versions only, which routes their patches to renovate/patch-talos
+      // while the mise pin stayed on renovate/talos; set it group-wide so every
+      // member lands on the same branch.
       description: "Talos Group",
       groupName: "talos",
       matchPackageNames: ["siderolabs/talos"],
+      separateMinorPatch: true,
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
