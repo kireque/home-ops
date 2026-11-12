@@ -1,0 +1,39 @@
+---
+# TODO: add schema
+# kaniop writes the credentials to shelfmark-kanidm-oauth2-credentials.
+# Issuer: https://idm.econline.nl/oauth2/openid/shelfmark
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmOAuth2Client
+metadata:
+  name: shelfmark
+spec:
+  # Shelfmark grants admin to users whose OIDC_GROUP_CLAIM contains
+  # OIDC_ADMIN_GROUP; a fixed value avoids depending on Kanidm's group naming
+  claimMap:
+    - joinStrategy: array
+      name: shelfmark_role
+      valuesMap:
+        - group: homelab-admins@idm.econline.nl
+          values:
+            - admin
+  disableConsentPrompt: true
+  displayname: Shelfmark
+  image:
+    url: https://cdn.jsdelivr.net/gh/calibrain/shelfmark@main/src/frontend/public/logo.png
+  kanidmRef:
+    name: sso
+    namespace: security
+  origin: https://shelfmark.econline.nl/
+  preferShortUsername: true
+  redirectUrl:
+    - https://shelfmark.econline.nl/api/auth/oidc/callback
+  # Shelfmark also requests its group claim name as a scope when admin-group
+  # mapping is on; Kanidm rejects any scope not granted here
+  scopeMap:
+    - group: homelab-admins@idm.econline.nl
+      scopes:
+        - email
+        - openid
+        - profile
+        - shelfmark_role
+  strictRedirectUrl: true
