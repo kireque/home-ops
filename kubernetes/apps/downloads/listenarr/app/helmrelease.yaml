@@ -10,6 +10,21 @@ spec:
     name: listenarr
   interval: 1h
   values:
+    externalSecrets:
+      listenarr:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              PROWLARR_API_KEY: "{{ .PROWLARR_API_KEY }}"
+              SABNZBD_API_KEY: "{{ .api_key }}"
+        dataFrom:
+          - extract:
+              key: prowlarr
+          - extract:
+              key: sabnzbd
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -52,7 +67,7 @@ spec:
                     port: *port
                   failureThreshold: 30
                   periodSeconds: 10
-            securityContext:
+            securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
@@ -62,6 +77,40 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 2Gi
+      # SABnzbd category + download client, Prowlarr indexers; idempotent, reruns on every upgrade
+      setup:
+        type: job
+        annotations:
+          helm.sh/hook: post-install,post-upgrade
+          helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+        job:
+          backoffLimit: 3
+        containers:
+          app:
+            # python3 from the SABnzbd image, which Renovate already tracks
+            image:
+              repository: ghcr.io/home-operations/sabnzbd
+              tag: 5.1.3@sha256:c89b0322721c3eba47221e5f916505e7e742684651f73c5215717340b6b5402f
+            command:
+              - python3
+              - /scripts/setup.py
+            env:
+              LISTENARR_URL: http://listenarr.downloads.svc.cluster.local:4545
+              PROWLARR_URL: http://prowlarr.downloads.svc.cluster.local
+              SABNZBD_CATEGORY: audiobooks-listenarr
+              SABNZBD_URL: http://sabnzbd.downloads.svc.cluster.local
+            envFrom:
+              - externalSecretRef:
+                  identifier: listenarr
+            securityContext: *securityContext
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+        pod:
+          restartPolicy: Never
     service:
       app:
         controller: listenarr
@@ -78,13 +127,29 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-        globalMounts:
-          - path: /app/config
+        advancedMounts:
+          listenarr:
+            app:
+              - path: /app/config
       media:
         type: nfs
         server: gladius.home.econline.nl
         path: /mnt/tank/media
-        globalMounts:
-          - path: /media
+        advancedMounts:
+          listenarr:
+            app:
+              - path: /media
+      scripts:
+        type: configMap
+        name: listenarr-configmap
+        advancedMounts:
+          setup:
+            app:
+              - path: /scripts
+                readOnly: true
       tmp:
         type: emptyDir
+        advancedMounts:
+          listenarr:
+            app:
+              - path: /tmp
