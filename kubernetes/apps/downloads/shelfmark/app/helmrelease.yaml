@@ -1,0 +1,155 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: shelfmark
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: shelfmark
+  interval: 1h
+  values:
+    externalSecrets:
+      shelfmark:
+        secretStoreRef:
+          kind: ClusterSecretStore
+          name: onepassword-connect
+        target:
+          template:
+            data:
+              HARDCOVER_API_KEY: "{{ .HARDCOVER_API_KEY }}"
+              PROWLARR_API_KEY: "{{ .PROWLARR_API_KEY }}"
+              SABNZBD_API_KEY: "{{ .api_key }}"
+        dataFrom:
+          - extract:
+              key: shelfmark
+          - extract:
+              key: prowlarr
+          - extract:
+              key: sabnzbd
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      shelfmark:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/calibrain/shelfmark-lite
+              tag: v1.6.2@sha256:3bf5a4fd4b9ac4255578c361cd6cc820ba941f5edee34161d48b4081e026b15d
+            env:
+              # Env values win over the web UI (ENV > /config > default), so these
+              # are locked in Settings; anything not set here stays editable
+              AUDIOBOOK_LIBRARY_URL: https://audiobookshelf.econline.nl
+              AUTH_METHOD: oidc
+              DEFAULT_CONTENT_TYPE: audiobook
+              # Audiobookshelf library; organize = {Author}/{Title}/{Title}
+              DESTINATION_AUDIOBOOK: /media/audiobooks
+              DISABLE_LOCAL_AUTH: "true"
+              FILE_ORGANIZATION_AUDIOBOOK: organize
+              FLASK_PORT: &port 8084
+              HARDCOVER_ENABLED: "true"
+              # Ebooks aren't used yet; keep them out of the audiobook library
+              INGEST_DIR: /media/books
+              # /var/log is on the read-only root filesystem
+              LOG_ROOT: /tmp/log
+              METADATA_PROVIDER: hardcover
+              OIDC_ADMIN_GROUP: admin
+              OIDC_BUTTON_LABEL: Login with Kanidm
+              OIDC_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: shelfmark-kanidm-oauth2-credentials
+                    key: CLIENT_ID
+              OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: shelfmark-kanidm-oauth2-credentials
+                    key: CLIENT_SECRET
+              OIDC_DISCOVERY_URL: https://idm.econline.nl/oauth2/openid/shelfmark/.well-known/openid-configuration
+              OIDC_GROUP_CLAIM: shelfmark_role
+              OIDC_USE_ADMIN_GROUP: "true"
+              PROWLARR_ENABLED: "true"
+              PROWLARR_URL: http://prowlarr.downloads.svc.cluster.local
+              PROWLARR_USENET_CLIENT: sabnzbd
+              SABNZBD_URL: http://sabnzbd.downloads.svc.cluster.local
+              SEARCH_MODE: universal
+              # served over https via envoy-internal
+              SESSION_COOKIE_SECURE: "true"
+              TZ: Europe/Amsterdam
+            envFrom:
+              - externalSecretRef:
+                  identifier: shelfmark
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: *port
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: *port
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 10m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.econline.nl"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+      media:
+        type: nfs
+        server: gladius.home.econline.nl
+        path: /mnt/tank/media
+        globalMounts:
+          - path: /media
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
+          # the entrypoint requires the image user's home (from /etc/passwd,
+          # HOME is not honoured) to be writable in non-root mode
+          - path: /home/shelfmark
+            subPath: home
