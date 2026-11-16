@@ -73,8 +73,9 @@
           loop:
             - name: 1pw_token
               content: "{{ doco_1pw_sa_token }}"
-            - name: api_secret
-              content: "{{ doco_api_secret }}"
+            # doco-cd 0.134+ takes a YAML list of role-scoped keys; the existing key keeps full access
+            - name: api_keys.yaml
+              content: "- key: {{ doco_api_secret | to_json }}\n  role: full"
             - name: webhook_secret
               content: "{{ doco_webhook_secret }}"
 
