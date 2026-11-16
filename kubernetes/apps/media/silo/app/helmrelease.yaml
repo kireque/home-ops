@@ -62,7 +62,7 @@ spec:
           app:
             image: &image
               repository: ghcr.io/silo-server/silo-server
-              tag: build-2211@sha256:90cf22b7a510accb9922efe24686099ef5315034e9166d58f8686001f44cd458
+              tag: build-2483@sha256:1fc5664168c68bd2500df60de6030e3689efdd828e0d33eaa424222312e64ca9
             # The image's /init (s6-overlay) needs root; run the binary directly as uid 1000
             command: &command
               - silo
