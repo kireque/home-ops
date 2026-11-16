@@ -62,9 +62,9 @@ spec:
           app:
             image: &image
               repository: ghcr.io/silo-server/silo-server
-              tag: build-2211@sha256:90cf22b7a510accb9922efe24686099ef5315034e9166d58f8686001f44cd458
+              tag: build-2488@sha256:8506661bae9d2fe2859d9d6e8b9591fd5d45b748cdaa3b70b7e0ea19fd2d382d
             # The image's /init (s6-overlay) needs root; run the binary directly as uid 1000
-            command: &command
+            command:
               - silo
             env: &env
               HOME: /tmp
@@ -76,7 +76,7 @@ spec:
               # legacy Intel OpenCL runtime (copied in by the intel-opencl-legacy init container)
               LD_LIBRARY_PATH: /opt/intel-legacy/lib
               OCL_ICD_VENDORS: /opt/intel-legacy/vendors
-            envFrom: &envFrom
+            envFrom:
               - externalSecretRef:
                   identifier: silo
             probes:
@@ -174,24 +174,25 @@ spec:
               - -c
               - until wget -q -O /dev/null http://silo-app.media.svc.cluster.local:8080/api/v1/ready; do sleep 3; done
             securityContext: *securityContext
-          # Silo has no node self-registration; add this pod to stream_nodes via the admin API if missing
+          # Silo has no node self-registration: add this pod to stream_nodes via the admin API if
+          # missing, then issue it a fresh node key (rotating is safe, the pod has no streams yet)
+          # and write it to the env file the app container starts from
           register-node:
             dependsOn: wait-for-api
             image:
               repository: busybox
               tag: 1.38.0@sha256:a46257e06c82ad85242d0d38077d0a52d9896389ca60a1a59d3463db586e5fa4
             env:
-              <<: &nodeIdentity
-                POD_NAME:
-                  valueFrom:
-                    fieldRef:
-                      fieldPath: metadata.name
-                NODE_NAME:
-                  value: $(POD_NAME)
-                  dependsOn: POD_NAME
-                NODE_URL:
-                  value: http://$(POD_NAME).silo-transcode.media.svc.cluster.local:8080
-                  dependsOn: POD_NAME
+              POD_NAME:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.name
+              NODE_NAME:
+                value: $(POD_NAME)
+                dependsOn: POD_NAME
+              NODE_URL:
+                value: http://$(POD_NAME).silo-transcode.media.svc.cluster.local:8080
+                dependsOn: POD_NAME
               SILO_ADMIN_API_KEY:
                 valueFrom:
                   secretKeyRef:
@@ -202,27 +203,42 @@ spec:
               - -c
               - |
                 set -eu
+                umask 077
                 api=http://silo-app.media.svc.cluster.local:8080/api/v2/admin/nodes
                 auth="Authorization: Bearer $SILO_ADMIN_API_KEY"
-                if wget -qO- --header "$auth" "$api" | grep -qF "\"url\":\"$NODE_URL\""; then
-                  echo "$NODE_NAME already registered"
-                  exit 0
+                # during a rollout the old API server can still be the one answering
+                until wget -qO- --header "$auth" "$api/capabilities" 2>/dev/null | grep -q '"node_keys":true'; do
+                  echo "waiting for an API server that issues node keys"
+                  sleep 5
+                done
+                node_id() {
+                  sed -n "s|.*\"id\":\"\{0,1\}\([0-9][0-9]*\)\"\{0,1\},\"name\":\"[^\"]*\",\"type\":\"transcode\",\"url\":\"$NODE_URL\".*|\1|p"
+                }
+                id=$(wget -qO- --header "$auth" "$api?limit=200" | node_id)
+                if [ -z "$id" ]; then
+                  id=$(wget -qO- --header "$auth" --header "Content-Type: application/json" \
+                    --post-data "{\"name\":\"$NODE_NAME\",\"type\":\"transcode\",\"url\":\"$NODE_URL\"}" "$api" | node_id)
+                  echo "$NODE_NAME registered as $NODE_URL"
                 fi
-                wget -qO- --header "$auth" --header "Content-Type: application/json" \
-                  --post-data "{\"name\":\"$NODE_NAME\",\"type\":\"transcode\",\"url\":\"$NODE_URL\"}" "$api"
-                echo
-                echo "$NODE_NAME registered as $NODE_URL"
+                [ -n "$id" ] || { echo "no node id for $NODE_URL"; exit 1; }
+                key=$(wget -qO- --header "$auth" --post-data '' "$api/$id/key" | sed -n 's/.*"node_key":"\([^"]*\)".*/\1/p')
+                [ -n "$key" ] || { echo "issuing a key for node $id failed"; exit 1; }
+                printf 'SILO_NODE_KEY=%s\n' "$key" > /node/.env
+                echo "$NODE_NAME (node $id) issued a fresh key"
             securityContext: *securityContext
         containers:
           app:
             image: *image
-            command: *command
+            # SILO_NODE_KEY comes from the env file register-node writes
+            command:
+              - silo
+              - -env
+              - /node/.env
             env:
-              <<:
-                - *env
-                - *nodeIdentity
+              <<: *env
               MODE: transcode
-            envFrom: *envFrom
+              # a transcode node takes all other settings from the API server
+              SILO_CORE_URL: http://silo-app.media.svc.cluster.local:8080
             probes:
               liveness:
                 enabled: true
@@ -340,6 +356,16 @@ spec:
           transcode:
             app:
               - path: /config/silo
+      node-env:
+        type: emptyDir
+        medium: Memory
+        advancedMounts:
+          transcode:
+            register-node:
+              - path: /node
+            app:
+              - path: /node
+                readOnly: true
       intel-legacy:
         type: emptyDir
         globalMounts:
