@@ -17,6 +17,9 @@
       ansible.builtin.shell: "op read 'op://{{ item.key }}' < /dev/null"
       delegate_to: localhost
       become: false
+      # the controller's discovered python3 can be a mise shim with no version outside the repo
+      vars:
+        ansible_python_interpreter: "{{ ansible_playbook_python }}"
       loop:
         - key: truenas/hswvpidjvs3g6qg5qi2dtjg6xa/credential
           var: doco_1pw_sa_token
