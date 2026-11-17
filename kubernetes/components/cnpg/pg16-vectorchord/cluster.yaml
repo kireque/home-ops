@@ -1,0 +1,59 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: ${APP}-postgres
+  annotations:
+    # Every incarnation recovers from, then archives back into, the same
+    # serverName prefix, so the empty-WAL-archive check would refuse to start
+    # archiving after a restore.
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
+spec:
+  # Disaster-recovery stanza. bootstrap and externalClusters are only read when
+  # the Cluster is first created, so this is inert on a running cluster. Deleting
+  # the Cluster *and* its PVCs restores the latest backup with fresh credentials
+  # (${APP}-postgres-app). A brand-new database has no backup to recover from:
+  # its app patches bootstrap to initdb/import for the first creation, then
+  # drops the patch once the first backup exists.
+  bootstrap:
+    recovery:
+      source: ${APP}-postgres
+      database: ${CNPG_DATABASE:=${APP}}
+      owner: ${CNPG_OWNER:=${APP}}
+  enablePDB: false
+  enableSuperuserAccess: false
+  externalClusters:
+    - name: ${APP}-postgres
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: ${APP}-postgres
+          serverName: ${CNPG_SERVER_NAME:=${APP}-postgres-pg16}
+  # CNPG image with VectorChord + pgvector. The tag suffix is the VectorChord
+  # version; Renovate only proposes PostgreSQL 16 minors with the same suffix.
+  # Bump VectorChord by hand, within the range the Immich release supports.
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.4.3@sha256:bdb8d8829bd68c9204628cde5c495db9db0d2b45e958ddd17de1703338a3b98b
+  instances: ${CNPG_INSTANCES:=1}
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: ${APP}-postgres
+        serverName: ${CNPG_SERVER_NAME:=${APP}-postgres-pg16}
+  postgresql:
+    parameters:
+      max_slot_wal_keep_size: 2GB
+    shared_preload_libraries:
+      - vchord.so
+  primaryUpdateMethod: switchover
+  primaryUpdateStrategy: unsupervised
+  resources:
+    requests:
+      cpu: ${CNPG_CPU_REQUEST:=50m}
+      memory: ${CNPG_MEMORY_REQUEST:=256Mi}
+    limits:
+      memory: ${CNPG_MEMORY_LIMIT:=1Gi}
+  storage:
+    size: ${CNPG_CAPACITY:=8Gi}
+    storageClass: ${CNPG_STORAGECLASS:=ceph-block}

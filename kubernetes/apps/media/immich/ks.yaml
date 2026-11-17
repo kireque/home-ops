@@ -6,6 +6,7 @@ metadata:
   name: immich
 spec:
   components:
+    - ../../../../components/cnpg/pg16-vectorchord
     - ../../../../components/nfs-scaler
   targetNamespace: media
   path: ./kubernetes/apps/media/immich/app
@@ -17,10 +18,15 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
+    - name: cloudnative-pg
+      namespace: database
+    - name: cloudnative-pg-barman-plugin
+      namespace: database
     - name: immich-database
   postBuild:
     substitute:
       APP: immich
+      CNPG_MEMORY_LIMIT: 2Gi
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
