@@ -1,0 +1,46 @@
+---
+# TODO: add schema
+# Only members may sign in: Kanidm issues tokens to scope-mapped groups only, and
+# Silo's Allowed groups setting (silo-users) repeats the rule on its side
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmGroup
+metadata:
+  name: silo-users
+spec:
+  kanidmRef:
+    name: sso
+    namespace: security
+  members:
+    - erik
+---
+# TODO: add schema
+# Used by Silo's OpenID Connect Sign-in plugin (silo.auth.oidc); its settings live in the Silo DB.
+# kaniop writes the credentials to silo-kanidm-oauth2-credentials.
+# Issuer: https://idm.econline.nl/oauth2/openid/silo
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmOAuth2Client
+metadata:
+  name: silo
+spec:
+  disableConsentPrompt: true
+  displayname: Silo
+  image:
+    url: https://cdn.jsdelivr.net/gh/Silo-Server/silo-server@main/web/public/web-app-icon-192.png
+  kanidmRef:
+    name: sso
+    namespace: security
+  origin: https://silo.econline.nl/
+  preferShortUsername: true
+  # the path segment is the plugin's installation id in Silo; reinstalling the plugin changes it
+  redirectUrl:
+    - https://silo.econline.nl/api/v2/auth/oauth/7/callback
+  # Kanidm rejects any requested scope missing here, so groups must be listed for the
+  # plugin's "Request the groups scope"; leave offline access off in Silo
+  scopeMap:
+    - group: silo-users@idm.econline.nl
+      scopes:
+        - email
+        - groups
+        - openid
+        - profile
+  strictRedirectUrl: true
