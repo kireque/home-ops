@@ -54,6 +54,8 @@ spec:
       namespace: database
     - name: intel-gpu-resource-driver
       namespace: kube-system
+    - name: kanidm
+      namespace: security
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: silo-database
