@@ -6,3 +6,37 @@ resources:
   - ./helmrelease.yaml
   - ./httproutefilter.yaml
   - ./ocirepository.yaml
+# First creation only: import the database from the old standalone Postgres
+# (silo-database HelmRelease) instead of the cnpg/pg18 component's recovery
+# bootstrap, which has no backup to restore yet. Lives here, not in ks.yaml,
+# because cluster-apps replaces every child's spec.patches. Drop it once the
+# first base backup exists.
+patches:
+  - target:
+      group: postgresql.cnpg.io
+      kind: Cluster
+    patch: |-
+      - op: replace
+        path: /spec/bootstrap
+        value:
+          initdb:
+            database: silo
+            owner: silo
+            import:
+              type: microservice
+              databases:
+                - silo
+              source:
+                externalCluster: silo-database
+      - op: add
+        path: /spec/externalClusters/-
+        value:
+          name: silo-database
+          connectionParameters:
+            dbname: silo
+            host: silo-database-postgres.media.svc.cluster.local
+            sslmode: disable
+            user: silo
+          password:
+            name: silo-database
+            key: POSTGRES_PASSWORD

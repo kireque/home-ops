@@ -19,7 +19,6 @@ spec:
         target:
           template:
             data:
-              DATABASE_URL: "postgres://{{ .POSTGRES_USER }}:{{ urlquery .POSTGRES_PASSWORD }}@silo-database-postgres.media.svc.cluster.local.:5432/silo?sslmode=disable"
               REDIS_URL: redis://silo-database-valkey.media.svc.cluster.local.:6379/0
               SECRET_KEY: "{{ .SECRET_KEY }}"
         dataFrom:
@@ -66,16 +65,24 @@ spec:
             # The image's /init (s6-overlay) needs root; run the binary directly as uid 1000
             command:
               - silo
-            env: &env
-              HOME: /tmp
-              JF_PORT: &jfPort 8096
-              PORT: &port 8080
-              SILO_METRICS_LISTEN: :9091
-              SILO_PLUGIN_CACHE_DIR: /tmp/silo-plugins
-              SILO_TRUSTED_PROXIES: 10.244.0.0/16
-              # legacy Intel OpenCL runtime (copied in by the intel-opencl-legacy init container)
-              LD_LIBRARY_PATH: /opt/intel-legacy/lib
-              OCL_ICD_VENDORS: /opt/intel-legacy/vendors
+            env:
+              # CloudNativePG cluster from the cnpg/pg18 component; only this
+              # container gets it, the transcode nodes merge *env without it
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: silo-postgres-app
+                    key: uri
+              <<: &env
+                HOME: /tmp
+                JF_PORT: &jfPort 8096
+                PORT: &port 8080
+                SILO_METRICS_LISTEN: :9091
+                SILO_PLUGIN_CACHE_DIR: /tmp/silo-plugins
+                SILO_TRUSTED_PROXIES: 10.244.0.0/16
+                # legacy Intel OpenCL runtime (copied in by the intel-opencl-legacy init container)
+                LD_LIBRARY_PATH: /opt/intel-legacy/lib
+                OCL_ICD_VENDORS: /opt/intel-legacy/vendors
             envFrom:
               - externalSecretRef:
                   identifier: silo

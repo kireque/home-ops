@@ -34,6 +34,7 @@ metadata:
   name: silo
 spec:
   components:
+    - ../../../../components/cnpg/pg18
     - ../../../../components/gpu
     - ../../../../components/kopiur/backup
     - ../../../../components/nfs-scaler
@@ -47,6 +48,10 @@ spec:
     name: flux-system
     namespace: flux-system
   dependsOn:
+    - name: cloudnative-pg
+      namespace: database
+    - name: cloudnative-pg-barman-plugin
+      namespace: database
     - name: intel-gpu-resource-driver
       namespace: kube-system
     - name: rook-ceph-cluster
@@ -55,4 +60,5 @@ spec:
   postBuild:
     substitute:
       APP: silo
+      CNPG_MEMORY_LIMIT: 2Gi
       KOPIUR_CAPACITY: 10Gi
