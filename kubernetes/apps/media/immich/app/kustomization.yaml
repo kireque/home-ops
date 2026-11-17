@@ -5,3 +5,45 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+# First creation only: import the database from the old standalone Postgres
+# (immich-database HelmRelease) instead of the cnpg/pg16-vectorchord
+# component's recovery bootstrap, which has no backup to restore yet. Lives
+# here, not in ks.yaml, because cluster-apps replaces every child's
+# spec.patches. Drop it once the first base backup exists (recovery keeps the
+# locale and database settings).
+# The locale matches the source (en_US.utf8); CNPG's default C would change
+# LOWER()/regex/collation behaviour for non-ASCII text. pg_dump doesn't carry
+# database-level settings, so vchordrq.probes is set again after the import.
+patches:
+  - target:
+      group: postgresql.cnpg.io
+      kind: Cluster
+    patch: |-
+      - op: replace
+        path: /spec/bootstrap
+        value:
+          initdb:
+            database: immich
+            localeCType: en_US.utf8
+            localeCollate: en_US.utf8
+            owner: immich
+            import:
+              type: microservice
+              databases:
+                - immich
+              postImportApplicationSQL:
+                - ALTER DATABASE immich SET vchordrq.probes = 1
+              source:
+                externalCluster: immich-database
+      - op: add
+        path: /spec/externalClusters/-
+        value:
+          name: immich-database
+          connectionParameters:
+            dbname: immich
+            host: immich-database-postgres.media.svc.cluster.local
+            sslmode: disable
+            user: immich
+          password:
+            name: immich-database
+            key: POSTGRES_PASSWORD

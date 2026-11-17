@@ -1,0 +1,11 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/component.json
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+# PostgreSQL 16 with VectorChord (vchord + pgvector) for Immich. Same layout as
+# ../pg18: the major version and the extension build live in this directory, so
+# the operand image and the object store prefix can't be bumped separately.
+components:
+  - ../base
+resources:
+  - ./cluster.yaml
