@@ -16,10 +16,10 @@
     {
       // kaniop refuses a server newer than the Kanidm client it is built with and
       // never creates the StatefulSet; raise this together with the kaniop chart
-      description: "Hold Kanidm at the 1.11.x client kaniop 0.21.0 supports",
+      description: "Hold Kanidm at the 1.12.x client kaniop 0.23.0 supports",
       matchDatasources: ["docker"],
       matchPackageNames: ["docker.io/kanidm/server"],
-      allowedVersions: "<1.12.0",
+      allowedVersions: "<1.13.0",
     },
     {
       // Hermes moved from calendar tags (v2026.9.24) to semver (v0.22.x); the
