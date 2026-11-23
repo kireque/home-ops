@@ -36,7 +36,41 @@ spec:
     envoy:
       enabled: false
     hubble:
-      enabled: false
+      enabled: true
+      export:
+        # Flow log for drafting network policies; the dynamic exporter's
+        # filters can change without restarting the agents
+        dynamic:
+          enabled: true
+          config:
+            content:
+              - name: downloads
+                fieldMask:
+                  - time
+                  - source.namespace
+                  - source.pod_name
+                  - source.labels
+                  - destination.namespace
+                  - destination.pod_name
+                  - destination.labels
+                  - IP
+                  - l4
+                  - verdict
+                  - drop_reason_desc
+                  - traffic_direction
+                  - is_reply
+                includeFilters:
+                  - source_pod:
+                      - "downloads/"
+                  - destination_pod:
+                      - "downloads/"
+                filePath: /var/run/cilium/hubble/downloads.log
+                fileMaxSizeMb: 50
+                fileMaxBackups: 5
+                fileCompress: true
+      relay:
+        enabled: true
+        rollOutPods: true
     ipam:
       mode: kubernetes
     ipv4NativeRoutingCIDR: 10.244.0.0/16
