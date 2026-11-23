@@ -45,7 +45,7 @@ My cluster is a 3-node [Talos Linux](https://www.talos.dev) cluster, currently o
 
 - **GitOps**: [flux-operator](https://github.com/controlplaneio-fluxcd/flux-operator) manages the [Flux](https://github.com/fluxcd/flux2) installation itself (via a `FluxInstance` resource) rather than bootstrapping Flux directly, which lets Flux's own version be reconciled and upgraded like any other component.
 - **Networking**: [Cilium](https://github.com/cilium/cilium) provides eBPF-based CNI with kube-proxy replacement and [Multus](https://github.com/k8snetworkplumbingwg/multus-cni) enables secondary network interfaces for pods that need them (e.g. Frigate/Zigbee2MQTT). [Envoy Gateway](https://github.com/envoyproxy/gateway) implements the Kubernetes Gateway API for both internal and external HTTP routing.
-- **Ingress & DNS**: Two `HTTPRoute` classes — `internal` and `external` — are synced by two separate [external-dns](https://github.com/kubernetes-sigs/external-dns) instances: one to a local UniFi controller via the [UniFi webhook provider](https://github.com/kashalls/external-dns-unifi-webhook), the other to Cloudflare (DNS-only, unproxied records). External access is served through [Towonel](https://towonel.dev) via TLS-passthrough into Envoy Gateway; [Cloudflare Tunnel](https://github.com/cloudflare/cloudflared) is still deployed but idle, kept only as a fast rollback path.
+- **Ingress & DNS**: Two `HTTPRoute` classes — `internal` and `external` — are synced by two separate [external-dns](https://github.com/kubernetes-sigs/external-dns) instances: one to a local UniFi controller via the [UniFi webhook provider](https://github.com/kashalls/external-dns-unifi-webhook), the other to Cloudflare (DNS-only, unproxied records). External access is served through [Towonel](https://towonel.dev) via TLS-passthrough into Envoy Gateway.
 - **Secrets**: [external-secrets](https://github.com/external-secrets/external-secrets) with an [1Password Connect](https://github.com/1Password/connect) `ClusterSecretStore` injects secrets from 1Password at reconcile time — nothing sensitive is committed in plaintext.
 - **Storage & Data Protection**: [Rook-Ceph](https://github.com/rook/rook) provides replicated block/filesystem storage across all three nodes, [OpenEBS](https://github.com/openebs/openebs) hostpath handles single-node local volumes, and [kopiur](./kubernetes/components/kopiur) handles PVC backup and restore to S3 ([Garage](https://garagehq.deuxfleurs.fr/) on the NAS).
 - **Certificates**: [cert-manager](https://github.com/cert-manager/cert-manager) issues and renews TLS certificates automatically.
@@ -80,7 +80,7 @@ My cluster is a 3-node [Talos Linux](https://www.talos.dev) cluster, currently o
 | `rook-ceph` | rook-ceph operator, rook-ceph-cluster, ceph-csi-drivers |
 | `openebs-system` | OpenEBS (hostpath local storage) |
 | `kopiur-system` | kopiur, kopiur-repository (backup/restore) |
-| `network` | Cilium ingress bits, Envoy Gateway, cloudflare-tunnel, cloudflare-dns, unifi-dns, towonel-agent, echo |
+| `network` | Cilium ingress bits, Envoy Gateway, cloudflare-dns, unifi-dns, towonel-agent, echo |
 | `observability` | kube-prometheus-stack, Grafana, VictoriaLogs, fluent-bit, Gatus, kromgo, Headlamp, KEDA, silence-operator, smartctl-exporter, blackbox-exporter |
 | `home-automation` | Home Assistant, Zigbee2MQTT, ESPHome, Frigate, Mosquitto |
 | `media` | Jellyfin, seerr, watchstate (Plex, Tautulli and agregarr archived: scaled to zero) |
@@ -112,7 +112,7 @@ Each node's NVMe drive is dedicated entirely to Rook-Ceph as an OSD (`devicePath
 ### Networking
 
 - UniFi network gear (controller reachable via `unifi-dns` for internal DNS sync).
-- External ingress: [Towonel](https://towonel.dev) (primary, TLS-passthrough into Envoy) with Cloudflare Tunnel kept deployed idle as a fast-rollback path.
+- External ingress: [Towonel](https://towonel.dev) (TLS-passthrough into Envoy).
 
 ---
 

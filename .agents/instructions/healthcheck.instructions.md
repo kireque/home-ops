@@ -254,15 +254,6 @@ kubectl get httproute --all-namespaces
 kubectl -n network get pods -l gateway.envoyproxy.io/owning-gateway-name
 ```
 
-### Cloudflared tunnel
-
-```bash
-kubectl -n network get pods -l app.kubernetes.io/name=cloudflare-tunnel
-
-# Recent tunnel logs (look for reconnects or auth failures)
-kubectl -n network logs deploy/cloudflare-tunnel --tail 30
-```
-
 ---
 
 ## 9. Active Prometheus alerts
@@ -303,7 +294,7 @@ These components underpin everything else. Any issue here cascades widely.
 | `external-secrets` | controller, webhook, onepassword-connect |
 | `rook-ceph` | operator, mgr, 3× mon, osd pods |
 | `kube-system` | coredns (2 replicas), metrics-server, cilium-operator, descheduler |
-| `network` | envoy-gateway, cloudflare-tunnel, external-dns |
+| `network` | envoy-gateway, towonel-agent, external-dns |
 | `kopiur-system` | kopiur |
 
 ```bash
