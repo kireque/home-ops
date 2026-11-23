@@ -1,0 +1,40 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cert-manager-webhook-ovh
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: cert-manager-webhook-ovh
+  interval: 1h
+  values:
+    groupName: acme.econline.nl
+    # The chart only grants the webhook read access to the OVH secret for
+    # issuers it creates. This staging issuer provides that access and is
+    # used to test DNS01 against OVH; letsencrypt-production gets an OVH
+    # solver once the nameservers point to OVH.
+    issuers:
+      - name: letsencrypt-staging-ovh
+        create: true
+        kind: ClusterIssuer
+        acmeServerUrl: https://acme-staging-v02.api.letsencrypt.org/directory
+        # required by the chart schema; Let's Encrypt no longer emails anyone
+        email: acme@econline.nl
+        profile: shortlived
+        ovhEndpointName: ovh-eu
+        ovhAuthenticationMethod: application
+        ovhAuthenticationRef:
+          applicationKeyRef:
+            name: &secret ovh-issuer-secret
+            key: applicationKey
+          applicationSecretRef:
+            name: *secret
+            key: applicationSecret
+          applicationConsumerKeyRef:
+            name: *secret
+            key: applicationConsumerKey
+    pod:
+      annotations:
+        secret.reloader.stakater.com/reload: *secret

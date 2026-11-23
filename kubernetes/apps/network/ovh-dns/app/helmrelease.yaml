@@ -1,0 +1,55 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app ovh-dns
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: ovh-dns
+  interval: 1h
+  values:
+    fullnameOverride: *app
+    provider:
+      name: ovh
+    env:
+      - name: &name OVH_APPLICATION_KEY
+        valueFrom:
+          secretKeyRef:
+            name: &secret ovh-dns-secret
+            key: *name
+      - name: &name OVH_APPLICATION_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: *secret
+            key: *name
+      - name: &name OVH_CONSUMER_KEY
+        valueFrom:
+          secretKeyRef:
+            name: *secret
+            key: *name
+    extraArgs:
+      - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
+      - --crd-source-kind=DNSEndpoint
+      - --gateway-name=envoy-external
+      - --ovh-endpoint=ovh-eu
+      # First rollout only logs its plan; dropped once it shows the OVH
+      # zone's existing records are adopted rather than duplicated
+      - --dry-run
+    triggerLoopOnEvent: true
+    policy: sync
+    sources:
+      - crd
+      - gateway-httproute
+    # Same owner and prefix as cloudflare-dns: the OVH zone already holds
+    # its registry records, so this instance adopts them instead of
+    # recreating every record
+    txtOwnerId: default
+    txtPrefix: k8s.
+    domainFilters:
+      - econline.nl
+    serviceMonitor:
+      enabled: true
+    podAnnotations:
+      secret.reloader.stakater.com/reload: *secret
