@@ -28,8 +28,8 @@
     "**/resources/**",
   ],
   // Resolves mirror.gcr.io references against Docker Hub so Renovate finds
-  // tags/digests via the upstream registry (coredns, envoy-gateway,
-  // cloudflare-tunnel all pull through this mirror).
+  // tags/digests via the upstream registry (coredns and envoy-gateway pull
+  // through this mirror).
   registryAliases: {
     "mirror.gcr.io": "docker.io",
   },

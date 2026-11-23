@@ -88,8 +88,8 @@ All secrets come from **1Password** via External Secrets Operator:
 
 - **Cilium**: CNI with eBPF, kube-proxy replacement
 - **Envoy Gateway**: Kubernetes Gateway API implementation for external access
-- **Cloudflared**: Tunnel for exposing services externally without open ports
-- **External-DNS**: Automatically creates Cloudflare DNS records
+- **Towonel**: External access via TLS passthrough into Envoy Gateway (no open ports)
+- **External-DNS**: Creates DNS records in Cloudflare (DNS-only zone) and on the UniFi controller
 
 ## Agent Instructions & Skills
 
