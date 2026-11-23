@@ -34,9 +34,6 @@ spec:
       - --crd-source-kind=DNSEndpoint
       - --gateway-name=envoy-external
       - --ovh-endpoint=ovh-eu
-      # First rollout only logs its plan; dropped once it shows the OVH
-      # zone's existing records are adopted rather than duplicated
-      - --dry-run
     triggerLoopOnEvent: true
     policy: sync
     sources:
