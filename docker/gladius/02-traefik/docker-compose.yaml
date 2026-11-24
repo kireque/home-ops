@@ -9,9 +9,10 @@ services:
       - --certificatesresolvers.cf.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
       # 1.1.1.1 sees the record instantly; give Let's Encrypt's validators time to see it too
       - --certificatesresolvers.cf.acme.dnsChallenge.propagation.delayBeforeChecks=60s
-      # UniFi blocks DNS to Cloudflare's authoritative servers; check propagation via the allowed public resolvers
+      # UniFi intercepts outbound DNS, so the authoritative servers can't be queried directly; check propagation via the allowed public resolvers
       - --certificatesresolvers.cf.acme.dnsChallenge.propagation.disableANSChecks=true
-      - --certificatesresolvers.cf.acme.dnsChallenge.provider=cloudflare
+      # The resolver keeps its name so Traefik keeps the wildcard certificate it already holds in acme.json
+      - --certificatesresolvers.cf.acme.dnsChallenge.provider=ovh
       - --certificatesresolvers.cf.acme.dnsChallenge.resolvers=1.1.1.1:53,9.9.9.9:53
       - --certificatesresolvers.cf.acme.storage=/certs/acme.json
       - --entryPoints.web.address=:80
@@ -25,7 +26,10 @@ services:
       - --providers.docker.exposedByDefault=false
     container_name: traefik
     environment:
-      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
+      - OVH_APPLICATION_KEY=${OVH_APPLICATION_KEY}
+      - OVH_APPLICATION_SECRET=${OVH_APPLICATION_SECRET}
+      - OVH_CONSUMER_KEY=${OVH_CONSUMER_KEY}
+      - OVH_ENDPOINT=ovh-eu
     image: ghcr.io/traefik/traefik:v3.7.19@sha256:a6c0194dda77bcb804824580f36fa7edc56e315b1acfe933366c8b52844a78a4
     networks:
       - apps
