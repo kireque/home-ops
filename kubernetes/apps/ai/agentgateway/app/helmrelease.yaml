@@ -167,8 +167,9 @@ spec:
         mcp:
           port: 8081
       # One multiplexed MCP endpoint (/mcp), like LiteLLM's: tools are
-      # prefixed with the target name. Every target has no auth of its own
-      # (except Context7), so the API key policy here is the only gate.
+      # prefixed with the target name, which may only hold lowercase letters,
+      # digits, '-' and '.' ('_' is rejected at startup). Every target but
+      # Context7 has no auth of its own, so the API key policy is the only gate.
       routes:
         - name: mcp
           gateways:
@@ -188,7 +189,7 @@ spec:
                   - name: flux
                     mcp:
                       host: http://flux-mcp.ai.svc.cluster.local:8000/mcp
-                  - name: home_assistant
+                  - name: home-assistant
                     mcp:
                       host: http://home-assistant-mcp.ai.svc.cluster.local:8080/mcp
                   - name: kubectl
