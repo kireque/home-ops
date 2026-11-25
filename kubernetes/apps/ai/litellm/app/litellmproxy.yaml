@@ -91,9 +91,9 @@ spec:
   resources:
     requests:
       cpu: 50m
-      memory: 512Mi
-    limits:
       memory: 1Gi
+    limits:
+      memory: 2Gi
   routerSettings:
     cooldown_time: 30
     enable_pre_call_checks: true
