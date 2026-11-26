@@ -34,6 +34,9 @@ spec:
                 spec:
                   install:
                     crds: CreateReplace
+                  # Helm release secrets dominate etcd's size; keep only
+                  # what a rollback needs (default is 5)
+                  maxHistory: 2
                   rollback:
                     cleanupOnFail: true
                   upgrade:
