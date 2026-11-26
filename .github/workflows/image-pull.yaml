@@ -35,6 +35,9 @@ jobs:
     needs: filter
     name: Image Pull - Extract Images
     runs-on: ubuntu-latest
+    env:
+      # renovate: datasource=github-releases depName=home-operations/flate
+      FLATE_VERSION: v0.8.0
     outputs:
       images: ${{ steps.extract.outputs.images }}
     steps:
@@ -43,7 +46,7 @@ jobs:
         with:
           cache: false
           tool_versions: |
-            github:home-operations/flate v0.3.2
+            github:home-operations/flate ${{ env.FLATE_VERSION }}
 
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -53,10 +56,15 @@ jobs:
 
       - name: Extract Images
         id: extract
+        env:
+          # The default of 32 parallel chart fetches times out on PRs that
+          # touch many HelmReleases (e.g. global patches)
+          FLATE_CONCURRENCY: 4
         run: |
+          flate diff images -p ./kubernetes/flux/cluster -o json > images.json
           {
             echo 'images<<EOF'
-            flate diff images -p ./kubernetes/flux/cluster -o json
+            cat images.json
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
 
@@ -85,7 +93,9 @@ jobs:
 
   success:
     if: ${{ !cancelled() }}
-    needs: pull
+    needs:
+      - extract
+      - pull
     name: Image Pull - Success
     runs-on: ubuntu-latest
     steps:
